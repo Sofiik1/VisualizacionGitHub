@@ -40,6 +40,32 @@
   overflow: hidden;
 }
 
+.colab-box-BIG-Mora {
+  position: relative;  /* esta línea es clave para que los hijos absolute se posicionen dentro */
+  background-color: black;
+  margin: 0;
+    border: 4px solid #AAC7DA;
+  border-radius: 2px;
+  padding: 1rem;
+  width: 280px;
+  height: 280px;
+  overflow: hidden;
+}
+
+.borde-extra{
+  border: 4px solid #AAC7DA;
+  border-radius: 2px;
+  margin: 5px;
+  width: fit-content;
+}
+
+.nombre_fecha{
+  display: flex;
+  flex-direction: column;
+  margin-top: .4vh;
+  align-content: center;
+}
+
 
 .icon-layer-BIG {
   position: relative; /* crucial for children with position:absolute */

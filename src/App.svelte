@@ -306,6 +306,25 @@ let todos2 = [
  const iconLayoutRow = JSON.parse(JSON.stringify(iconLayout));
 
 
+//  CODIGO MORA
+   const lenguajeIcons = [
+    { nombre: 'javascript', componente: JavaScript },
+    { nombre: 'c++', componente: Cmasmas },
+    { nombre: 'css', componente: CSS },
+    { nombre: 'c', componente: C },
+    { nombre: 'svelte', componente: Svelte },
+    { nombre: 'python', componente: Python },
+    { nombre: 'html', componente: Html }
+  ];
+
+  function getIcons(lenguajes) {
+    if (!Array.isArray(lenguajes)) return [];
+    return lenguajeIcons
+      .filter(icon => lenguajes.includes(icon.nombre))
+  }
+
+
+
    
 </script>
 
@@ -360,12 +379,60 @@ let todos2 = [
         </div>
       {/each}
     </div>
+
+
+  <h1 class="title">Bordes distintos</h1>
+  <div class="cajas">
+    {#each Repositorios as t}
+      <div class="caja">
+        <div class="borde-extra" style= "border-color: {t.peso==4 ? '#4B86AA' : '#111'};">
+        <div class="borde-extra" style= "border-color: {t.peso>=3 ? '#669BBC' : '#111'};">
+        <div class="borde-extra" style= "border-color: {t.peso>=2 ? '#8EB5CD' : '#111'}; padding:5px;">
+          <div class="colab-box-BIG-Mora">
+            <div class="icon-layer-BIG">
+                {#each t.iconos as nombre}
+                  {#if iconComponents[nombre] && t.iconLayout[nombre] && !/^WavyLineIcon\d*$/.test(nombre)}
+                    <svelte:component
+                      this={iconComponents[nombre]}
+                      size={baseIconSize * t.iconLayout[nombre].scale * (nombre === 'StarIcon' ? t.starScale : 1)}
+                      class="icon-item-BIG"
+                      style={`position: absolute;
+                              left: ${t.iconLayout[nombre].x};
+                              top: ${t.iconLayout[nombre].y};
+                              transform: translate(-50%, -50%);
+                              z-index: ${t.iconLayout[nombre].zIndex ?? 0};
+                              pointer-events: none;`}
+                    />
+                  {/if}
+                {/each}
+            </div>
+          </div>
+        </div>
+        </div>
+        </div>
+        <div class="nombre_fecha">
+          <p class="nombre-repo">{t.nombre}</p>
+          <!-- <p class="fecha-repo">{t.fecha}</p> -->
+        </div>
+      </div>
+    {/each}
+  </div>
           
   
 
 
   <h2 class="subtitulo">Leyenda de íconos</h2>
   <div class="leyenda">
+    <div>
+      <div class="borde-extra" style= "border-color:'#4B86AA';">
+        <div class="borde-extra" style= "border-color:'#669BBC';">
+          <div class="borde-extra" style= "border-color:'#8EB5CD';">
+            <div class="borde-extra borde-leyenda" style= "border-color: '#AAC7DA';">
+            </div>
+          </div>
+        </div>
+      </div> <span>Peso</span>
+    </div>
     <div><WavyLineIcon height={100}, size={100}   /> <span>Cantidad de líneas segun intervalo de peso </span></div>
     <div><StarIcon size={80}  /> <span>Commits, tamaño según cantidad </span></div>
     <div><Html size={80}  /> <span>HTML</span></div>
