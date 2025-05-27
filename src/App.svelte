@@ -21,7 +21,7 @@
   import * as d3 from 'd3';
 
   const iconLayout = {
-  JavaScript:        { x: '45%', y: '0%',    scale: 4 },
+  JavaScript:        { x: '45%', y: '20%',    scale: 4, color: '#0'},
   DoubleDiamondIcon: { x: '15%', y: '50%',   scale: 1.5 },
   CSS:               { x: '33%', y: '75%',   scale: 5 },
   C:                 { x: '50%', y: '50%',   scale: 6 },
@@ -31,7 +31,7 @@
   Html:              { x: '85%', y: '62%',   scale: 6 },
   Cmasmas:           { x: '40%', y: '40%',   scale: 7 },
 
-  StarIcon:          { x: '85%', y: '15%',   zIndex: 9, scale: 1.5 },
+  StarIcon:          { x: '85%', y: '14%',   zIndex: 9, scale: 1.5 },
   WavyLineIcon:      { x: '0%',  y: '50%',   zIndex: 20, scale: 6 },
   WavyLineIcon2:     { x: '5%',  y: '50%',   zIndex: 20, scale: 6 },
   WavyLineIcon3:     { x: '10%', y: '50%',   zIndex: 20, scale: 6 },
@@ -41,7 +41,12 @@
 
   let Repositorios = [];
 
-  function parseColaboradoresFromCSV(csvText) {
+  function parseDateDDMMYYYY(fechaStr) {
+  const [day, month, year] = fechaStr.split('/').map(Number);
+  return new Date(year, month - 1, day); // JavaScript months are 0-indexed
+}
+
+function parseColaboradoresFromCSV(csvText) {
   if (csvText.charCodeAt(0) === 0xFEFF) {
     csvText = csvText.slice(1);
   }
@@ -65,7 +70,9 @@
     .domain([minCommits, maxCommits])
     .range([0.5, 1.5]);
 
-  return data.map(row => {
+  const parsedRepos = data.map(row => {
+    const fechaParsed = parseDateDDMMYYYY(row.fecha);
+
     const languages = [
       { name: 'Python', value: row.python },
       { name: 'JavaScript', value: row.javascript },
@@ -76,22 +83,18 @@
       { name: 'Cmasmas', value: row.cmas },
     ].filter(lang => lang.value > 0);
 
-    // Sort by relevance
     languages.sort((a, b) => a.value - b.value);
 
-    // Base icons: Star + top languages
     const baseIcons = languages.map(lang => lang.name);
     const wavyIcons = ['WavyLineIcon', 'WavyLineIcon2', 'WavyLineIcon3', 'WavyLineIcon4'];
     const wavySubset = wavyIcons.slice(0, Math.min(4, row.peso));
     const allIcons = ['StarIcon', ...baseIcons, ...wavySubset];
 
-    // Clone and assign zIndex to runtime icons
     const iconLayoutRow = {};
     allIcons.forEach((iconName, i) => {
       const base = iconLayout[iconName];
       if (base) {
         iconLayoutRow[iconName] = { ...base };
-        // Assign zIndex only if not fixed (e.g., Star or Wavy lines)
         if (!('zIndex' in base)) {
           iconLayoutRow[iconName].zIndex = i;
         }
@@ -100,7 +103,7 @@
 
     return {
       nombre: row.nombre,
-      fecha: new Date(row.fecha),
+      fecha: fechaParsed,
       commits: row.commits,
       peso: row.peso,
       gusto: row.gusto,
@@ -110,7 +113,13 @@
       iconLayout: iconLayoutRow
     };
   });
+
+  // 🔽 Sort by date ascending
+  parsedRepos.sort((a, b) => a.fecha - b.fecha);
+
+  return parsedRepos;
 }
+
 
 onMount(async () => {
   try {
@@ -305,6 +314,14 @@ let todos2 = [
  const baseIconSize = 50;  // for example, 50px base size
  const iconLayoutRow = JSON.parse(JSON.stringify(iconLayout));
 
+ function formatDateToDDMMYYYY(date) {
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // months are 0-indexed
+  const year = date.getFullYear();
+  return `${day}/${month}/${year}`;
+}
+
+
 
 //  CODIGO MORA
    const lenguajeIcons = [
@@ -329,6 +346,37 @@ let todos2 = [
 </script>
 
 <main class="page">
+
+  <h2 class="subtitulo">Leyenda de íconos</h2>
+  <p class="leyenda-subtitulo">Metricas: </p>
+  <div class="leyenda">
+      <div>
+        <div class="borde-extra" style= "border-color:'#4B86AA';">
+          <div class="borde-extra" style= "border-color:'#669BBC';">
+            <div class="borde-extra" style= "border-color:'#8EB5CD';">
+              <div class="borde-extra borde-leyenda" style= "border-color: '#AAC7DA';">
+              </div>
+            </div>
+          </div>
+        </div> <span>Peso</span>
+      </div>
+      <div><WavyLineIcon height={100}, size={100}   /> <span>Cantidad de líneas segun intervalo de peso </span></div>
+      <div><StarIcon size={80}  /> <span>Commits, tamaño según cantidad </span></div>
+      
+  </div>
+  <p class="leyenda-subtitulo">Lenguajes usados: </p>
+  <div class="leyenda">
+      <div ><Html size={80}  /> <span>HTML</span></div>
+      <div><Python size={80}  /> <span>Python</span></div>
+      <div><JavaScript size={80} /> <span>JavaScript</span></div>
+      <div><Cmasmas size={80}  /> <span>C++</span></div>
+      <div><C size={80}  /> <span>C</span></div>
+      <div><Svelte size={80} /> <span>Svelte</span></div>
+      <div><CSS size={80}  /> <span>CSS</span></div>
+  </div>
+
+
+
 
   <h1 class="title">Todos Repos Posibles</h1>
   <div class="cajas">
@@ -390,6 +438,7 @@ let todos2 = [
         <div class="borde-extra" style= "border-color: {t.peso>=2 ? '#8EB5CD' : '#111'}; padding:5px;">
           <div class="colab-box-BIG-Mora">
             <div class="icon-layer-BIG">
+
                 {#each t.iconos as nombre}
                   {#if iconComponents[nombre] && t.iconLayout[nombre] && !/^WavyLineIcon\d*$/.test(nombre)}
                     <svelte:component
@@ -399,6 +448,7 @@ let todos2 = [
                       style={`position: absolute;
                               left: ${t.iconLayout[nombre].x};
                               top: ${t.iconLayout[nombre].y};
+                              stroke= ${t.iconLayout[nombre].color};
                               transform: translate(-50%, -50%);
                               z-index: ${t.iconLayout[nombre].zIndex ?? 0};
                               pointer-events: none;`}
@@ -410,10 +460,8 @@ let todos2 = [
         </div>
         </div>
         </div>
-        <div class="nombre_fecha">
-          <p class="nombre-repo">{t.nombre}</p>
-          <!-- <p class="fecha-repo">{t.fecha}</p> -->
-        </div>
+          <p class="repo-sub-nombre">{t.nombre}</p>
+          <p class="repo-sub-fecha">{formatDateToDDMMYYYY(t.fecha)}</p>
       </div>
     {/each}
   </div>
@@ -451,26 +499,13 @@ let todos2 = [
       <a href="https://www.linkedin.com/in/sofia-kutter" target="_blank">Sofía Kutter</a>
       <span>|</span>
       <a href="https://www.linkedin.com/in/ezequiel-mautner/" target="_blank">Ezequiel Mautner</a>
+      <span>|</span>
+      <a href="https://www.linkedin.com/in/ezequiel-mautner/" target="_blank">Mora Fernandez</a>
     </div>
   </footer>
 </main>
 
 <style>
-  .page {
-    background-color: #111;
-    color: white;
-    min-height: 100vh;
-    padding: 2rem;
-    text-align: center;
-  }
-  .cajas {
-    display: flex;
-    justify-content: center;
-    gap: 2rem;
-    flex-wrap: wrap;
-    margin-bottom: 3rem;
-  }
-
 
 
   @keyframes float {
@@ -479,29 +514,6 @@ let todos2 = [
   }
 
 
-  .subtitulo {
-    font-size: 1.4rem;
-    font-weight: bold;
-    margin-bottom: 1rem;
-  }
-  .leyenda {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-    gap: 1rem;
-    align-items: center;
-    text-align: left;
-    margin-bottom: 2rem;
-  }
-  .leyenda div {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-  .footer-content {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-    flex-wrap: wrap;
-    font-size: 0.9rem;
-  }
+
+
 </style>
