@@ -342,9 +342,9 @@ onMount(async () => {
 <div class="scroll-container">
   {#each Repositorios as t}
     <div class="caja-horizontal">
-      <div class="borde-extra" style="border-color: {t.peso == 4 ? '#cccccc' : '#111'}">
-        <div class="borde-extra" style="border-color: {t.peso >= 3 ? '#cccccc' : '#111'}">
-          <div class="borde-extra" style="border-color: {t.peso >= 2 ? '#cccccc' : '#111'}; padding:5px;">
+      <div class="borde-extra" style="border-color: {t.peso == 4 ? '#ffffff' : '#111'}">
+        <div class="borde-extra" style="border-color: {t.peso >= 3 ? '#ffffff' : '#111'}">
+          <div class="borde-extra" style="border-color: {t.peso >= 2 ? '#ffffff' : '#111'}; padding:5px;">
             <div class="colab-box-BIG-Mora">
               <div class="icon-layer-BIG">
                 {#each t.iconos as nombre}
