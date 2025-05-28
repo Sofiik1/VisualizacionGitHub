@@ -206,6 +206,16 @@ p{
   text-align: center;
   color: #fff;
 }
+.repo-sub-nombre, .repo-sub-fecha{
+  font-family: "Electrolize", sans-serif;
+  font-optical-sizing: auto;
+  font-size: 1.2rem;
+  letter-spacing: 1px;
+  font-weight: 700;
+  text-align: center;
+  color: #fff;
+}
+
 
 .cajas {
   display: flex;

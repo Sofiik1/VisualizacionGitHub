@@ -181,6 +181,9 @@ onMount(async () => {
       .filter(icon => lenguajes.includes(icon.nombre))
   }
 
+  let boxScale = 0.8; // or any value like 0.8, 1.5, etc.
+
+
 
 </script>
 
@@ -345,7 +348,7 @@ onMount(async () => {
       <div class="caja">
         <div class="borde-extra" style= "border-color: {t.peso==4 ? '#ffffff' : '#000000'};">
         <div class="borde-extra" style= "border-color: {t.peso>=3 ?  '#ffffff' : '#000000'};">
-        <div class="borde-extra" style= "border-color: {t.peso>=2 ? '#ffffff' : '#000000'}; padding:5px;">
+        <div class="borde-extra" style= "border-color: {t.peso>=2 ? '#ffffff' : '#000000'}; padding:3.5px;">
           <div class="colab-box-BIG">
             <div class="icon-layer-BIG">
 
@@ -353,7 +356,7 @@ onMount(async () => {
                   {#if iconComponents[nombre] && t.iconLayout[nombre] }
                     <svelte:component
                       this={iconComponents[nombre]}
-                      size={baseIconSize * t.iconLayout[nombre].scale * (nombre === 'StarIcon' ? t.starScale : 1 )}
+                      size={baseIconSize * t.iconLayout[nombre].scale * .9 * (nombre === 'StarIcon' ? t.starScale : 1 )}
                       class="icon-item-BIG"
                       style={`position: absolute;
                               left: ${t.iconLayout[nombre].x};
