@@ -25,7 +25,7 @@
   JavaScript:        { x: '45%', y: '20%',    scale: 4, color: '#0'},
   DoubleDiamondIcon: { x: '15%', y: '50%',   scale: 1.5 },
   CSS:               { x: '33%', y: '75%',   scale: 5 },
-  C:                 { x: '50%', y: '50%',   scale: 6 },
+  C:                 { x: '50%', y: '50%',   scale: 6.5 },
   Svelte:            { x: '80%', y: '95%',   scale: 8.2 },
   Python:            { x: '34%', y: '50%',   scale: 7 },
   SemiArcsIcon:      { x: '90%', y: '85%',   scale: 1.5 },
@@ -33,8 +33,8 @@
   Cmasmas:           { x: '40%', y: '40%',   scale: 7 },
 
   StarIcon:          { x: '85%', y: '14%',   zIndex: 9, scale: 1.5 },
-  WavyLineIcon:      { x: '0%',  y: '50%',   zIndex: 20, scale: 6 },
-  WavyLineHueco:     { x: '0%',  y: '50%',   zIndex: 20, scale: 6 },
+  WavyLineIcon:      { x: '0%',  y: '50%',   zIndex: 20, scale: 6.5 },
+  WavyLineHueco:     { x: '0%',  y: '50%',   zIndex: 20, scale: 6.5 },
 
 };
 
@@ -185,6 +185,46 @@ onMount(async () => {
 </script>
 
 <main class="page">
+  <h1 class="title">Repographix</h1>
+<h2 class="subtitle"> Nuestros repositorios en tarjetas visuales</h2>
+<!-- CONTENEDOR CON SCROLL HORIZONTAL -->
+<div class="scroll-container">
+  {#each Repositorios as t}
+    <div class="caja-horizontal">
+      <div class="borde-extra" style="border-color: {t.peso == 4 ? '#ffffff' : '#000000'}">
+        <div class="borde-extra" style="border-color: {t.peso >= 3 ? '#ffffff' : '#000000'}">
+          <div class="borde-extra" style="border-color: {t.peso >= 2 ? '#ffffff' : '#000000'}; padding:5px;">
+            <div class="colab-box-BIG-Mora">
+              <div class="icon-layer-BIG">
+                {#each t.iconos as nombre}
+                  {#if iconComponents[nombre] && t.iconLayout[nombre]}
+                    <svelte:component
+                      this={iconComponents[nombre]}
+                      size={baseIconSize * t.iconLayout[nombre].scale * (nombre === 'StarIcon' ? t.starScale : 1)}
+                      class="icon-item-BIG"
+                      style={`position: absolute;
+                              left: ${t.iconLayout[nombre].x};
+                              top: ${t.iconLayout[nombre].y};
+                              stroke: ${t.iconLayout[nombre].color};
+                              transform: translate(-50%, -50%);
+                              z-index: ${t.iconLayout[nombre].zIndex ?? 0};
+                              pointer-events: none;`}
+                    />
+                  {/if}
+                {/each}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="repositorio-info">
+      <p class="repo-sub-nombre">{t.nombre}</p>
+      <p class="repo-sub-fecha">{formatDateToDDMMYYYY(t.fecha)}</p>
+      </div>
+    </div>
+  {/each}
+</div>
+
 <div class="intro">
  <h1 class="title">Repositorios GitHub</h1>
   <p class="info">
@@ -203,41 +243,41 @@ onMount(async () => {
                   <div class="borde-extra-negro">
                     <div class="borde-extra-negro">
                       <div class="borde-extra-negro">
-                        <div class="borde-extra"></div>
+                        <div class="borde-extra"><div class="borde-extra-negro"></div></div>
                       </div>
                     </div>
                   </div>
-                   <span>0 - 20KB</span>
+                   <span class="ref">0 - 20KB</span>
                 </div>
                 <div class="legend-item">
                   <div class="borde-extra-negro">
                     <div class="borde-extra-negro">
                       <div class="borde-extra">
-                        <div class="borde-extra"></div>
+                        <div class="borde-extra"><div class="borde-extra-negro"></div></div>
                       </div>
                     </div>
                   </div>
-                  <span>20KB - 60KB</span>
+                  <span class="ref">20KB - 60KB</span>
                 </div>
                 <div class="legend-item">
                   <div class="borde-extra-negro">
                     <div class="borde-extra">
                       <div class="borde-extra">
-                        <div class="borde-extra"></div>
+                        <div class="borde-extra"><div class="borde-extra-negro"></div></div>
                       </div>
                     </div>
                   </div>
-                  <span>60KB - 3GB</span>
+                  <span class="ref">60KB - 3GB</span>
                 </div>
                 <div class="legend-item">
                   <div class="borde-extra">
                     <div class="borde-extra">
                       <div class="borde-extra">
-                        <div class="borde-extra"></div>
+                        <div class="borde-extra"><div class="borde-extra-negro"></div></div>
                       </div>
                     </div>
                   </div>
-                  <span>4GB - 10GB</span>
+                  <span class="ref">4GB - 10GB</span>
                 </div>
               </div>
             </div>
@@ -247,11 +287,11 @@ onMount(async () => {
             <div class="legend-vertical-list">
               <div class="legend-icon-horizontal">
                 <WavyLineIcon size={120} />
-                <p>Satisfecho</p>
+                <p class="ref">Satisfecho</p>
               </div>
               <div class="legend-icon-horizontal">
                 <WavyLineHueco height={100} size={120} />
-                <p>Insatisfecho</p>
+                <p class="ref">Insatisfecho</p>
               </div>
             </div>
           </div>
@@ -299,14 +339,14 @@ onMount(async () => {
       </div>
       </div>
   </div>
- <!--  <h1 class="title">Bordes distintos</h1>
+ <h1 class="title">Bordes distintos</h1>
   <div class="cajas">
     {#each Repositorios as t}
       <div class="caja">
-        <div class="borde-extra" style= "border-color: {t.peso==4 ? "#cccccc" : '#111'};">
-        <div class="borde-extra" style= "border-color: {t.peso>=3 ?  '#cccccc' : '#111'};">
-        <div class="borde-extra" style= "border-color: {t.peso>=2 ? "#cccccc" : '#111'}; padding:5px;">
-          <div class="colab-box-BIG-Mora">
+        <div class="borde-extra" style= "border-color: {t.peso==4 ? '#ffffff' : '#000000'};">
+        <div class="borde-extra" style= "border-color: {t.peso>=3 ?  '#ffffff' : '#000000'};">
+        <div class="borde-extra" style= "border-color: {t.peso>=2 ? '#ffffff' : '#000000'}; padding:5px;">
+          <div class="colab-box-BIG">
             <div class="icon-layer-BIG">
 
                 {#each t.iconos as nombre}
@@ -330,49 +370,13 @@ onMount(async () => {
         </div>
         </div>
         </div>
+        <div class="repositorio-info">
           <p class="repo-sub-nombre">{t.nombre}</p>
           <p class="repo-sub-fecha">{formatDateToDDMMYYYY(t.fecha)}</p>
+        </div>
       </div>
     {/each}
   </div>
-          --> 
-  <h1 class="title">Repographix</h1>
-
-<!-- CONTENEDOR CON SCROLL HORIZONTAL -->
-<div class="scroll-container">
-  {#each Repositorios as t}
-    <div class="caja-horizontal">
-      <div class="borde-extra" style="border-color: {t.peso == 4 ? '#ffffff' : '#111'}">
-        <div class="borde-extra" style="border-color: {t.peso >= 3 ? '#ffffff' : '#111'}">
-          <div class="borde-extra" style="border-color: {t.peso >= 2 ? '#ffffff' : '#111'}; padding:5px;">
-            <div class="colab-box-BIG-Mora">
-              <div class="icon-layer-BIG">
-                {#each t.iconos as nombre}
-                  {#if iconComponents[nombre] && t.iconLayout[nombre]}
-                    <svelte:component
-                      this={iconComponents[nombre]}
-                      size={baseIconSize * t.iconLayout[nombre].scale * (nombre === 'StarIcon' ? t.starScale : 1)}
-                      class="icon-item-BIG"
-                      style={`position: absolute;
-                              left: ${t.iconLayout[nombre].x};
-                              top: ${t.iconLayout[nombre].y};
-                              stroke: ${t.iconLayout[nombre].color};
-                              transform: translate(-50%, -50%);
-                              z-index: ${t.iconLayout[nombre].zIndex ?? 0};
-                              pointer-events: none;`}
-                    />
-                  {/if}
-                {/each}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <p class="repo-sub-nombre">{t.nombre}</p>
-      <p class="repo-sub-fecha">{formatDateToDDMMYYYY(t.fecha)}</p>
-    </div>
-  {/each}
-</div>
 
 
   <footer class="footer">
