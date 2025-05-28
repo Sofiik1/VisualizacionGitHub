@@ -1,7 +1,7 @@
 <!-- ZigzagIcon.svelte -->
 <script>
   export let size = 64;
-  export let color = "#ec4899"; // naranja vibrante
+  export let color = "#ff8acb"; // naranja vibrante "#ec4899"
   export let style = "";
 </script>
 

@@ -1,7 +1,7 @@
 <!-- WavyLineIcon.svelte -->
 <script>
     export let size = 64;
-    export let color = "#ff6100"; // naranja oscuro
+    export let color = "#fe1492"; // naranja oscuro  "#ff6100"
     export let style = "";
   </script>
   

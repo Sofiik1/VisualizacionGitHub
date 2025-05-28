@@ -13,6 +13,7 @@
   import StarIcon from './StarIcon.svelte';
   import Html from './Html.svelte';
   import Cmasmas from './Cmasmas.svelte';
+  import WavyLineHueco from './WavyLineHueco.svelte';
 
 
 
@@ -33,9 +34,8 @@
 
   StarIcon:          { x: '85%', y: '14%',   zIndex: 9, scale: 1.5 },
   WavyLineIcon:      { x: '0%',  y: '50%',   zIndex: 20, scale: 6 },
-  WavyLineIcon2:     { x: '5%',  y: '50%',   zIndex: 20, scale: 6 },
-  WavyLineIcon3:     { x: '10%', y: '50%',   zIndex: 20, scale: 6 },
-  WavyLineIcon4:     { x: '15%', y: '50%',   zIndex: 20, scale: 6 },
+  WavyLineHueco:     { x: '0%',  y: '50%',   zIndex: 20, scale: 6 },
+
 };
 
 
@@ -86,9 +86,9 @@ function parseColaboradoresFromCSV(csvText) {
     languages.sort((a, b) => a.value - b.value);
 
     const baseIcons = languages.map(lang => lang.name);
-    const wavyIcons = ['WavyLineIcon', 'WavyLineIcon2', 'WavyLineIcon3', 'WavyLineIcon4'];
-    const wavySubset = wavyIcons.slice(0, Math.min(4, row.peso));
-    const allIcons = ['StarIcon', ...baseIcons, ...wavySubset];
+    const wavyIconName = row.gusto === 1 ? 'WavyLineIcon' : 'WavyLineHueco';
+    const allIcons = ['StarIcon', ...baseIcons, wavyIconName];
+
 
     const iconLayoutRow = {};
     allIcons.forEach((iconName, i) => {
@@ -120,7 +120,6 @@ function parseColaboradoresFromCSV(csvText) {
   return parsedRepos;
 }
 
-
 onMount(async () => {
   try {
     const response = await fetch('/datos.csv');
@@ -136,8 +135,6 @@ onMount(async () => {
   }
 });
 
-
-
   const iconComponents = {
     JavaScript,
     DoubleDiamondIcon,
@@ -147,169 +144,13 @@ onMount(async () => {
     Python,
     SemiArcsIcon,
     WavyLineIcon,
-    WavyLineIcon2,
-    WavyLineIcon3,
-    WavyLineIcon4,
     StarIcon,
     Html,
-    Cmasmas
+    Cmasmas,
+    WavyLineHueco
   };
 
-/*  
-Combinaciones:
-JavaScript, CSS, svelte   -> 'CSS', 'JavaScript', 'Svelte'
-Html  -> 'Cmasmas'
-python, CSS, Html  -> 'Python', 'JavaScript', 'Cmasmas'
-python, Html  -> 'Python', 'Cmasmas'
-python  -> 'Python',
-python, c++  -> 'Python', 'Html'
-python, c  -> 'Python', 'C'
-c  -> 'C'
-
-'JavaScript',   JavaScript    
-'DoubleDiamondIcon', 
-'CSS',         CSS 
-'C',              
-'Svelte',        Svelte
-'Python',          
-'SemiArcsIcon',        
-'Html',   Html
-'Cmasmas'   c++
-
-'WavyLineIcon',   peso   
-'StarIcon',       commit   
-*/
-
  
-
-let todos = [
-   {  nombre: 'Spotify Skip',
-      gusto: true,
-      starScale: 1,
-      iconos: ['StarIcon','JavaScript', 'CSS', 'Svelte',
-        'WavyLineIcon', 'WavyLineIcon2','WavyLineIcon3','WavyLineIcon4',
-      ]
-    },
-
-   {  nombre: '',
-      gusto: false,
-      starScale: 1,
-      iconos: ['StarIcon','Html',
-        'WavyLineIcon', 'WavyLineIcon2','WavyLineIcon3','WavyLineIcon4',
-      ]
-    },
-   {  nombre: '',
-      gusto: true,
-      starScale: 1,
-      iconos: ['StarIcon','Python', 'CSS', 'Html',
-        'WavyLineIcon', 'WavyLineIcon2','WavyLineIcon3','WavyLineIcon4',
-      ]
-    },
-
-   {  nombre: '',
-      gusto: false,
-      starScale: 1,
-      iconos: ['StarIcon','Python', 'Html',
-        'WavyLineIcon', 'WavyLineIcon2','WavyLineIcon3','WavyLineIcon4',
-      ]
-    },
-   {  nombre: '',
-      gusto: true,
-      starScale: 1,
-      iconos: ['StarIcon','Python',
-        'WavyLineIcon', 'WavyLineIcon2','WavyLineIcon3','WavyLineIcon4',
-      ]
-    },
-
-   {  nombre: '',
-      gusto: false,
-      starScale: 1,
-      iconos: ['StarIcon','Python', 'Cmasmas',
-        'WavyLineIcon', 'WavyLineIcon2','WavyLineIcon3','WavyLineIcon4',
-      ]
-    },
-   {  nombre: '',
-      gusto: true,
-      starScale: 1,
-      iconos: ['StarIcon','Python', 'C',
-        'WavyLineIcon', 'WavyLineIcon2','WavyLineIcon3','WavyLineIcon4',
-      ]
-    },
-
-   {  nombre: '',
-      gusto: false,
-      starScale: 1,
-      iconos: ['StarIcon','C',
-        'WavyLineIcon', 'WavyLineIcon2','WavyLineIcon3','WavyLineIcon4',
-      ]
-    },
-
-]
-let todos2 = [
-   {  nombre: 'Spotify Skip',
-      gusto: true,
-      starScale: max_size,
-      iconos: ['StarIcon','JavaScript', 'CSS', 'Svelte',
-        'WavyLineIcon', 'WavyLineIcon2','WavyLineIcon3','WavyLineIcon4',
-      ]
-    },
-
-   {  nombre: '',
-      gusto: false,
-      starScale: max_size,
-      iconos: ['StarIcon','Html',
-        'WavyLineIcon', 'WavyLineIcon2','WavyLineIcon3','WavyLineIcon4',
-      ]
-    },
-   {  nombre: '',
-      gusto: true,
-      starScale: max_size,
-      iconos: ['StarIcon','Python', 'CSS', 'Html',
-        'WavyLineIcon', 'WavyLineIcon2','WavyLineIcon3','WavyLineIcon4',
-      ]
-    },
-
-   {  nombre: '',
-      gusto: false,
-      starScale: max_size,
-      iconos: ['StarIcon','Python', 'Html',
-        'WavyLineIcon', 'WavyLineIcon2','WavyLineIcon3','WavyLineIcon4',
-      ]
-    },
-   {  nombre: '',
-      gusto: true,
-      starScale: max_size,
-      iconos: ['StarIcon','Python',
-        'WavyLineIcon', 'WavyLineIcon2','WavyLineIcon3','WavyLineIcon4',
-      ]
-    },
-
-   {  nombre: '',
-      gusto: false,
-      starScale: max_size,
-      iconos: ['StarIcon','Python', 'Cmasmas',
-        'WavyLineIcon', 'WavyLineIcon2','WavyLineIcon3','WavyLineIcon4',
-      ]
-    },
-   {  nombre: '',
-      gusto: true,
-      starScale: max_size,
-      iconos: ['StarIcon','Python', 'C',
-        'WavyLineIcon', 'WavyLineIcon2','WavyLineIcon3','WavyLineIcon4',
-      ]
-    },
-
-   {  nombre: '',
-      gusto: false,
-      starScale: max_size,
-      iconos: ['StarIcon','C',
-        'WavyLineIcon', 'WavyLineIcon2','WavyLineIcon3','WavyLineIcon4',
-      ]
-    },
-
-]
-
-
  const max_size = 1.6   
  const baseIconSize = 50;  // for example, 50px base size
  const iconLayoutRow = JSON.parse(JSON.stringify(iconLayout));
@@ -322,7 +163,6 @@ let todos2 = [
 }
 
 
-
 //  CODIGO MORA
    const lenguajeIcons = [
     { nombre: 'javascript', componente: JavaScript },
@@ -332,6 +172,7 @@ let todos2 = [
     { nombre: 'svelte', componente: Svelte },
     { nombre: 'python', componente: Python },
     { nombre: 'html', componente: Html }
+
   ];
 
   function getIcons(lenguajes) {
@@ -341,109 +182,137 @@ let todos2 = [
   }
 
 
-
-   
 </script>
 
 <main class="page">
+<div class="intro">
+ <h1 class="title">Repositorios GitHub</h1>
+  <p class="info">
+    Representamos colaboraciones en repositorios de GitHub, correspondientes a trabajos que realizamos a lo largo de nuestra carrera. Para ello, usamos tarjetas visuales
+    sintetizando atributos clave como:
+    la variedad de lenguajes utilizados, la cantidad de commits, el peso del repositorio y cual fue la satisfacción del usuario con el resultado final de su proyecto.
+    Para representar y diferenciar cada una de estas dimensiones, seleccionamos las siguientes formas y colores.
+  </p>
+</div>
+  <div class="legend-wrapper">
+      <div class="legend-grid">
+          <div class="legend-block">
+              <h3 class="legend-title">Peso del repositorio</h3>
+              <div class="legend-row peso-grid">
+                <div class="legend-item">
+                  <div class="borde-extra-negro">
+                    <div class="borde-extra-negro">
+                      <div class="borde-extra-negro">
+                        <div class="borde-extra"></div>
+                      </div>
+                    </div>
+                  </div>
+                   <span>0 - 20KB</span>
+                </div>
+                <div class="legend-item">
+                  <div class="borde-extra-negro">
+                    <div class="borde-extra-negro">
+                      <div class="borde-extra">
+                        <div class="borde-extra"></div>
+                      </div>
+                    </div>
+                  </div>
+                  <span>20KB - 60KB</span>
+                </div>
+                <div class="legend-item">
+                  <div class="borde-extra-negro">
+                    <div class="borde-extra">
+                      <div class="borde-extra">
+                        <div class="borde-extra"></div>
+                      </div>
+                    </div>
+                  </div>
+                  <span>60KB - 3GB</span>
+                </div>
+                <div class="legend-item">
+                  <div class="borde-extra">
+                    <div class="borde-extra">
+                      <div class="borde-extra">
+                        <div class="borde-extra"></div>
+                      </div>
+                    </div>
+                  </div>
+                  <span>4GB - 10GB</span>
+                </div>
+              </div>
+            </div>
 
-  <h2 class="subtitulo">Leyenda de íconos</h2>
-  <p class="leyenda-subtitulo">Metricas: </p>
-  <div class="leyenda">
-      <div>
-        <div class="borde-extra" style= "border-color:'#4B86AA';">
-          <div class="borde-extra" style= "border-color:'#669BBC';">
-            <div class="borde-extra" style= "border-color:'#8EB5CD';">
-              <div class="borde-extra borde-leyenda" style= "border-color: '#AAC7DA';">
+          <div class="legend-block">
+            <h3 class="legend-title">Grado de satisfacción</h3>
+            <div class="legend-vertical-list">
+              <div class="legend-icon-horizontal">
+                <WavyLineIcon size={75} />
+                <p>Satisfecho</p>
+              </div>
+              <div class="legend-icon-horizontal">
+                <WavyLineHueco size={75} />
+                <p>Insatisfecho</p>
               </div>
             </div>
           </div>
-        </div> <span>Peso</span>
-      </div>
-      <div><WavyLineIcon height={100}, size={100}   /> <span>Cantidad de líneas segun intervalo de peso </span></div>
-      <div><StarIcon size={80}  /> <span>Commits, tamaño según cantidad </span></div>
-      
-  </div>
-  <p class="leyenda-subtitulo">Lenguajes usados: </p>
-  <div class="leyenda">
-      <div ><Html size={80}  /> <span>HTML</span></div>
-      <div><Python size={80}  /> <span>Python</span></div>
-      <div><JavaScript size={80} /> <span>JavaScript</span></div>
-      <div><Cmasmas size={80}  /> <span>C++</span></div>
-      <div><C size={80}  /> <span>C</span></div>
-      <div><Svelte size={80} /> <span>Svelte</span></div>
-      <div><CSS size={80}  /> <span>CSS</span></div>
-  </div>
 
-
-
-
-  <h1 class="title">Todos Repos Posibles</h1>
-  <div class="cajas">
-    {#each todos as t}
-      <div class="colab-box-BIG" style="border-color: {t.gusto ? 'limegreen' : 'deeppink'}">
-        <div class="icon-layer-BIG">
-          {#each t.iconos as nombre}
-            {#if iconComponents[nombre] && iconLayout[nombre]}
-              <svelte:component
-                this={iconComponents[nombre]}
-                size={baseIconSize * iconLayout[nombre].scale * (nombre === 'StarIcon' ? t.starScale : 1)}
-                class="icon-item-BIG"
-                style={`position: absolute;
-                        left: ${iconLayout[nombre].x};
-                        top: ${iconLayout[nombre].y};
-                        transform: translate(-50%, -50%);
-                        z-index: ${iconLayout[nombre].zIndex ?? 0};
-                        pointer-events: none;`}
-              />
-            {/if}
-          {/each}
-        </div>
-      </div>
-      {/each}
-    </div>
-
-    <h1 class="title">Repos de verdad</h1>
-    <div class="cajas">
-      {#each Repositorios as t}
-        <div class="colab-box-BIG" style="border-color: {t.gusto ? 'limegreen' : 'deeppink'}">
-          <div class="icon-layer-BIG" >
-            {#each t.iconos as nombre}
-              {#if iconComponents[nombre] && iconLayout[nombre]}
-                <svelte:component
-                  this={iconComponents[nombre]}
-                  size={baseIconSize * t.iconLayout[nombre].scale * (nombre === 'StarIcon' ? t.starScale : 1)}
-                  class="icon-item-BIG"
-                  style={`position: absolute;
-                          left: ${iconLayout[nombre].x};
-                          top: ${iconLayout[nombre].y};
-                          transform: translate(-50%, -50%);
-                          z-index: ${t.iconLayout[nombre].zIndex ?? 0};
-                          pointer-events: none;`}
-                />
-              {/if}
-            {/each}
+          <div class="legend-block">
+            <h3 class="legend-title">Commits</h3>
+            <div class="legend-icon-horizontal">
+              <div class="legend-icon-stack">
+                <StarIcon size={30} />
+                <StarIcon size={50} />
+                <StarIcon size={70} />
+              </div>
+              <p class="commit-description">
+                El tamaño varia según la cantidad de commits realizados en el repositorio.
+              </p>
+            </div>
           </div>
-        </div>
-      {/each}
-    </div>
-
-
-  <h1 class="title">Bordes distintos</h1>
+          
+      </div>
+      <div class="legend-block">
+      <h3 class="legend-title">Lenguajes usados: </h3>
+      <div class="legend-icon-grid">
+          <div ><Html size={60}  /> 
+            <p>HTML</p>
+          </div>
+          <div><Python size={60}  /> 
+            <p>Python</p>
+          </div>
+          <div><JavaScript size={60} /> 
+            <p>JavaScript</p>
+          </div>
+          <div><Cmasmas size={60}/> 
+            <p>C++</p>
+          </div>
+          <div><C size={60}/> 
+            <p>C</p>
+          </div>
+          <div><Svelte size={60} /> 
+            <p>Svelte</p>
+          </div>
+          <div><CSS size={60}/> 
+            <p>CSS</p>
+          </div>
+      </div>
+      </div>
+  </div>
+ <!--  <h1 class="title">Bordes distintos</h1>
   <div class="cajas">
     {#each Repositorios as t}
       <div class="caja">
-        <div class="borde-extra" style= "border-color: {t.peso==4 ? '#4B86AA' : '#111'};">
-        <div class="borde-extra" style= "border-color: {t.peso>=3 ? '#669BBC' : '#111'};">
-        <div class="borde-extra" style= "border-color: {t.peso>=2 ? '#8EB5CD' : '#111'}; padding:5px;">
+        <div class="borde-extra" style= "border-color: {t.peso==4 ? "#cccccc" : '#111'};">
+        <div class="borde-extra" style= "border-color: {t.peso>=3 ?  '#cccccc' : '#111'};">
+        <div class="borde-extra" style= "border-color: {t.peso>=2 ? "#cccccc" : '#111'}; padding:5px;">
           <div class="colab-box-BIG-Mora">
             <div class="icon-layer-BIG">
 
                 {#each t.iconos as nombre}
-                  {#if iconComponents[nombre] && t.iconLayout[nombre] && !/^WavyLineIcon\d*$/.test(nombre)}
+                  {#if iconComponents[nombre] && t.iconLayout[nombre] }
                     <svelte:component
                       this={iconComponents[nombre]}
-                      size={baseIconSize * t.iconLayout[nombre].scale * (nombre === 'StarIcon' ? t.starScale : 1)}
+                      size={baseIconSize * t.iconLayout[nombre].scale * (nombre === 'StarIcon' ? t.starScale : 1 )}
                       class="icon-item-BIG"
                       style={`position: absolute;
                               left: ${t.iconLayout[nombre].x};
@@ -465,32 +334,45 @@ let todos2 = [
       </div>
     {/each}
   </div>
-          
-  
+          --> 
+  <h1 class="title">Repographix</h1>
 
-
-  <h2 class="subtitulo">Leyenda de íconos</h2>
-  <div class="leyenda">
-    <div>
-      <div class="borde-extra" style= "border-color:'#4B86AA';">
-        <div class="borde-extra" style= "border-color:'#669BBC';">
-          <div class="borde-extra" style= "border-color:'#8EB5CD';">
-            <div class="borde-extra borde-leyenda" style= "border-color: '#AAC7DA';">
+<!-- CONTENEDOR CON SCROLL HORIZONTAL -->
+<div class="scroll-container">
+  {#each Repositorios as t}
+    <div class="caja-horizontal">
+      <div class="borde-extra" style="border-color: {t.peso == 4 ? '#cccccc' : '#111'}">
+        <div class="borde-extra" style="border-color: {t.peso >= 3 ? '#cccccc' : '#111'}">
+          <div class="borde-extra" style="border-color: {t.peso >= 2 ? '#cccccc' : '#111'}; padding:5px;">
+            <div class="colab-box-BIG-Mora">
+              <div class="icon-layer-BIG">
+                {#each t.iconos as nombre}
+                  {#if iconComponents[nombre] && t.iconLayout[nombre]}
+                    <svelte:component
+                      this={iconComponents[nombre]}
+                      size={baseIconSize * t.iconLayout[nombre].scale * (nombre === 'StarIcon' ? t.starScale : 1)}
+                      class="icon-item-BIG"
+                      style={`position: absolute;
+                              left: ${t.iconLayout[nombre].x};
+                              top: ${t.iconLayout[nombre].y};
+                              stroke: ${t.iconLayout[nombre].color};
+                              transform: translate(-50%, -50%);
+                              z-index: ${t.iconLayout[nombre].zIndex ?? 0};
+                              pointer-events: none;`}
+                    />
+                  {/if}
+                {/each}
+              </div>
             </div>
           </div>
         </div>
-      </div> <span>Peso</span>
+      </div>
+      <p class="repo-sub-nombre">{t.nombre}</p>
+      <p class="repo-sub-fecha">{formatDateToDDMMYYYY(t.fecha)}</p>
     </div>
-    <div><WavyLineIcon height={100}, size={100}   /> <span>Cantidad de líneas segun intervalo de peso </span></div>
-    <div><StarIcon size={80}  /> <span>Commits, tamaño según cantidad </span></div>
-    <div><Html size={80}  /> <span>HTML</span></div>
-    <div><Python size={80}  /> <span>Python</span></div>
-    <div><JavaScript size={80} /> <span>JavaScript</span></div>
-    <div><Cmasmas size={80}  /> <span>C++</span></div>
-    <div><C size={80}  /> <span>C</span></div>
-    <div><Svelte size={80} /> <span>Svelte</span></div>
-    <div><CSS size={80}  /> <span>CSS</span></div>
-  </div>
+  {/each}
+</div>
+
 
   <footer class="footer">
     <div class="footer-content">
@@ -507,13 +389,10 @@ let todos2 = [
 
 <style>
 
-
   @keyframes float {
     0%, 100% { transform: translateY(0px); }
     50% { transform: translateY(-10px); }
   }
-
-
 
 
 </style>
