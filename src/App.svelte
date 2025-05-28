@@ -246,11 +246,11 @@ onMount(async () => {
             <h3 class="legend-title">Grado de satisfacción</h3>
             <div class="legend-vertical-list">
               <div class="legend-icon-horizontal">
-                <WavyLineIcon size={75} />
+                <WavyLineIcon size={80} />
                 <p>Satisfecho</p>
               </div>
               <div class="legend-icon-horizontal">
-                <WavyLineHueco size={75} />
+                <WavyLineHueco height={100} size={80} />
                 <p>Insatisfecho</p>
               </div>
             </div>
@@ -265,7 +265,7 @@ onMount(async () => {
                 <StarIcon size={70} />
               </div>
               <p class="commit-description">
-                El tamaño varia según la cantidad de commits realizados en el repositorio.
+                El tamaño varia según la cantidad de commits realizados.
               </p>
             </div>
           </div>
