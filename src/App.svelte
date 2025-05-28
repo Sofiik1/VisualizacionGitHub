@@ -333,7 +333,7 @@ onMount(async () => {
           <div><C size={60}/> 
             <p>C</p>
           </div>
-          <div><Svelte size={60} /> 
+          <div><Svelte size={70} /> 
             <p>Svelte</p>
           </div>
           <div><CSS size={60}/> 
