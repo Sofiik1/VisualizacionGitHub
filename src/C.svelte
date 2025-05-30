@@ -1,7 +1,7 @@
 <!-- CurvedRibbonIcon.svelte -->
 <script>
   export let size = 64;
-  export let color = "#f8d471"; // amarillo pastel
+  export let color = "#009b01"; // amarillo pastel
   export let style = "";
 </script>
 

@@ -1,7 +1,7 @@
 <!-- ZigzagIcon.svelte -->
 <script>
   export let size = 64;
-  export let color = "#f8b400"; // naranja vibrante
+  export let color = "#ff8acb"; // naranja vibrante "#ec4899"
   export let style = "";
 </script>
 
@@ -14,10 +14,10 @@ fill="none"
 style={style}
 >
   <path
-    d="M10 10 
+    d="M5 10 
     L55 30 
     L50 55 
-    L90 80"
+    L95 80"
     stroke={color}
     stroke-width="12"
     stroke-linecap="round"

@@ -13,6 +13,7 @@
   import StarIcon from './StarIcon.svelte';
   import Html from './Html.svelte';
   import Cmasmas from './Cmasmas.svelte';
+  import WavyLineHueco from './WavyLineHueco.svelte';
 
 
 
@@ -21,27 +22,31 @@
   import * as d3 from 'd3';
 
   const iconLayout = {
-  JavaScript:        { x: '45%', y: '0%',    scale: 4 },
+  JavaScript:        { x: '45%', y: '20%',    scale: 4, color: '#0'},
   DoubleDiamondIcon: { x: '15%', y: '50%',   scale: 1.5 },
   CSS:               { x: '33%', y: '75%',   scale: 5 },
-  C:                 { x: '50%', y: '50%',   scale: 6 },
-  Svelte:            { x: '80%', y: '95%',   scale: 8.2 },
+  C:                 { x: '50%', y: '50%',   scale: 6.5 },
+  Svelte:            { x: '80%', y: '70%',   scale: 8.2 },
   Python:            { x: '34%', y: '50%',   scale: 7 },
   SemiArcsIcon:      { x: '90%', y: '85%',   scale: 1.5 },
   Html:              { x: '85%', y: '62%',   scale: 6 },
-  Cmasmas:           { x: '40%', y: '40%',   scale: 7 },
+  Cmasmas:           { x: '43%', y: '40%',   scale: 7 },
 
-  StarIcon:          { x: '85%', y: '15%',   zIndex: 9, scale: 1.5 },
-  WavyLineIcon:      { x: '0%',  y: '50%',   zIndex: 20, scale: 6 },
-  WavyLineIcon2:     { x: '5%',  y: '50%',   zIndex: 20, scale: 6 },
-  WavyLineIcon3:     { x: '10%', y: '50%',   zIndex: 20, scale: 6 },
-  WavyLineIcon4:     { x: '15%', y: '50%',   zIndex: 20, scale: 6 },
+  StarIcon:          { x: '85%', y: '14%',   zIndex: 9, scale: 1.5 },
+  WavyLineIcon:      { x: '0%',  y: '50%',   zIndex: 20, scale: 6.5 },
+  WavyLineHueco:     { x: '0%',  y: '50%',   zIndex: 20, scale: 6.5 },
+
 };
 
 
   let Repositorios = [];
 
-  function parseColaboradoresFromCSV(csvText) {
+  function parseDateDDMMYYYY(fechaStr) {
+  const [day, month, year] = fechaStr.split('/').map(Number);
+  return new Date(year, month - 1, day); // JavaScript months are 0-indexed
+}
+
+function parseColaboradoresFromCSV(csvText) {
   if (csvText.charCodeAt(0) === 0xFEFF) {
     csvText = csvText.slice(1);
   }
@@ -63,9 +68,11 @@
 
   const starScale = d3.scaleLinear()
     .domain([minCommits, maxCommits])
-    .range([0.5, 1.5]);
+    .range([0.3, 1.5]);
 
-  return data.map(row => {
+  const parsedRepos = data.map(row => {
+    const fechaParsed = parseDateDDMMYYYY(row.fecha);
+
     const languages = [
       { name: 'Python', value: row.python },
       { name: 'JavaScript', value: row.javascript },
@@ -76,22 +83,18 @@
       { name: 'Cmasmas', value: row.cmas },
     ].filter(lang => lang.value > 0);
 
-    // Sort by relevance
     languages.sort((a, b) => a.value - b.value);
 
-    // Base icons: Star + top languages
     const baseIcons = languages.map(lang => lang.name);
-    const wavyIcons = ['WavyLineIcon', 'WavyLineIcon2', 'WavyLineIcon3', 'WavyLineIcon4'];
-    const wavySubset = wavyIcons.slice(0, Math.min(4, row.peso));
-    const allIcons = ['StarIcon', ...baseIcons, ...wavySubset];
+    const wavyIconName = row.gusto === 1 ? 'WavyLineIcon' : 'WavyLineHueco';
+    const allIcons = ['StarIcon', ...baseIcons, wavyIconName];
 
-    // Clone and assign zIndex to runtime icons
+
     const iconLayoutRow = {};
     allIcons.forEach((iconName, i) => {
       const base = iconLayout[iconName];
       if (base) {
         iconLayoutRow[iconName] = { ...base };
-        // Assign zIndex only if not fixed (e.g., Star or Wavy lines)
         if (!('zIndex' in base)) {
           iconLayoutRow[iconName].zIndex = i;
         }
@@ -100,7 +103,7 @@
 
     return {
       nombre: row.nombre,
-      fecha: new Date(row.fecha),
+      fecha: fechaParsed,
       commits: row.commits,
       peso: row.peso,
       gusto: row.gusto,
@@ -110,6 +113,11 @@
       iconLayout: iconLayoutRow
     };
   });
+
+  // 🔽 Sort by date ascending
+  parsedRepos.sort((a, b) => a.fecha - b.fecha);
+
+  return parsedRepos;
 }
 
 onMount(async () => {
@@ -127,8 +135,6 @@ onMount(async () => {
   }
 });
 
-
-
   const iconComponents = {
     JavaScript,
     DoubleDiamondIcon,
@@ -138,184 +144,23 @@ onMount(async () => {
     Python,
     SemiArcsIcon,
     WavyLineIcon,
-    WavyLineIcon2,
-    WavyLineIcon3,
-    WavyLineIcon4,
     StarIcon,
     Html,
-    Cmasmas
+    Cmasmas,
+    WavyLineHueco
   };
 
-/*  
-Combinaciones:
-JavaScript, CSS, svelte   -> 'CSS', 'JavaScript', 'Svelte'
-Html  -> 'Cmasmas'
-python, CSS, Html  -> 'Python', 'JavaScript', 'Cmasmas'
-python, Html  -> 'Python', 'Cmasmas'
-python  -> 'Python',
-python, c++  -> 'Python', 'Html'
-python, c  -> 'Python', 'C'
-c  -> 'C'
-
-'JavaScript',   JavaScript    
-'DoubleDiamondIcon', 
-'CSS',         CSS 
-'C',              
-'Svelte',        Svelte
-'Python',          
-'SemiArcsIcon',        
-'Html',   Html
-'Cmasmas'   c++
-
-'WavyLineIcon',   peso   
-'StarIcon',       commit   
-*/
-
  
-
-let todos = [
-   {  nombre: 'Spotify Skip',
-      gusto: true,
-      starScale: 1,
-      iconos: ['StarIcon','JavaScript', 'CSS', 'Svelte',
-        'WavyLineIcon', 'WavyLineIcon2','WavyLineIcon3','WavyLineIcon4',
-      ]
-    },
-
-   {  nombre: '',
-      gusto: false,
-      starScale: 1,
-      iconos: ['StarIcon','Html',
-        'WavyLineIcon', 'WavyLineIcon2','WavyLineIcon3','WavyLineIcon4',
-      ]
-    },
-   {  nombre: '',
-      gusto: true,
-      starScale: 1,
-      iconos: ['StarIcon','Python', 'CSS', 'Html',
-        'WavyLineIcon', 'WavyLineIcon2','WavyLineIcon3','WavyLineIcon4',
-      ]
-    },
-
-   {  nombre: '',
-      gusto: false,
-      starScale: 1,
-      iconos: ['StarIcon','Python', 'Html',
-        'WavyLineIcon', 'WavyLineIcon2','WavyLineIcon3','WavyLineIcon4',
-      ]
-    },
-   {  nombre: '',
-      gusto: true,
-      starScale: 1,
-      iconos: ['StarIcon','Python',
-        'WavyLineIcon', 'WavyLineIcon2','WavyLineIcon3','WavyLineIcon4',
-      ]
-    },
-
-   {  nombre: '',
-      gusto: false,
-      starScale: 1,
-      iconos: ['StarIcon','Python', 'Cmasmas',
-        'WavyLineIcon', 'WavyLineIcon2','WavyLineIcon3','WavyLineIcon4',
-      ]
-    },
-   {  nombre: '',
-      gusto: true,
-      starScale: 1,
-      iconos: ['StarIcon','Python', 'C',
-        'WavyLineIcon', 'WavyLineIcon2','WavyLineIcon3','WavyLineIcon4',
-      ]
-    },
-
-   {  nombre: '',
-      gusto: false,
-      starScale: 1,
-      iconos: ['StarIcon','C',
-        'WavyLineIcon', 'WavyLineIcon2','WavyLineIcon3','WavyLineIcon4',
-      ]
-    },
-
-]
-let todos2 = [
-   {  nombre: 'Spotify Skip',
-      gusto: true,
-      starScale: max_size,
-      iconos: ['StarIcon','JavaScript', 'CSS', 'Svelte',
-        'WavyLineIcon', 'WavyLineIcon2','WavyLineIcon3','WavyLineIcon4',
-      ]
-    },
-
-   {  nombre: '',
-      gusto: false,
-      starScale: max_size,
-      iconos: ['StarIcon','Html',
-        'WavyLineIcon', 'WavyLineIcon2','WavyLineIcon3','WavyLineIcon4',
-      ]
-    },
-   {  nombre: '',
-      gusto: true,
-      starScale: max_size,
-      iconos: ['StarIcon','Python', 'CSS', 'Html',
-        'WavyLineIcon', 'WavyLineIcon2','WavyLineIcon3','WavyLineIcon4',
-      ]
-    },
-
-   {  nombre: '',
-      gusto: false,
-      starScale: max_size,
-      iconos: ['StarIcon','Python', 'Html',
-        'WavyLineIcon', 'WavyLineIcon2','WavyLineIcon3','WavyLineIcon4',
-      ]
-    },
-   {  nombre: '',
-      gusto: true,
-      starScale: max_size,
-      iconos: ['StarIcon','Python',
-        'WavyLineIcon', 'WavyLineIcon2','WavyLineIcon3','WavyLineIcon4',
-      ]
-    },
-
-   {  nombre: '',
-      gusto: false,
-      starScale: max_size,
-      iconos: ['StarIcon','Python', 'Cmasmas',
-        'WavyLineIcon', 'WavyLineIcon2','WavyLineIcon3','WavyLineIcon4',
-      ]
-    },
-   {  nombre: '',
-      gusto: true,
-      starScale: max_size,
-      iconos: ['StarIcon','Python', 'C',
-        'WavyLineIcon', 'WavyLineIcon2','WavyLineIcon3','WavyLineIcon4',
-      ]
-    },
-
-   {  nombre: '',
-      gusto: false,
-      starScale: max_size,
-      iconos: ['StarIcon','C',
-        'WavyLineIcon', 'WavyLineIcon2','WavyLineIcon3','WavyLineIcon4',
-      ]
-    },
-
-]
-
-
  const max_size = 1.6   
  const baseIconSize = 50;  // for example, 50px base size
  const iconLayoutRow = JSON.parse(JSON.stringify(iconLayout));
 
-
-//  CODIGO MORA
-   const lenguajeIcons = [
-    { nombre: 'javascript', componente: JavaScript },
-    { nombre: 'c++', componente: Cmasmas },
-    { nombre: 'css', componente: CSS },
-    { nombre: 'c', componente: C },
-    { nombre: 'svelte', componente: Svelte },
-    { nombre: 'python', componente: Python },
-    { nombre: 'html', componente: Html }
-  ];
+ function formatDateToDDMMYYYY(date) {
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // months are 0-indexed
+  const year = date.getFullYear();
+  return `${day}/${month}/${year}`;
+}
 
   function getIcons(lenguajes) {
     if (!Array.isArray(lenguajes)) return [];
@@ -323,75 +168,177 @@ let todos2 = [
       .filter(icon => lenguajes.includes(icon.nombre))
   }
 
+  document.addEventListener("DOMContentLoaded", function () {
+  window.abrirPantalla = function () {
+    document.getElementById("pantalla").style.display = "flex";
+  };
 
-
-   
+  window.cerrarPantalla = function () {
+    document.getElementById("pantalla").style.display = "none";
+  };
+});
 </script>
 
 <main class="page">
+  <h1 class="title">Repographix</h1>
+  <h2 class="subtitle"> Nuestros repositorios en tarjetas visuales</h2>
 
-  <h1 class="title">Todos Repos Posibles</h1>
-  <div class="cajas">
-    {#each todos as t}
-      <div class="colab-box-BIG" style="border-color: {t.gusto ? 'limegreen' : 'deeppink'}">
-        <div class="icon-layer-BIG">
-          {#each t.iconos as nombre}
-            {#if iconComponents[nombre] && iconLayout[nombre]}
-              <svelte:component
-                this={iconComponents[nombre]}
-                size={baseIconSize * iconLayout[nombre].scale * (nombre === 'StarIcon' ? t.starScale : 1)}
-                class="icon-item-BIG"
-                style={`position: absolute;
-                        left: ${iconLayout[nombre].x};
-                        top: ${iconLayout[nombre].y};
-                        transform: translate(-50%, -50%);
-                        z-index: ${iconLayout[nombre].zIndex ?? 0};
-                        pointer-events: none;`}
-              />
-            {/if}
-          {/each}
-        </div>
-      </div>
-      {/each}
-    </div>
-
-    <h1 class="title">Repos de verdad</h1>
-    <div class="cajas">
-      {#each Repositorios as t}
-        <div class="colab-box-BIG" style="border-color: {t.gusto ? 'limegreen' : 'deeppink'}">
-          <div class="icon-layer-BIG" >
-            {#each t.iconos as nombre}
-              {#if iconComponents[nombre] && iconLayout[nombre]}
-                <svelte:component
-                  this={iconComponents[nombre]}
-                  size={baseIconSize * t.iconLayout[nombre].scale * (nombre === 'StarIcon' ? t.starScale : 1)}
-                  class="icon-item-BIG"
-                  style={`position: absolute;
-                          left: ${iconLayout[nombre].x};
-                          top: ${iconLayout[nombre].y};
-                          transform: translate(-50%, -50%);
-                          z-index: ${t.iconLayout[nombre].zIndex ?? 0};
-                          pointer-events: none;`}
-                />
-              {/if}
-            {/each}
+<div>
+<button class="ref-button" onclick="abrirPantalla()">Referencias</button>
+  <div id="pantalla" class="modal">
+    <div class="legend-wrapper">
+      <span class="cerrar" onclick="cerrarPantalla()">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </span>
+      <div class="legend-info">
+        <div class="legend-block">
+          <h3 class="legend-title">Peso del repositorio</h3>
+          <div class="peso-grid">
+            <div class="peso-item">
+              <div class="borde-extra-negro">
+                <div class="borde-extra-negro">
+                  <div class="borde-extra-negro">
+                    <div class="borde-extra">
+                      <div class="borde-extra-negro"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <span class="ref">1KB - 3KB</span>
+            </div>
+            <div class="peso-item">
+              <div class="borde-extra-negro">
+                <div class="borde-extra-negro">
+                  <div class="borde-extra">
+                    <div class="borde-extra">
+                      <div class="borde-extra-negro"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <span class="ref">5KB - 1MB</span>
+            </div>
+            <div class="peso-item">
+              <div class="borde-extra-negro">
+                <div class="borde-extra">
+                  <div class="borde-extra">
+                    <div class="borde-extra">
+                      <div class="borde-extra-negro"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <span class="ref">1.1MB - 4MB</span>
+            </div>
+            <div class="peso-item">
+              <div class="borde-extra">
+                <div class="borde-extra">
+                  <div class="borde-extra">
+                    <div class="borde-extra">
+                      <div class="borde-extra-negro"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <span class="ref">5MB - 33MB</span>
+            </div>
           </div>
         </div>
-      {/each}
+
+        <div class="satis-commits">
+          <!-- Block 1: Satisfacción -->
+          <div class="legend-block">
+            <h3 class="legend-title">Grado de satisfacción</h3>
+            <div class="legend-vertical-list">
+              <div class="container-wavy">
+                <WavyLineIcon size={110}  strowidth=7/>
+                <p class="ref">Satisfecho</p>
+              </div>
+              <div class="container-wavy">
+                <WavyLineHueco height={100} size={110} strowidth=7/>
+                <p class="ref">Insatisfecho</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Block 2: Commits -->
+          <div class="legend-block">
+            <h3 class="legend-title">Cantidad de Commits</h3>
+            <div class="legend-icon-horizontal">
+              <div class="legend-icon-stack">
+                <StarIcon size={25} />
+                <div class='commit-num'>
+                  <p>1</p>
+                </div>
+              </div>
+              <div class="legend-icon-stack">
+                <StarIcon size={50} />
+                <div class='commit-num'>
+                  <p>25</p>
+                </div>
+              </div>
+              <div class="legend-icon-stack">
+                <StarIcon size={75} />
+                <div class='commit-num'>
+                  <p>50</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+
+
+      <div class="legend-block">
+        <h3 class="legend-title">Lenguajes usados:</h3>
+        <div class="legend-icon-grid">
+          <div>
+            <Html size={60} />
+            <p>HTML</p>
+          </div>
+          <div>
+            <Python size={60} />
+            <p>Python</p>
+          </div>
+          <div>
+            <JavaScript size={60} />
+            <p>JavaScript</p>
+          </div>
+          <div>
+            <Cmasmas size={60} />
+            <p>C++</p>
+          </div>
+          <div>
+            <C size={60} />
+            <p>C</p>
+          </div>
+          <div>
+            <Svelte size={60}/>
+            <p>Svelte</p>
+          </div>
+          <div>
+            <CSS size={60} />
+            <p>CSS</p>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
+  </div>
 
-
-  <h1 class="title">Bordes distintos</h1>
-  <div class="cajas">
-    {#each Repositorios as t}
-      <div class="caja">
-        <div class="borde-extra" style= "border-color: {t.peso==4 ? '#4B86AA' : '#111'};">
-        <div class="borde-extra" style= "border-color: {t.peso>=3 ? '#669BBC' : '#111'};">
-        <div class="borde-extra" style= "border-color: {t.peso>=2 ? '#8EB5CD' : '#111'}; padding:5px;">
-          <div class="colab-box-BIG-Mora">
-            <div class="icon-layer-BIG">
+<!-- CONTENEDOR CON SCROLL HORIZONTAL -->
+<div class="scroll-container">
+  {#each Repositorios as t}
+    <div class="caja-horizontal">
+      <div class="borde-extra" style="border-color: {t.peso == 4 ? '#ffffff' : '#000000'}">
+        <div class="borde-extra" style="border-color: {t.peso >= 3 ? '#ffffff' : '#000000'}">
+          <div class="borde-extra" style="border-color: {t.peso >= 2 ? '#ffffff' : '#000000'}; padding:5px;">
+            <div class="colab-box-BIG-Mora">
+              <div class="icon-layer-BIG">
                 {#each t.iconos as nombre}
-                  {#if iconComponents[nombre] && t.iconLayout[nombre] && !/^WavyLineIcon\d*$/.test(nombre)}
+                  {#if iconComponents[nombre] && t.iconLayout[nombre]}
                     <svelte:component
                       this={iconComponents[nombre]}
                       size={baseIconSize * t.iconLayout[nombre].scale * (nombre === 'StarIcon' ? t.starScale : 1)}
@@ -399,50 +346,217 @@ let todos2 = [
                       style={`position: absolute;
                               left: ${t.iconLayout[nombre].x};
                               top: ${t.iconLayout[nombre].y};
+                              stroke: ${t.iconLayout[nombre].color};
                               transform: translate(-50%, -50%);
                               z-index: ${t.iconLayout[nombre].zIndex ?? 0};
                               pointer-events: none;`}
                     />
                   {/if}
                 {/each}
+              </div>
+              </div>
             </div>
           </div>
         </div>
+        <div class="repositorio-info" style="width: 368;">
+          <p class="repo-sub-nombre">{t.nombre}</p>
+          <p class="repo-sub-fecha">{formatDateToDDMMYYYY(t.fecha)}</p>
         </div>
+    </div>
+  {/each}
+</div>
+  
+
+<div class="intro">
+ <h1 class="title">Repositorios GitHub</h1>
+  <p class="info">
+    Representamos colaboraciones en repositorios de GitHub, correspondientes a trabajos que realizamos a lo largo de nuestra carrera. Para ello, usamos tarjetas visuales
+    sintetizando atributos clave como:
+    la variedad de lenguajes utilizados, la cantidad de commits, el peso del repositorio y cual fue la satisfacción del usuario con el resultado final de su proyecto.
+    Para representar y diferenciar cada una de estas dimensiones, seleccionamos las siguientes formas y colores.
+  </p>
+</div>
+
+<div>
+<button class="ref-button" onclick="abrirPantalla()">Referencias</button>
+  <div id="pantalla" class="modal">
+    <div class="legend-wrapper">
+      <span class="cerrar" onclick="cerrarPantalla()">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </span>
+      <div class="legend-info">
+        <div class="legend-block">
+          <h3 class="legend-title">Peso del repositorio</h3>
+          <div class="peso-grid">
+            <div class="peso-item">
+              <div class="borde-extra-negro">
+                <div class="borde-extra-negro">
+                  <div class="borde-extra-negro">
+                    <div class="borde-extra">
+                      <div class="borde-extra-negro"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <span class="ref">1KB - 3KB</span>
+            </div>
+            <div class="peso-item">
+              <div class="borde-extra-negro">
+                <div class="borde-extra-negro">
+                  <div class="borde-extra">
+                    <div class="borde-extra">
+                      <div class="borde-extra-negro"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <span class="ref">5KB - 1MB</span>
+            </div>
+            <div class="peso-item">
+              <div class="borde-extra-negro">
+                <div class="borde-extra">
+                  <div class="borde-extra">
+                    <div class="borde-extra">
+                      <div class="borde-extra-negro"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <span class="ref">1.1MB - 4MB</span>
+            </div>
+            <div class="peso-item">
+              <div class="borde-extra">
+                <div class="borde-extra">
+                  <div class="borde-extra">
+                    <div class="borde-extra">
+                      <div class="borde-extra-negro"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <span class="ref">5MB - 33MB</span>
+            </div>
+          </div>
         </div>
-        <div class="nombre_fecha">
-          <p class="nombre-repo">{t.nombre}</p>
-          <!-- <p class="fecha-repo">{t.fecha}</p> -->
+
+        <div class="satis-commits">
+          <!-- Block 1: Satisfacción -->
+          <div class="legend-block">
+            <h3 class="legend-title">Grado de satisfacción</h3>
+            <div class="legend-vertical-list">
+              <div class="container-wavy">
+                <WavyLineIcon size={110}  strowidth=7/>
+                <p class="ref">Satisfecho</p>
+              </div>
+              <div class="container-wavy">
+                <WavyLineHueco height={100} size={110} strowidth=7/>
+                <p class="ref">Insatisfecho</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Block 2: Commits -->
+          <div class="legend-block">
+            <h3 class="legend-title">Cantidad de Commits</h3>
+            <div class="legend-icon-horizontal">
+              <div class="legend-icon-stack">
+                <StarIcon size={25} />
+                <div class='commit-num'>
+                  <p>1</p>
+                </div>
+              </div>
+              <div class="legend-icon-stack">
+                <StarIcon size={50} />
+                <div class='commit-num'>
+                  <p>25</p>
+                </div>
+              </div>
+              <div class="legend-icon-stack">
+                <StarIcon size={75} />
+                <div class='commit-num'>
+                  <p>50</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      <div class="legend-block">
+        <h3 class="legend-title">Lenguajes usados:</h3>
+        <div class="legend-icon-grid">
+          <div>
+            <Html size={60} />
+            <p>HTML</p>
+          </div>
+          <div>
+            <Python size={60} />
+            <p>Python</p>
+          </div>
+          <div>
+            <JavaScript size={60} />
+            <p>JavaScript</p>
+          </div>
+          <div>
+            <Cmasmas size={60} />
+            <p>C++</p>
+          </div>
+          <div>
+            <C size={60} />
+            <p>C</p>
+          </div>
+          <div>
+            <Svelte size={60}/>
+            <p>Svelte</p>
+          </div>
+          <div>
+            <CSS size={60} />
+            <p>CSS</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+ <h1 class="title">Grilla de todos los repositorios</h1>
+  <div class="cajas">
+    {#each Repositorios as t}
+      <div class="caja">
+        <div class="borde-extra" style= "border-color: {t.peso==4 ? '#ffffff' : '#000000'};">
+          <div class="borde-extra" style= "border-color: {t.peso>=3 ?  '#ffffff' : '#000000'};">
+            <div class="borde-extra" style= "border-color: {t.peso>=2 ? '#ffffff' : '#000000'}; padding:3.5px;">
+              <div class="colab-box-BIG">
+                <div class="icon-layer-BIG">
+
+                    {#each t.iconos as nombre}
+                      {#if iconComponents[nombre] && t.iconLayout[nombre] }
+                        <svelte:component
+                          this={iconComponents[nombre]}
+                          size={baseIconSize * t.iconLayout[nombre].scale * .9 * (nombre === 'StarIcon' ? t.starScale : 1 )}
+                          class="icon-item-BIG"
+                          style={`position: absolute;
+                                  left: ${t.iconLayout[nombre].x};
+                                  top: ${t.iconLayout[nombre].y};
+                                  stroke= ${t.iconLayout[nombre].color};
+                                  transform: translate(-50%, -50%);
+                                  z-index: ${t.iconLayout[nombre].zIndex ?? 0};
+                                  pointer-events: none;`}
+                        />
+                      {/if}
+                    {/each}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="repositorio-info"style="width: 329px;">
+          <p class="repo-sub-nombre">{t.nombre}</p>
+          <p class="repo-sub-fecha">{formatDateToDDMMYYYY(t.fecha)}</p>
         </div>
       </div>
     {/each}
   </div>
-          
-  
 
-
-  <h2 class="subtitulo">Leyenda de íconos</h2>
-  <div class="leyenda">
-    <div>
-      <div class="borde-extra" style= "border-color:'#4B86AA';">
-        <div class="borde-extra" style= "border-color:'#669BBC';">
-          <div class="borde-extra" style= "border-color:'#8EB5CD';">
-            <div class="borde-extra borde-leyenda" style= "border-color: '#AAC7DA';">
-            </div>
-          </div>
-        </div>
-      </div> <span>Peso</span>
-    </div>
-    <div><WavyLineIcon height={100}, size={100}   /> <span>Cantidad de líneas segun intervalo de peso </span></div>
-    <div><StarIcon size={80}  /> <span>Commits, tamaño según cantidad </span></div>
-    <div><Html size={80}  /> <span>HTML</span></div>
-    <div><Python size={80}  /> <span>Python</span></div>
-    <div><JavaScript size={80} /> <span>JavaScript</span></div>
-    <div><Cmasmas size={80}  /> <span>C++</span></div>
-    <div><C size={80}  /> <span>C</span></div>
-    <div><Svelte size={80} /> <span>Svelte</span></div>
-    <div><CSS size={80}  /> <span>CSS</span></div>
-  </div>
 
   <footer class="footer">
     <div class="footer-content">
@@ -451,27 +565,13 @@ let todos2 = [
       <a href="https://www.linkedin.com/in/sofia-kutter" target="_blank">Sofía Kutter</a>
       <span>|</span>
       <a href="https://www.linkedin.com/in/ezequiel-mautner/" target="_blank">Ezequiel Mautner</a>
+      <span>|</span>
+      <a href="https://www.linkedin.com/in/ezequiel-mautner/" target="_blank">Mora Fernandez</a>
     </div>
   </footer>
 </main>
 
 <style>
-  .page {
-    background-color: #111;
-    color: white;
-    min-height: 100vh;
-    padding: 2rem;
-    text-align: center;
-  }
-  .cajas {
-    display: flex;
-    justify-content: center;
-    gap: 2rem;
-    flex-wrap: wrap;
-    margin-bottom: 3rem;
-  }
-
-
 
   @keyframes float {
     0%, 100% { transform: translateY(0px); }
@@ -479,29 +579,4 @@ let todos2 = [
   }
 
 
-  .subtitulo {
-    font-size: 1.4rem;
-    font-weight: bold;
-    margin-bottom: 1rem;
-  }
-  .leyenda {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-    gap: 1rem;
-    align-items: center;
-    text-align: left;
-    margin-bottom: 2rem;
-  }
-  .leyenda div {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-  .footer-content {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-    flex-wrap: wrap;
-    font-size: 0.9rem;
-  }
 </style>

@@ -15,14 +15,15 @@ fill="none"
 style={style}
 >
   <path
-    d="M40,75
-       c0,-15 -20,-15 -20,0
-       c0,10 10,20 20,20
-       c20,0 30,-20 30,-40
-       c0,-25 -25,-40 -50,-40"
+    d="M70 20
+  L5 30
+  L85 80
+  L5 90
+  L70 20
+"
     stroke={color}
-    stroke-width="6"
+    stroke-width="8"
     stroke-linecap="round"
-    fill="none"
+    stroke-linejoin="round"
   />
 </svg>
