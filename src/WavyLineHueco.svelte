@@ -1,7 +1,6 @@
 <script>
   export let size = 64;
   export let color = "#fe1492";
-  export let strokeWidth = 6;
   export let style = "";
   export let viewBox = "0 0 20 300";
   export let strowidth = 6;
