@@ -15,12 +15,13 @@
   import Cmasmas from './Cmasmas.svelte';
   import WavyLineHueco from './WavyLineHueco.svelte';
 
+
+
   import Papa from 'papaparse';
   import { onMount } from 'svelte';
   import * as d3 from 'd3';
 
   const iconLayout = {
-  JavaScript:        { x: '45%', y: '20%',    scale: 4, color: '#0'},
   JavaScript:        { x: '45%', y: '20%',    scale: 4},
   DoubleDiamondIcon: { x: '15%', y: '50%',   scale: 1.5 },
   CSS:               { x: '33%', y: '75%',   scale: 5.5 },
@@ -167,7 +168,6 @@ onMount(async () => {
       .filter(icon => lenguajes.includes(icon.nombre))
   }
 
-  let boxScale = 0.8; // or any value like 0.8, 1.5, etc.
 document.addEventListener("DOMContentLoaded", function () {
     const body = document.body;
     const modal = document.getElementById("pantalla");
@@ -182,7 +182,6 @@ document.addEventListener("DOMContentLoaded", function () {
       body.style.overflow = ""; // unlock scroll
     };
   });
-
 
 </script>
 
@@ -421,7 +420,7 @@ document.addEventListener("DOMContentLoaded", function () {
                   {#if iconComponents[nombre] && t.iconLayout[nombre]}
                     <svelte:component
                       this={iconComponents[nombre]}
-                      size={baseIconSize * t.iconLayout[nombre].scale * .9 * (nombre === 'StarIcon' ? t.starScale : 1 )}
+                      size={baseIconSize * t.iconLayout[nombre].scale * (nombre === 'StarIcon' ? t.starScale : 1)}
                       class="icon-item-BIG"
                       style={`position: absolute;
                               left: ${t.iconLayout[nombre].x};
