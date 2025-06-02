@@ -18,6 +18,9 @@
 
   let mostrarGrilla = false;
   let mostrarReferencias = false;
+  let referenciasActivas = false;
+  let grillaActiva = false;
+
   import Papa from 'papaparse';
   import { onMount } from 'svelte';
   import * as d3 from 'd3';
@@ -224,9 +227,17 @@ onMount(async () => {
 </div>
 
 <div>
-<button class="ref-button" on:click={() => mostrarReferencias = !mostrarReferencias}>
-{mostrarReferencias ? 'Ocultar referencias' : 'Ver referencias'}
+
+<button
+  class="ref-button {referenciasActivas ? 'activo' : ''}"
+  on:click={() => {
+    referenciasActivas = !referenciasActivas;
+    mostrarReferencias = !mostrarReferencias;
+  }}>
+  {referenciasActivas ? 'Ocultar referencias' : 'Ver referencias'}
 </button>
+
+
 
  {#if mostrarReferencias}
     <div class="legend-wrapper">
@@ -362,17 +373,10 @@ onMount(async () => {
 
           <!-- SATISFACCIÓN -->
           <div class="legend-block">
-            <!-- Satisfacción content -->
              <h3 class="legend-title">Grado de satisfacción</h3>
               <div class="legend-vertical-list">
-                <div class="container-wavy">
-                  <WavyLineIcon size={180} />
-                  <p class="ref">Satisfecho</p>
-                </div>
-                <div class="container-wavy">
-                  <WavyLineHueco size={180} />
-                  <p class="ref">Insatisfecho</p>
-                </div>
+                <div class="container-wavy"> <WavyLineIcon size={180} /> <p class="ref">Satisfecho</p> </div>
+                <div class="container-wavy"> <WavyLineHueco size={180} /> <p class="ref">Insatisfecho</p> </div>
               </div>
             </div>
 
@@ -382,64 +386,42 @@ onMount(async () => {
             <h3 class="legend-title">Cantidad de Commits</h3>
               <div class="container-wavy">
                 <div class="legend-icon-horizontal">
-                  <div class="legend-icon-stack">
-                    <StarIcon size={25} />
-                  </div>
-                  <div class="legend-icon-stack">
-                    <StarIcon size={65} />
-                  </div>
-                  <div class="legend-icon-stack">
-                    <StarIcon size={130} />
-                  </div>
+                  <div class="legend-icon-stack"> <StarIcon size={25} /></div>
+                  <div class="legend-icon-stack"> <StarIcon size={65} /> </div>
+                  <div class="legend-icon-stack"> <StarIcon size={130} /> </div>
                 </div>
                 <div class = "text-com">
                   <p class="ref">Mayor cantidad de commits, más grande la estrella.</p>
                 </div>
                 </div>
             </div>
+            
+            <div class="legend-block" style="grid-column: span 2;">
+            <h3 class="legend-title" >Lenguajes usados:</h3>
+            <div class="legend-icon-grid">
+              <div> <Html size={60} /> <p>HTML</p> </div>
+              <div> <Python size={60} /> <p>Python</p> </div>
+              <div> <JavaScript size={60} /> <p>JavaScript</p> </div>
+              <div> <Cmasmas size={60} /> <p>C++</p> </div>
+              <div> <C size={60} /> <p>C</p> </div>
+              <div> <Svelte size={60}/> <p>Svelte</p> </div>
+              <div> <CSS size={60} /> <p>CSS</p> </div>
+            </div>
           </div>
-        
-        
-
-      <div class="legend-block">
-        <h3 class="legend-title">Lenguajes usados:</h3>
-        <div class="legend-icon-grid">
-          <div>
-            <Html size={90} />
-            <p>HTML</p>
-          </div>
-          <div>
-            <Python size={90} />
-            <p>Python</p>
-          </div>
-          <div>
-            <JavaScript size={90} />
-            <p>JavaScript</p>
-          </div>
-          <div>
-            <Cmasmas size={90} />
-            <p>C++</p>
-          </div>
-          <div>
-            <C size={90} />
-            <p>C</p>
-          </div>
-          <div>
-            <Svelte size={90}/>
-            <p>Svelte</p>
-          </div>
-          <div>
-            <CSS size={90} />
-            <p>CSS</p>
-          </div>
+          
         </div>
-      </div>
-
     </div>
   </div>
 {/if}
 
-<button class="ref-button" on:click={() => mostrarGrilla = !mostrarGrilla}>{mostrarGrilla ? 'Ocultar Repos' : 'Ver todos los Repos'}</button>
+<button
+  class="ref-button {grillaActiva ? 'activo' : ''}"
+  on:click={() => {
+    grillaActiva = !grillaActiva;
+    mostrarGrilla = !mostrarGrilla;
+  }}>
+  {grillaActiva ? 'Ocultar Repos' : 'Ver todos los Repos'}
+</button>
 
 {#if mostrarGrilla}  
  <h1 class="title">Grilla de todos los repositorios</h1>

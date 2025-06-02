@@ -161,7 +161,8 @@ p{
   gap: 1rem;
   flex-wrap: wrap;
   font-size: 0.9rem;
-  margin-top: 20px;
+  margin-top: 50px;
+  margin-bottom: 20px;
 }
 
   
@@ -194,8 +195,7 @@ p{
   color: #fff;
   text-align: left;
   margin: 0;
-  margin-bottom: .5rem;
-  margin-top: .5rem;
+  margin-bottom: 2rem;
   max-width: 100%;
 }
 
@@ -219,12 +219,14 @@ p{
   align-items: center;
   gap: 1rem;
 }
+
 .borde-extra-negro{
-  border: 5px solid #313131;
+  border: 5px solid #000000;
   margin: 3px;
   border-radius: 2px;
   width: fit-content;
 }
+
 .borde-extra{
   margin: 3px;
   border: 5px solid #ffffff;
@@ -233,6 +235,7 @@ p{
   min-width: 2px;
   min-height: 2px;
 }
+
 .ref{
   font-weight: 200;
   font-size: 1.2rem;
@@ -267,16 +270,17 @@ p{
 }
 
 .superposicion-container {
-  justify-content: left;
+  justify-content: center;
+  gap: 2rem;
   display: flex;
   align-items: center;
-  gap: 1rem; /* space between box and text */
+  
 }
 
 .superposicion-text {
   max-width: 450px;
   line-height: 1.4;
-  text-align: left; 
+  text-align: center; 
 }
 
 
@@ -284,8 +288,8 @@ p{
 .legend-vertical-list {
   display: flex;
   flex-direction: row;
-  justify-content: left;
 }
+
 .container-wavy {
   display: flex;
   flex-direction: column;
@@ -301,6 +305,7 @@ p{
   align-items: flex-end;
   height: 100%;
   margin-bottom: 2.5rem;
+  margin-left: 20px;
 }
 
 .text-com{
@@ -311,11 +316,9 @@ p{
 /*LENGUAJES*/
 .legend-icon-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); /* distribuido horizontal */
   justify-items: center;
-  font-size: 0.8rem;
-  margin: 0; 
+  gap: 2rem;
 }
 
 /* SCROLL */
@@ -341,19 +344,26 @@ p{
   margin-bottom: 20px;
   margin-top: 20px;
   margin-left: 20px;
+  transition: background-color 0.3s ease, transform 0.2s ease, border-color 0.3s ease;
 }
+
 
 .ref-button:hover {
   background-color: #333333;
   transform: scale(1.05);        /* Slight zoom on hover */
 }
 
+.ref-button.activo {
+  border-color: #fe1492;
+}
+
+
 .legend-grid-2x2 {
   display: grid;
   grid-template-columns: 1fr 1fr;  /* 2 columns */
   grid-template-rows: auto auto;  /* 2 rows */
   overflow: auto;
-  gap: 1rem;
+  gap: 5rem;
 }
 
 
