@@ -237,7 +237,14 @@ onMount(async () => {
   {referenciasActivas ? 'Ocultar referencias' : 'Ver referencias'}
 </button>
 
-
+<button
+  class="ref-button {grillaActiva ? 'activo' : ''}"
+  on:click={() => {
+    grillaActiva = !grillaActiva;
+    mostrarGrilla = !mostrarGrilla;
+  }}>
+  {grillaActiva ? 'Ocultar Repos' : 'Ver todos los Repos'}
+</button>
 
  {#if mostrarReferencias}
     <div class="legend-wrapper">
@@ -414,14 +421,7 @@ onMount(async () => {
   </div>
 {/if}
 
-<button
-  class="ref-button {grillaActiva ? 'activo' : ''}"
-  on:click={() => {
-    grillaActiva = !grillaActiva;
-    mostrarGrilla = !mostrarGrilla;
-  }}>
-  {grillaActiva ? 'Ocultar Repos' : 'Ver todos los Repos'}
-</button>
+
 
 {#if mostrarGrilla}  
  <h1 class="title">Grilla de todos los repositorios</h1>
