@@ -22,9 +22,9 @@
   import * as d3 from 'd3';
 
   const iconLayout = {
-  JavaScript:        { x: '45%', y: '20%',    scale: 4, color: '#0'},
+  JavaScript:        { x: '45%', y: '20%',    scale: 4},
   DoubleDiamondIcon: { x: '15%', y: '50%',   scale: 1.5 },
-  CSS:               { x: '33%', y: '75%',   scale: 5 },
+  CSS:               { x: '33%', y: '75%',   scale: 5.5 },
   C:                 { x: '50%', y: '50%',   scale: 6.5 },
   Svelte:            { x: '80%', y: '70%',   scale: 8.2 },
   Python:            { x: '34%', y: '50%',   scale: 7 },
@@ -168,15 +168,21 @@ onMount(async () => {
       .filter(icon => lenguajes.includes(icon.nombre))
   }
 
-  document.addEventListener("DOMContentLoaded", function () {
-  window.abrirPantalla = function () {
-    document.getElementById("pantalla").style.display = "flex";
-  };
+document.addEventListener("DOMContentLoaded", function () {
+    const body = document.body;
+    const modal = document.getElementById("pantalla");
 
-  window.cerrarPantalla = function () {
-    document.getElementById("pantalla").style.display = "none";
-  };
-});
+    window.abrirPantalla = function () {
+      modal.style.display = "flex";
+      body.style.overflow = "hidden"; // lock scroll
+    };
+
+    window.cerrarPantalla = function () {
+      modal.style.display = "none";
+      body.style.overflow = ""; // unlock scroll
+    };
+  });
+
 </script>
 
 <main class="page">
@@ -190,143 +196,216 @@ onMount(async () => {
       <span class="cerrar" onclick="cerrarPantalla()">
         <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
       </span>
+
       <div class="legend-info">
-        <div class="legend-block">
-          <h3 class="legend-title">Peso del repositorio</h3>
-          <div class="peso-grid">
-            <div class="peso-item">
-              <div class="borde-extra-negro">
-                <div class="borde-extra-negro">
-                  <div class="borde-extra-negro">
-                    <div class="borde-extra">
-                      <div class="borde-extra-negro"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <span class="ref">1KB - 3KB</span>
-            </div>
-            <div class="peso-item">
-              <div class="borde-extra-negro">
-                <div class="borde-extra-negro">
-                  <div class="borde-extra">
-                    <div class="borde-extra">
-                      <div class="borde-extra-negro"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <span class="ref">5KB - 1MB</span>
-            </div>
-            <div class="peso-item">
-              <div class="borde-extra-negro">
-                <div class="borde-extra">
-                  <div class="borde-extra">
-                    <div class="borde-extra">
-                      <div class="borde-extra-negro"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <span class="ref">1.1MB - 4MB</span>
-            </div>
-            <div class="peso-item">
-              <div class="borde-extra">
-                <div class="borde-extra">
-                  <div class="borde-extra">
-                    <div class="borde-extra">
-                      <div class="borde-extra-negro"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <span class="ref">5MB - 33MB</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="satis-commits">
-          <!-- Block 1: Satisfacción -->
+        <div class="legend-grid-2x2">
+          <!-- PESO -->
           <div class="legend-block">
-            <h3 class="legend-title">Grado de satisfacción</h3>
-            <div class="legend-vertical-list">
-              <div class="container-wavy">
-                <WavyLineIcon size={110}  strowidth=7/>
-                <p class="ref">Satisfecho</p>
+            <!-- Peso content -->
+              <h3 class="legend-title">Peso del repositorio</h3>
+              <div class="peso-grid">
+                <div class="peso-item">
+                      <div class="borde-extra-negro">
+                        <div class="borde-extra-negro">
+                          <div class="borde-extra-negro">
+                            <div class="borde-extra">
+                              <div class="borde-extra-negro"></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <span class="ref">1KB - 3KB</span>
+                    </div>
+                    <div class="peso-item">
+                      <div class="borde-extra-negro">
+                        <div class="borde-extra-negro">
+                          <div class="borde-extra">
+                            <div class="borde-extra">
+                              <div class="borde-extra-negro"></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <span class="ref">5KB - 1MB</span>
+                    </div>
+                    <div class="peso-item">
+                      <div class="borde-extra-negro">
+                        <div class="borde-extra">
+                          <div class="borde-extra">
+                            <div class="borde-extra">
+                              <div class="borde-extra-negro"></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <span class="ref">1.1MB - 4MB</span>
+                    </div>
+                    <div class="peso-item">
+                      <div class="borde-extra">
+                        <div class="borde-extra">
+                          <div class="borde-extra">
+                            <div class="borde-extra">
+                              <div class="borde-extra-negro"></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <span class="ref">5MB - 33MB</span>
+                    </div>
+                  </div>
+                </div>
+                  
+
+          <!-- SUPERPOSICIÓN -->
+          <div class="legend-block">
+            <!-- Superposición content -->
+              <h3 class="legend-title">Superposición</h3>
+              <div class="superposicion-container">
+                <div class="colab-box-referencia">
+                  <div class="icon-layer-referencia">
+                    <!-- Icon 1 -->
+                    <svelte:component
+                      this={iconComponents['Cmasmas']}
+                      size={baseIconSize * iconLayout['Cmasmas'].scale * 0.5}
+                      class="icon-item-BIG"
+                      style={`position: absolute;
+                              left: ${iconLayout['Cmasmas'].x};
+                              top: ${iconLayout['Cmasmas'].y};
+                              stroke: ${iconLayout['Cmasmas'].color ?? 'black'};
+                              transform: translate(-50%, -50%);
+                              z-index: ${iconLayout['Cmasmas'].zIndex ?? 0};
+                              pointer-events: none;`}
+                    />
+                    <!-- Icon 2 -->
+                    <svelte:component
+                      this={iconComponents['Python']}
+                      size={baseIconSize * iconLayout['Python'].scale * 0.5}
+                      class="icon-item-BIG"
+                      style={`position: absolute;
+                              left: ${iconLayout['Python'].x};
+                              top: ${iconLayout['Python'].y};
+                              stroke: ${iconLayout['Python'].color ?? 'black'};
+                              transform: translate(-50%, -50%);
+                              z-index: ${iconLayout['Python'].zIndex ?? 0};
+                              pointer-events: none;`}
+                    />
+                  </div>
+                </div>
+                <div class="colab-box-referencia">
+                  <div class="icon-layer-referencia">
+                    <!-- Icon 1 -->
+                    <svelte:component
+                      this={iconComponents['Python']}
+                      size={baseIconSize * iconLayout['Python'].scale * 0.5}
+                      class="icon-item-BIG"
+                      style={`position: absolute;
+                              left: ${iconLayout['Python'].x};
+                              top: ${iconLayout['Python'].y};
+                              stroke: ${iconLayout['Python'].color ?? 'black'};
+                              transform: translate(-50%, -50%);
+                              z-index: ${iconLayout['Python'].zIndex ?? 0};
+                              pointer-events: none;`}
+                    />
+                    <!-- Icon 2 -->
+                    <svelte:component
+                      this={iconComponents['Cmasmas']}
+                      size={baseIconSize * iconLayout['Cmasmas'].scale * 0.5}
+                      class="icon-item-BIG"
+                      style={`position: absolute;
+                              left: ${iconLayout['Cmasmas'].x};
+                              top: ${iconLayout['Cmasmas'].y};
+                              stroke: ${iconLayout['Cmasmas'].color ?? 'black'};
+                              transform: translate(-50%, -50%);
+                              z-index: ${iconLayout['Cmasmas'].zIndex ?? 0};
+                              pointer-events: none;`}
+                    />
+                  </div>
+                </div>
               </div>
-              <div class="container-wavy">
-                <WavyLineHueco height={100} size={110} strowidth=7/>
-                <p class="ref">Insatisfecho</p>
+              <p class="superposicion-text">
+                Mientras más se usó un lenguaje, más arriba aparece en relación al resto.
+              </p>
+            </div>
+
+          <!-- SATISFACCIÓN -->
+          <div class="legend-block">
+            <!-- Satisfacción content -->
+             <h3 class="legend-title">Grado de satisfacción</h3>
+              <div class="legend-vertical-list">
+                <div class="container-wavy">
+                  <WavyLineIcon size={180} />
+                  <p class="ref">Satisfecho</p>
+                </div>
+                <div class="container-wavy">
+                  <WavyLineHueco size={180} />
+                  <p class="ref">Insatisfecho</p>
+                </div>
               </div>
             </div>
-          </div>
 
-          <!-- Block 2: Commits -->
+          <!-- COMMITS -->
           <div class="legend-block">
+            <!-- Commits content -->
             <h3 class="legend-title">Cantidad de Commits</h3>
-            <div class="legend-icon-horizontal">
-              <div class="legend-icon-stack">
-                <StarIcon size={25} />
-                <div class='commit-num'>
-                  <p>1</p>
+              <div class="container-wavy">
+                <div class="legend-icon-horizontal">
+                  <div class="legend-icon-stack">
+                    <StarIcon size={25} />
+                  </div>
+                  <div class="legend-icon-stack">
+                    <StarIcon size={65} />
+                  </div>
+                  <div class="legend-icon-stack">
+                    <StarIcon size={130} />
+                  </div>
                 </div>
-              </div>
-              <div class="legend-icon-stack">
-                <StarIcon size={50} />
-                <div class='commit-num'>
-                  <p>25</p>
+                <div class = "text-com">
+                  <p class="ref">Mayor cantidad de commits, más grande la estrella.</p>
                 </div>
-              </div>
-              <div class="legend-icon-stack">
-                <StarIcon size={75} />
-                <div class='commit-num'>
-                  <p>50</p>
                 </div>
-              </div>
             </div>
           </div>
-        </div>
-
-
-
-
+        
+        
 
       <div class="legend-block">
         <h3 class="legend-title">Lenguajes usados:</h3>
         <div class="legend-icon-grid">
           <div>
-            <Html size={60} />
+            <Html size={90} />
             <p>HTML</p>
           </div>
           <div>
-            <Python size={60} />
+            <Python size={90} />
             <p>Python</p>
           </div>
           <div>
-            <JavaScript size={60} />
+            <JavaScript size={90} />
             <p>JavaScript</p>
           </div>
           <div>
-            <Cmasmas size={60} />
+            <Cmasmas size={90} />
             <p>C++</p>
           </div>
           <div>
-            <C size={60} />
+            <C size={90} />
             <p>C</p>
           </div>
           <div>
-            <Svelte size={60}/>
+            <Svelte size={90}/>
             <p>Svelte</p>
           </div>
           <div>
-            <CSS size={60} />
+            <CSS size={90} />
             <p>CSS</p>
           </div>
         </div>
       </div>
+
     </div>
   </div>
   </div>
+
 
 <!-- CONTENEDOR CON SCROLL HORIZONTAL -->
 <div class="scroll-container">
@@ -379,145 +458,7 @@ onMount(async () => {
 
 <div>
 <button class="ref-button" onclick="abrirPantalla()">Referencias</button>
-  <div id="pantalla" class="modal">
-    <div class="legend-wrapper">
-      <span class="cerrar" onclick="cerrarPantalla()">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
-      </span>
-      <div class="legend-info">
-        <div class="legend-block">
-          <h3 class="legend-title">Peso del repositorio</h3>
-          <div class="peso-grid">
-            <div class="peso-item">
-              <div class="borde-extra-negro">
-                <div class="borde-extra-negro">
-                  <div class="borde-extra-negro">
-                    <div class="borde-extra">
-                      <div class="borde-extra-negro"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <span class="ref">1KB - 3KB</span>
-            </div>
-            <div class="peso-item">
-              <div class="borde-extra-negro">
-                <div class="borde-extra-negro">
-                  <div class="borde-extra">
-                    <div class="borde-extra">
-                      <div class="borde-extra-negro"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <span class="ref">5KB - 1MB</span>
-            </div>
-            <div class="peso-item">
-              <div class="borde-extra-negro">
-                <div class="borde-extra">
-                  <div class="borde-extra">
-                    <div class="borde-extra">
-                      <div class="borde-extra-negro"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <span class="ref">1.1MB - 4MB</span>
-            </div>
-            <div class="peso-item">
-              <div class="borde-extra">
-                <div class="borde-extra">
-                  <div class="borde-extra">
-                    <div class="borde-extra">
-                      <div class="borde-extra-negro"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <span class="ref">5MB - 33MB</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="satis-commits">
-          <!-- Block 1: Satisfacción -->
-          <div class="legend-block">
-            <h3 class="legend-title">Grado de satisfacción</h3>
-            <div class="legend-vertical-list">
-              <div class="container-wavy">
-                <WavyLineIcon size={110}  strowidth=7/>
-                <p class="ref">Satisfecho</p>
-              </div>
-              <div class="container-wavy">
-                <WavyLineHueco height={100} size={110} strowidth=7/>
-                <p class="ref">Insatisfecho</p>
-              </div>
-            </div>
-          </div>
-
-          <!-- Block 2: Commits -->
-          <div class="legend-block">
-            <h3 class="legend-title">Cantidad de Commits</h3>
-            <div class="legend-icon-horizontal">
-              <div class="legend-icon-stack">
-                <StarIcon size={25} />
-                <div class='commit-num'>
-                  <p>1</p>
-                </div>
-              </div>
-              <div class="legend-icon-stack">
-                <StarIcon size={50} />
-                <div class='commit-num'>
-                  <p>25</p>
-                </div>
-              </div>
-              <div class="legend-icon-stack">
-                <StarIcon size={75} />
-                <div class='commit-num'>
-                  <p>50</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      <div class="legend-block">
-        <h3 class="legend-title">Lenguajes usados:</h3>
-        <div class="legend-icon-grid">
-          <div>
-            <Html size={60} />
-            <p>HTML</p>
-          </div>
-          <div>
-            <Python size={60} />
-            <p>Python</p>
-          </div>
-          <div>
-            <JavaScript size={60} />
-            <p>JavaScript</p>
-          </div>
-          <div>
-            <Cmasmas size={60} />
-            <p>C++</p>
-          </div>
-          <div>
-            <C size={60} />
-            <p>C</p>
-          </div>
-          <div>
-            <Svelte size={60}/>
-            <p>Svelte</p>
-          </div>
-          <div>
-            <CSS size={60} />
-            <p>CSS</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  </div>
-
+  
  <h1 class="title">Grilla de todos los repositorios</h1>
   <div class="cajas">
     {#each Repositorios as t}

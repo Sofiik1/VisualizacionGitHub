@@ -17,7 +17,7 @@ style={style}
     d="M5 10 
     L55 30 
     L50 55 
-    L95 80"
+    L95 90"
     stroke={color}
     stroke-width="12"
     stroke-linecap="round"
