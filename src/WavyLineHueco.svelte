@@ -1,23 +1,14 @@
 <script>
   export let size = 64;
   export let color = "#fe1492";
-<<<<<<< HEAD
-  export let strokeWidth = 6;
-  export let style = "";
-=======
   export let style = "";
   export let viewBox = "0 0 20 300";
   export let strowidth = 6;
->>>>>>> fork/master
 </script>
 
 <svg
   xmlns="http://www.w3.org/2000/svg"
-<<<<<<< HEAD
-  viewBox="0 0 20 300"
-=======
   viewBox={viewBox}
->>>>>>> fork/master
   width={size}
   height={size}
   style={style}
@@ -36,11 +27,7 @@
        Q 0 255, 10 270
        Q 20 285, 10 300"
     stroke={color}
-<<<<<<< HEAD
-    stroke-width={strokeWidth}
-=======
     stroke-width={strowidth}
->>>>>>> fork/master
     stroke-dasharray="10 10"  
     stroke-linecap="round"
   />

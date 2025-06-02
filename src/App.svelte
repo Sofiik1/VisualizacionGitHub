@@ -16,7 +16,8 @@
   import WavyLineHueco from './WavyLineHueco.svelte';
 
 
-
+  let mostrarGrilla = false;
+  let mostrarReferencias = false;
   import Papa from 'papaparse';
   import { onMount } from 'svelte';
   import * as d3 from 'd3';
@@ -168,35 +169,67 @@ onMount(async () => {
       .filter(icon => lenguajes.includes(icon.nombre))
   }
 
-document.addEventListener("DOMContentLoaded", function () {
-    const body = document.body;
-    const modal = document.getElementById("pantalla");
-
-    window.abrirPantalla = function () {
-      modal.style.display = "flex";
-      body.style.overflow = "hidden"; // lock scroll
-    };
-
-    window.cerrarPantalla = function () {
-      modal.style.display = "none";
-      body.style.overflow = ""; // unlock scroll
-    };
-  });
-
 </script>
 
 <main class="page">
   <h1 class="title">Repographix</h1>
   <h2 class="subtitle"> Nuestros repositorios en tarjetas visuales</h2>
+<div>
+ 
+<!-- CONTENEDOR CON SCROLL HORIZONTAL -->
+<div class="scroll-container">
+  {#each Repositorios as t}
+    <div class="caja-horizontal">
+      <div class="borde-extra" style="border-color: {t.peso == 4 ? '#ffffff' : '#000000'}">
+        <div class="borde-extra" style="border-color: {t.peso >= 3 ? '#ffffff' : '#000000'}">
+          <div class="borde-extra" style="border-color: {t.peso >= 2 ? '#ffffff' : '#000000'}; padding:5px;">
+            <div class="colab-box-BIG-Mora">
+              <div class="icon-layer-BIG">
+                {#each t.iconos as nombre}
+                  {#if iconComponents[nombre] && t.iconLayout[nombre]}
+                    <svelte:component
+                      this={iconComponents[nombre]}
+                      size={baseIconSize * t.iconLayout[nombre].scale * (nombre === 'StarIcon' ? t.starScale : 1)}
+                      class="icon-item-BIG"
+                      style={`position: absolute;
+                              left: ${t.iconLayout[nombre].x};
+                              top: ${t.iconLayout[nombre].y};
+                              stroke: ${t.iconLayout[nombre].color};
+                              transform: translate(-50%, -50%);
+                              z-index: ${t.iconLayout[nombre].zIndex ?? 0};
+                              pointer-events: none;`}
+                    />
+                  {/if}
+                {/each}
+              </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="repositorio-info" style="width: 368;">
+          <p class="repo-sub-nombre">{t.nombre}</p>
+          <p class="repo-sub-fecha">{formatDateToDDMMYYYY(t.fecha)}</p>
+        </div>
+    </div>
+  {/each}
+</div>
+  
+<div class="intro">
+  <p class="info">
+    Representamos colaboraciones en repositorios de GitHub, correspondientes a trabajos que realizamos a lo largo de nuestra carrera. Para ello, usamos tarjetas visuales
+    sintetizando atributos clave como:
+    la variedad de lenguajes utilizados, la cantidad de commits, el peso del repositorio y cual fue la satisfacción del usuario con el resultado final de su proyecto.
+    Para representar y diferenciar cada una de estas dimensiones, seleccionamos las siguientes formas y colores.
+  </p>
+</div>
 
 <div>
-<button class="ref-button" onclick="abrirPantalla()">Referencias</button>
-  <div id="pantalla" class="modal">
-    <div class="legend-wrapper">
-      <span class="cerrar" onclick="cerrarPantalla()">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
-      </span>
+<button class="ref-button" on:click={() => mostrarReferencias = !mostrarReferencias}>
+{mostrarReferencias ? 'Ocultar referencias' : 'Ver referencias'}
+</button>
 
+ {#if mostrarReferencias}
+    <div class="legend-wrapper">
       <div class="legend-info">
         <div class="legend-grid-2x2">
           <!-- PESO -->
@@ -404,61 +437,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
     </div>
   </div>
-  </div>
+{/if}
 
+<button class="ref-button" on:click={() => mostrarGrilla = !mostrarGrilla}>{mostrarGrilla ? 'Ocultar Repos' : 'Ver todos los Repos'}</button>
 
-<!-- CONTENEDOR CON SCROLL HORIZONTAL -->
-<div class="scroll-container">
-  {#each Repositorios as t}
-    <div class="caja-horizontal">
-      <div class="borde-extra" style="border-color: {t.peso == 4 ? '#ffffff' : '#000000'}">
-        <div class="borde-extra" style="border-color: {t.peso >= 3 ? '#ffffff' : '#000000'}">
-          <div class="borde-extra" style="border-color: {t.peso >= 2 ? '#ffffff' : '#000000'}; padding:5px;">
-            <div class="colab-box-BIG-Mora">
-              <div class="icon-layer-BIG">
-                {#each t.iconos as nombre}
-                  {#if iconComponents[nombre] && t.iconLayout[nombre]}
-                    <svelte:component
-                      this={iconComponents[nombre]}
-                      size={baseIconSize * t.iconLayout[nombre].scale * (nombre === 'StarIcon' ? t.starScale : 1)}
-                      class="icon-item-BIG"
-                      style={`position: absolute;
-                              left: ${t.iconLayout[nombre].x};
-                              top: ${t.iconLayout[nombre].y};
-                              stroke: ${t.iconLayout[nombre].color};
-                              transform: translate(-50%, -50%);
-                              z-index: ${t.iconLayout[nombre].zIndex ?? 0};
-                              pointer-events: none;`}
-                    />
-                  {/if}
-                {/each}
-              </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="repositorio-info" style="width: 368;">
-          <p class="repo-sub-nombre">{t.nombre}</p>
-          <p class="repo-sub-fecha">{formatDateToDDMMYYYY(t.fecha)}</p>
-        </div>
-    </div>
-  {/each}
-</div>
-  
-
-<div class="intro">
- <h1 class="title">Repositorios GitHub</h1>
-  <p class="info">
-    Representamos colaboraciones en repositorios de GitHub, correspondientes a trabajos que realizamos a lo largo de nuestra carrera. Para ello, usamos tarjetas visuales
-    sintetizando atributos clave como:
-    la variedad de lenguajes utilizados, la cantidad de commits, el peso del repositorio y cual fue la satisfacción del usuario con el resultado final de su proyecto.
-    Para representar y diferenciar cada una de estas dimensiones, seleccionamos las siguientes formas y colores.
-  </p>
-</div>
-
-<div>
-<button class="ref-button" onclick="abrirPantalla()">Referencias</button>
-  
+{#if mostrarGrilla}  
  <h1 class="title">Grilla de todos los repositorios</h1>
   <div class="cajas">
     {#each Repositorios as t}
@@ -497,7 +480,7 @@ document.addEventListener("DOMContentLoaded", function () {
       </div>
     {/each}
   </div>
-
+{/if}
 
   <footer class="footer">
     <div class="footer-content">

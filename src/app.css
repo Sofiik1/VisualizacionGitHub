@@ -161,6 +161,7 @@ p{
   gap: 1rem;
   flex-wrap: wrap;
   font-size: 0.9rem;
+  margin-top: 20px;
 }
 
   
@@ -180,44 +181,11 @@ p{
   }
 
 
-  /* Pantalla referencias */
-.modal {
-  display: none;
-  position: fixed;
-  z-index: 1000;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  /* overflow: auto; */
-  background-color: rgba(0, 0, 0, 0.85);
-  justify-content: center;
-  align-items: center;
-  padding: .2rem;
-  border-radius: 10px;
-}
 
-.cerrar {
-  position: absolute;
-  top: 2vh;
-  right: 2vh;
-  cursor: pointer;
-  z-index: 1001;
-  width: 40px; 
-  height: 40px;
-  stroke: #ffffff;
-  stroke-width: 2px;
-}
-.cerrar :hover {
-  stroke-width: 3px;
-}
 .legend-wrapper {
-  overflow: auto;
   margin: 10%;
-  padding: 2vh 5vw;
-  width: 100%;
+  width: 80%;
   height: 100%;
-  background-color: rgba(49, 49, 49, 1); 
 }
 
 .legend-title {
@@ -370,6 +338,9 @@ p{
   border-radius: 8px;            /* Rounded corners */
   cursor: pointer;               /* Pointer cursor on hover */
   transition: background-color 0.3s ease, transform 0.2s ease;
+  margin-bottom: 20px;
+  margin-top: 20px;
+  margin-left: 20px;
 }
 
 .ref-button:hover {
