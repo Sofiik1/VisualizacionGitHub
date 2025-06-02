@@ -14,10 +14,10 @@ fill="none"
 style={style}
 >
   <path
-    d="M10 10 
+    d="M5 10 
     L55 30 
     L50 55 
-    L90 80"
+    L95 90"
     stroke={color}
     stroke-width="12"
     stroke-linecap="round"

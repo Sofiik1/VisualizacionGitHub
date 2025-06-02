@@ -3,11 +3,13 @@
     export let size = 64;
     export let color = "#fe1492"; // naranja oscuro  "#ff6100"
     export let style = "";
+    export let viewBox = "0 0 20 300";
+    export let strowidth = 6;
   </script>
   
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 20 300"
+    viewBox={viewBox}
     width={size}
     height={size}
     fill="none"
@@ -26,7 +28,7 @@
          Q 0 255, 10 270
          Q 20 285, 10 300"
       stroke={color}
-      stroke-width="6"
+      stroke-width={strowidth}
       stroke-linecap="round"
       fill="none"
     />

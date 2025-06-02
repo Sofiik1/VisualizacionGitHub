@@ -7,15 +7,15 @@
 
 <svg
 xmlns="http://www.w3.org/2000/svg"
-viewBox="0 0 100 100"
+viewBox="0 -20 100 100"
 width={size}
 height={size}
 fill="none"
 style={style}
 >
   <path
-    d="M0 50 
-    L40 20 
+    d="M0 65 
+    L35 10 
     L25 55 
     L55 30 
     L50 60 
