@@ -270,10 +270,10 @@ p{
 }
 
 .superposicion-container {
-  justify-content: center;
+  justify-content: left;
   gap: 2rem;
   display: flex;
-  align-items: center;
+  margin-left: 25px;
   
 }
 
