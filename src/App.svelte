@@ -507,7 +507,7 @@ document.addEventListener("DOMContentLoaded", function () {
       <span>|</span>
       <a href="https://www.linkedin.com/in/ezequiel-mautner/" target="_blank">Ezequiel Mautner</a>
       <span>|</span>
-      <a href="https://www.linkedin.com/in/ezequiel-mautner/" target="_blank">Mora Fernandez</a>
+      <a href="" target="_blank">Mora Fernandez</a>
     </div>
   </footer>
 </main>
