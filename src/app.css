@@ -204,6 +204,32 @@ p{
   flex-direction: column;
 }
 
+.avatar {
+  display: flex;
+  flex-direction: row;
+  gap: 8rem; /* Espacio entre tarjetas */
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 1rem;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: thin;
+}
+
+.avatar > * {
+  flex: 0 0 auto; /* No se encoge, mantiene ancho fijo */
+  scroll-snap-align: start;
+}
+
+
+.avatar::-webkit-scrollbar {
+  height: 6px;
+}
+.avatar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 3px;
+}
+
+
 /*PESO*/
 .peso-grid {
   display: flex;

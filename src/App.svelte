@@ -14,8 +14,11 @@
   import Html from './Html.svelte';
   import Cmasmas from './Cmasmas.svelte';
   import WavyLineHueco from './WavyLineHueco.svelte';
-
-
+  import Avatar from './avatar.svelte';
+  import Referencias from './avatarRef.svelte';
+  
+  let referenciasActivasAvatar = false;
+  let mostrarReferenciasAvatar = false;
   let mostrarGrilla = false;
   let mostrarReferencias = false;
   let referenciasActivas = false;
@@ -216,6 +219,16 @@ onMount(async () => {
     </div>
   {/each}
 </div>
+
+<h1>Descubri a los colaboradores</h1>
+<div class="avatar">
+  <Avatar/>
+  <Avatar/>
+  <Avatar/>
+  <Avatar/>
+  <Avatar/>
+  <Avatar/>
+</div>
   
 <div class="intro">
   <p class="info">
@@ -226,15 +239,15 @@ onMount(async () => {
   </p>
 </div>
 
-<div>
 
+<div>
 <button
   class="ref-button {referenciasActivas ? 'activo' : ''}"
   on:click={() => {
     referenciasActivas = !referenciasActivas;
     mostrarReferencias = !mostrarReferencias;
   }}>
-  {referenciasActivas ? 'Ocultar referencias' : 'Ver referencias'}
+  {referenciasActivas ? 'Ocultar referencias' : 'Ver referencias Repositorios'}
 </button>
 
 <button
@@ -245,6 +258,19 @@ onMount(async () => {
   }}>
   {grillaActiva ? 'Ocultar Repos' : 'Ver todos los Repos'}
 </button>
+
+<button
+  class="ref-button {referenciasActivasAvatar ? 'activo' : ''}"
+  on:click={() => {
+    referenciasActivasAvatar = !referenciasActivasAvatar;
+    mostrarReferenciasAvatar = !mostrarReferenciasAvatar;
+  }}>
+  {referenciasActivasAvatar ? 'Ocultar referencias' : 'Ver referencias colaboradores'}
+</button>
+
+{#if mostrarReferenciasAvatar}
+  <Referencias />
+{/if}
 
  {#if mostrarReferencias}
     <div class="legend-wrapper">
