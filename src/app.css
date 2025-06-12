@@ -1,3 +1,27 @@
+.codematrix-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 3rem;
+  flex-wrap: wrap;
+  padding: 2rem;
+}
+
+.flourish-embed {
+  width: 50%;
+  height: 80%;
+}
+
+.codematrix-container p {
+  max-width: 400px;
+  font-family: "Electrolize", sans-serif;
+  font-size: 1.3rem;
+  color: #ffffff;
+  line-height: 1.5;
+  text-align: left;
+}
+
 
 .title {
   font-family: "Electrolize", sans-serif;

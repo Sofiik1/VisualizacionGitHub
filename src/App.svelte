@@ -178,47 +178,17 @@ onMount(async () => {
 </script>
 
 <main class="page">
-  <h1 class="title">Repographix</h1>
-  <h2 class="subtitle"> Nuestros repositorios en tarjetas visuales</h2>
+  <h1 class="title"> Codematrix </h1>
+  <div class="codematrix-container">   
+     <div class="flourish-embed flourish-network" data-src="visualisation/23708577"></div>
+    <p>Cada línea, un aporte. Cada nodo, una mente.<br>
+    Esta matriz revela cómo se tejen las relaciones entre quienes colaboran y los proyectos que hacen crecer este espacio.<br>
+    Mové los nodos, explorá la constelación. Esto no es solo código: es comunidad en movimiento.</p>
+  </div>
+   <script src="https://public.flourish.studio/resources/embed.js"></script>
+  
 <div>
  
-<!-- CONTENEDOR CON SCROLL HORIZONTAL -->
-<div class="scroll-container">
-  {#each Repositorios as t}
-    <div class="caja-horizontal">
-      <div class="borde-extra" style="border-color: {t.peso == 4 ? '#ffffff' : '#000000'}">
-        <div class="borde-extra" style="border-color: {t.peso >= 3 ? '#ffffff' : '#000000'}">
-          <div class="borde-extra" style="border-color: {t.peso >= 2 ? '#ffffff' : '#000000'}; padding:5px;">
-            <div class="colab-box-BIG-Mora">
-              <div class="icon-layer-BIG">
-                {#each t.iconos as nombre}
-                  {#if iconComponents[nombre] && t.iconLayout[nombre]}
-                    <svelte:component
-                      this={iconComponents[nombre]}
-                      size={baseIconSize * t.iconLayout[nombre].scale * (nombre === 'StarIcon' ? t.starScale : 1)}
-                      class="icon-item-BIG"
-                      style={`position: absolute;
-                              left: ${t.iconLayout[nombre].x};
-                              top: ${t.iconLayout[nombre].y};
-                              stroke: ${t.iconLayout[nombre].color};
-                              transform: translate(-50%, -50%);
-                              z-index: ${t.iconLayout[nombre].zIndex ?? 0};
-                              pointer-events: none;`}
-                    />
-                  {/if}
-                {/each}
-              </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="repositorio-info" style="width: 368;">
-          <p class="repo-sub-nombre">{t.nombre}</p>
-          <p class="repo-sub-fecha">{formatDateToDDMMYYYY(t.fecha)}</p>
-        </div>
-    </div>
-  {/each}
-</div>
 
 <h1>Descubri a los colaboradores</h1>
 <div class="avatar">
@@ -450,7 +420,8 @@ onMount(async () => {
 
 
 {#if mostrarGrilla}  
- <h1 class="title">Grilla de todos los repositorios</h1>
+  <h1 class="title">Repographix</h1>
+  <h2 class="subtitle"> Nuestros repositorios en tarjetas visuales</h2>
   <div class="cajas">
     {#each Repositorios as t}
       <div class="caja">
