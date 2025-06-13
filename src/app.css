@@ -1,3 +1,27 @@
+.codematrix-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 3rem;
+  flex-wrap: wrap;
+  padding: 2rem;
+}
+
+.flourish-embed {
+  width: 50%;
+  height: 80%;
+}
+
+.codematrix-container p {
+  max-width: 400px;
+  font-family: "Electrolize", sans-serif;
+  font-size: 1.3rem;
+  color: #ffffff;
+  line-height: 1.5;
+  text-align: left;
+}
+
 
 .title {
   font-family: "Electrolize", sans-serif;
@@ -161,6 +185,8 @@ p{
   gap: 1rem;
   flex-wrap: wrap;
   font-size: 0.9rem;
+  margin-top: 50px;
+  margin-bottom: 20px;
 }
 
   
@@ -180,44 +206,11 @@ p{
   }
 
 
-  /* Pantalla referencias */
-.modal {
-  display: none;
-  position: fixed;
-  z-index: 1000;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  /* overflow: auto; */
-  background-color: rgba(0, 0, 0, 0.85);
-  justify-content: center;
-  align-items: center;
-  padding: .2rem;
-  border-radius: 10px;
-}
 
-.cerrar {
-  position: absolute;
-  top: 2vh;
-  right: 2vh;
-  cursor: pointer;
-  z-index: 1001;
-  width: 40px; 
-  height: 40px;
-  stroke: #ffffff;
-  stroke-width: 2px;
-}
-.cerrar :hover {
-  stroke-width: 3px;
-}
 .legend-wrapper {
-  overflow: auto;
   margin: 10%;
-  padding: 2vh 5vw;
-  width: 100%;
+  width: 80%;
   height: 100%;
-  background-color: rgba(49, 49, 49, 1); 
 }
 
 .legend-title {
@@ -226,8 +219,7 @@ p{
   color: #fff;
   text-align: left;
   margin: 0;
-  margin-bottom: .5rem;
-  margin-top: .5rem;
+  margin-bottom: 2rem;
   max-width: 100%;
 }
 
@@ -235,6 +227,32 @@ p{
   display: flex;
   flex-direction: column;
 }
+
+.avatar {
+  display: flex;
+  flex-direction: row;
+  gap: 8rem; /* Espacio entre tarjetas */
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 1rem;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: thin;
+}
+
+.avatar > * {
+  flex: 0 0 auto; /* No se encoge, mantiene ancho fijo */
+  scroll-snap-align: start;
+}
+
+
+.avatar::-webkit-scrollbar {
+  height: 6px;
+}
+.avatar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 3px;
+}
+
 
 /*PESO*/
 .peso-grid {
@@ -251,12 +269,14 @@ p{
   align-items: center;
   gap: 1rem;
 }
+
 .borde-extra-negro{
-  border: 5px solid #313131;
+  border: 5px solid #000000;
   margin: 3px;
   border-radius: 2px;
   width: fit-content;
 }
+
 .borde-extra{
   margin: 3px;
   border: 5px solid #ffffff;
@@ -265,6 +285,7 @@ p{
   min-width: 2px;
   min-height: 2px;
 }
+
 .ref{
   font-weight: 200;
   font-size: 1.2rem;
@@ -300,15 +321,16 @@ p{
 
 .superposicion-container {
   justify-content: left;
+  gap: 2rem;
   display: flex;
-  align-items: center;
-  gap: 1rem; /* space between box and text */
+  margin-left: 25px;
+  
 }
 
 .superposicion-text {
   max-width: 450px;
   line-height: 1.4;
-  text-align: left; 
+  text-align: center; 
 }
 
 
@@ -316,8 +338,8 @@ p{
 .legend-vertical-list {
   display: flex;
   flex-direction: row;
-  justify-content: left;
 }
+
 .container-wavy {
   display: flex;
   flex-direction: column;
@@ -333,6 +355,7 @@ p{
   align-items: flex-end;
   height: 100%;
   margin-bottom: 2.5rem;
+  margin-left: 20px;
 }
 
 .text-com{
@@ -343,11 +366,9 @@ p{
 /*LENGUAJES*/
 .legend-icon-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); /* distribuido horizontal */
   justify-items: center;
-  font-size: 0.8rem;
-  margin: 0; 
+  gap: 2rem;
 }
 
 /* SCROLL */
@@ -370,19 +391,29 @@ p{
   border-radius: 8px;            /* Rounded corners */
   cursor: pointer;               /* Pointer cursor on hover */
   transition: background-color 0.3s ease, transform 0.2s ease;
+  margin-bottom: 20px;
+  margin-top: 20px;
+  margin-left: 20px;
+  transition: background-color 0.3s ease, transform 0.2s ease, border-color 0.3s ease;
 }
+
 
 .ref-button:hover {
   background-color: #333333;
   transform: scale(1.05);        /* Slight zoom on hover */
 }
 
+.ref-button.activo {
+  border-color: #fe1492;
+}
+
+
 .legend-grid-2x2 {
   display: grid;
   grid-template-columns: 1fr 1fr;  /* 2 columns */
   grid-template-rows: auto auto;  /* 2 rows */
   overflow: auto;
-  gap: 1rem;
+  gap: 5rem;
 }
 
 
@@ -390,4 +421,3 @@ p{
   display: flex;
   flex-direction: column;
 }
-
