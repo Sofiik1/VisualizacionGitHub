@@ -15,7 +15,7 @@
   import Cmasmas from "./Cmasmas.svelte";
   import WavyLineHueco from "./WavyLineHueco.svelte";
   import ReferenciasAvatar from "./avatarRef.svelte";
-  import AvatarCard from "./AvatarCard.svelte";
+  import AvatarCard from "./avatarCard.svelte";
 
   let referenciasActivasAvatar = false;
   let mostrarReferenciasAvatar = false;
