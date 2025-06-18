@@ -4,6 +4,7 @@
     "#b24fe1", "#009688", "#009b01", "#8bc34a", "#ff8acb", "#f03800", "#c9b8f8"
   ];
   let sombreroHeight = 90;
+  
 </script>
 
 <div class="card">
