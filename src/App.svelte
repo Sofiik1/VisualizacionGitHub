@@ -176,6 +176,40 @@
     return parsedData;
   }
 
+fetch('/Contribudores.csv')
+  .then(res => res.text())
+  .then(text => {
+    const parsed = parseContribudoresCSV(text);
+    contribToRepos = parsed;
+    contributors = Object.keys(parsed);
+    selectedContributors = new Set(contributors); // all selected by default
+  });
+
+
+
+let contributors = []; // All unique contributor names
+let selectedContributors = new Set(); // Set of selected names
+let contribToRepos = {}; // nombre → { repos: [...], ... }
+
+$: filteredRepos = Repositorios.filter(repo =>
+  [...selectedContributors].some(nombre =>
+    contribToRepos[nombre]?.repos?.includes(repo.nombre)
+  )
+);
+
+let showDropdown = false;
+
+function toggleContributor(name) {
+  if (selectedContributors.has(name)) {
+    selectedContributors.delete(name);
+  } else {
+    selectedContributors.add(name);
+  }
+  // force Svelte to react to Set mutation
+  selectedContributors = new Set(selectedContributors);
+}
+
+
   /*
 EJEMPLO:
 "Victor Navajas": Object { commits: 7, fav: "Gestión eficiente de recursos en sistemas ferroviarios", repo_count: 1, repos: [ "Gestión eficiente de recursos en sistemas ferroviarios Kutter" ]}
@@ -330,7 +364,7 @@ repos: Array [ "Gestión eficiente de recursos en sistemas ferroviarios Kutter" 
             {nombre}
             colores={getColores(persona)}
             sombreroHeight={mapRepos(persona.repo_count)}
-            numEstrellas={mapCommits(persona.commits)}
+            commits={persona.commits}
           />
         </li>
       {/each}
@@ -345,7 +379,7 @@ repos: Array [ "Gestión eficiente de recursos en sistemas ferroviarios Kutter" 
             {nombre}
             colores={getColores(persona)}
             sombreroHeight={mapRepos(persona.repo_count)}
-            numEstrellas={mapCommits(persona.commits)}
+            commits={persona.commits}
           />
         </li>
       {/each}
@@ -608,10 +642,31 @@ repos: Array [ "Gestión eficiente de recursos en sistemas ferroviarios Kutter" 
     {/if}
 
     {#if mostrarGrilla}
+      <div class="dropdown-filter">
+        <button on:click={() => showDropdown = !showDropdown}>Filtrar por contribuidor</button>
+        {#if showDropdown}
+          <div class="dropdown-content">
+            <button on:click={() => selectedContributors = new Set(contributors)}>Seleccionar todos</button>
+            <button on:click={() => selectedContributors = new Set()}>Deseleccionar todos</button>
+            {#each contributors as name}
+              <label>
+                <input
+                  type="checkbox"
+                  bind:group={selectedContributors}
+                  value={name}
+                  checked={selectedContributors.has(name)}
+                  on:change={() => toggleContributor(name)} />
+                {name}
+              </label>
+            {/each}
+          </div>
+        {/if}
+      </div>
+
       <h1 class="title">Repographix</h1>
       <h2 class="subtitle">Nuestros repositorios en tarjetas visuales</h2>
       <div class="cajas">
-        {#each Repositorios as t}
+        {#each filteredRepos  as t}
           <div class="caja">
             <div
               class="borde-extra"

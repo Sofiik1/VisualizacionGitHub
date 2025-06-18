@@ -2,8 +2,8 @@
   export let nombre;
   export let colores = [];
   export let sombreroHeight = 90;
-  export let numEstrellas = 0;
-  import StarIcon from './StarIcon.svelte';
+  import SemiCircleStars from './SemiStart.svelte';
+  export let commits;
 
 function calcTop(height) {
   const minTop = 85;   // sombrero más chico (repos = 1~2)
@@ -16,40 +16,6 @@ function calcTop(height) {
   return minTop - eased * (minTop - maxTop);
 }
 
-const leftZones = [
-    { min: 0, max: 12 },   // izquierda
-    { min: 86, max: 85 }   // derecha
-  ];
-
-  function distancia(e1, e2) {
-    const dx = parseFloat(e1.left) - parseFloat(e2.left);
-    const dy = parseFloat(e1.top) - parseFloat(e2.top);
-    return Math.sqrt(dx * dx + dy * dy);
-  }
-
-  function generarEstrellas(num) {
-    const posiciones = [];
-
-    while (posiciones.length < num) {
-      const zona = leftZones[Math.floor(Math.random() * leftZones.length)];
-      const left = (Math.random() * (zona.max - zona.min) + zona.min).toFixed(2) + '%';
-      const top = (Math.random() * 75 + 10).toFixed(2) + '%'; // 10% a 85%
-
-      const nueva = { left, top };
-
-      const isFar = posiciones.every(
-        e => distancia({ left: parseFloat(left), top: parseFloat(top) }, {
-          left: parseFloat(e.left), top: parseFloat(e.top)
-        }) > 12 // distancia mínima en %
-      );
-
-      if (isFar) posiciones.push(nueva);
-    }
-
-    return posiciones;
-  }
-
-  $: estrellas = generarEstrellas(numEstrellas);
 </script>
 
 <div class="card">
@@ -82,15 +48,9 @@ const leftZones = [
     <p>{nombre}</p>
   </div>
 
-  {#each estrellas as estrella}
-    <StarIcon
-      size={30}
-      fill="gray"
-      stroke="gray"
-      style={`position: absolute; left: ${estrella.left}; top: ${estrella.top}; z-index: 0;`}
-    />
-  {/each}
-  
+  <div class="SemiStar">
+  <SemiCircleStars commits={commits} maxCommits={200} />
+</div>
 </div>
 
 <style>
@@ -154,6 +114,14 @@ const leftZones = [
     align-items: end;
     height: 95%;
     color: white;
+  }
+
+  .SemiStar {
+    position: absolute;
+    margin-top: -10%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
   }
 
   
