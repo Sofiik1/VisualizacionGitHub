@@ -176,40 +176,10 @@
     return parsedData;
   }
 
-fetch('/Contribudores.csv')
-  .then(res => res.text())
-  .then(text => {
-    const parsed = parseContribudoresCSV(text);
-    contribToRepos = parsed;
-    contributors = Object.keys(parsed);
-    selectedContributors = new Set(contributors); // all selected by default
-  });
 
 
-
-let contributors = []; // All unique contributor names
-let selectedContributors = new Set(); // Set of selected names
-let contribToRepos = {}; // nombre → { repos: [...], ... }
-
-$: filteredRepos = Repositorios.filter(repo =>
-  [...selectedContributors].some(nombre =>
-    contribToRepos[nombre]?.repos?.includes(repo.nombre)
-  )
-);
-
-let showDropdown = false;
-
-function toggleContributor(name) {
-  if (selectedContributors.has(name)) {
-    selectedContributors.delete(name);
-  } else {
-    selectedContributors.add(name);
-  }
-  // force Svelte to react to Set mutation
-  selectedContributors = new Set(selectedContributors);
-}
-
-
+  
+  
   /*
 EJEMPLO:
 "Victor Navajas": Object { commits: 7, fav: "Gestión eficiente de recursos en sistemas ferroviarios", repo_count: 1, repos: [ "Gestión eficiente de recursos en sistemas ferroviarios Kutter" ]}
@@ -220,7 +190,62 @@ languages: Array [ "Python", "C" ]
 repo_count: 1
 repos: Array [ "Gestión eficiente de recursos en sistemas ferroviarios Kutter" ]
 
-  */
+*/
+
+// Filter
+let showDropdown = false;
+
+let contributors = []; // array of names
+let selectedContributors = new Set(); // will contain names (strings)
+
+$: if (Avatares && Object.keys(Avatares).length > 0) {
+  contributors = Object.keys(Avatares);
+  selectedContributors = new Set(contributors); // all selected by default
+}
+
+// Force reactivity after any change
+function toggleContributor(name) {
+  if (selectedContributors.has(name)) {
+    selectedContributors.delete(name);
+  } else {
+    selectedContributors.add(name);
+  }
+  // This is key to trigger updates:
+  selectedContributors = new Set(selectedContributors);
+  console.log("selectedContributors", selectedContributors);
+}
+
+function isSelected(name) {
+  return selectedContributors.has(name);
+}
+
+
+function isSelectedContributorOf(repoNombre) {
+  // Buscar si algún colaborador que participa en este repo está seleccionado
+  for (const [contribuidor, data] of Object.entries(Avatares)) {
+    if (selectedContributors.has(contribuidor)) {
+      if (data.repos.includes(repoNombre)) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+function actualizarCajas() {
+  // Forzamos a que Repositorios se copie, para que el #each reaccione.
+  Repositorios = [...Repositorios];
+  console.log("🔁 Cajas actualizadas con", [...selectedContributors]);
+}
+
+// fin filtros
+
+
+
+
+
+
+
   let Avatares = {};
   onMount(async () => {
     try {
@@ -642,20 +667,50 @@ repos: Array [ "Gestión eficiente de recursos en sistemas ferroviarios Kutter" 
     {/if}
 
     {#if mostrarGrilla}
-      <div class="dropdown-filter">
-        <button on:click={() => showDropdown = !showDropdown}>Filtrar por contribuidor</button>
+      <h1 class="title">Repographix</h1>
+      <h2 class="subtitle">Nuestros repositorios en tarjetas visuales</h2>
+      <div>
+        <div class="dropdown-filter">
+          <button class="ref-button-filter" on:click={() => showDropdown = !showDropdown}>
+            Filtrar por contribuidor
+          </button>
+        </div>
+
         {#if showDropdown}
           <div class="dropdown-content">
-            <button on:click={() => selectedContributors = new Set(contributors)}>Seleccionar todos</button>
-            <button on:click={() => selectedContributors = new Set()}>Deseleccionar todos</button>
+            <button
+              on:click={() => {
+                selectedContributors = new Set(contributors);
+                actualizarCajas(); // 🔁 Actualiza las cajas
+              }}
+            >
+              Seleccionar todos
+            </button>
+
+            <button
+              on:click={() => {
+                selectedContributors = new Set();
+                actualizarCajas(); // 🔁 Actualiza las cajas
+              }}
+            >
+              Deseleccionar todos
+            </button>
+
             {#each contributors as name}
               <label>
                 <input
                   type="checkbox"
-                  bind:group={selectedContributors}
-                  value={name}
                   checked={selectedContributors.has(name)}
-                  on:change={() => toggleContributor(name)} />
+                  on:change={(e) => {
+                    if (e.target.checked) {
+                      selectedContributors.add(name);
+                    } else {
+                      selectedContributors.delete(name);
+                    }
+                    selectedContributors = new Set(selectedContributors); // fuerza reactividad
+                    actualizarCajas(); // 🔁 Actualiza las cajas
+                  }}
+                />
                 {name}
               </label>
             {/each}
@@ -663,11 +718,16 @@ repos: Array [ "Gestión eficiente de recursos en sistemas ferroviarios Kutter" 
         {/if}
       </div>
 
-      <h1 class="title">Repographix</h1>
-      <h2 class="subtitle">Nuestros repositorios en tarjetas visuales</h2>
+
+
+
+
+
+
       <div class="cajas">
-        {#each filteredRepos  as t}
-          <div class="caja">
+        {#each Repositorios as t}
+          <div class="caja" class:masked={!isSelectedContributorOf(t.nombre)}>
+
             <div
               class="borde-extra"
               style="border-color: {t.peso == 4 ? '#ffffff' : '#000000'};"

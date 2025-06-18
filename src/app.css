@@ -405,27 +405,67 @@ p{
 
 /* filtro */
 .dropdown-filter {
+  display: flex;
+  justify-content: center; /* centro horizontal */
   margin: 1rem auto;
   text-align: center;
+  
 }
 
 .dropdown-content {
   background: #1a1a1a;
   padding: 1rem;
   border: 1px solid white;
-  display: flex;
-  flex-direction: column;
-  max-height: 300px;
-  overflow-y: auto;
   color: white;
+  max-width: fit-content; /* un poco más ancho que fit-content */
+  margin: 1rem auto; /* centro vertical y horizontal */
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  gap: 0.5rem 1rem; /* espacio vertical y horizontal */
+  max-height: fit-content;
+  overflow-y: auto;
+  border: 2px solid #ffffff;     /* White border */
+  border-radius: 8px;            /* Rounded corners */
 }
-.dropdown-content label {
-  margin: 0.2rem 0;
-}
+
 .dropdown-content button {
-  margin-bottom: 0.5rem;
   background: #333;
   color: white;
   border: 1px solid white;
-  padding: 0.2rem 0.5rem;
+  padding: 0.4rem 0.8rem;
+  cursor: pointer;
+  grid-column: span 1; /* cada botón ocupa 1 columna */
+  border: 2px solid #ffffff;     /* White border */
+  border-radius: 8px;            /* Rounded corners */
 }
+
+.dropdown-content label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  user-select: none;
+  
+}
+
+
+.ref-button-filter{
+  background-color: #1e1e1e;      /* Dark background */
+  color: #ffffff;                /* White text */
+  padding: 0.75rem 1.5rem;       /* Size */
+  font-family: "Electrolize", sans-serif;
+  font-size: 1.2rem;               /* Font size */
+  border: 2px solid #ffffff;     /* White border */
+  border-radius: 8px;            /* Rounded corners */
+  cursor: pointer;               /* Pointer cursor on hover */
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  transition: background-color 0.3s ease, transform 0.2s ease, border-color 0.3s ease;
+}
+
+
+/* mascara */
+.masked {
+  display: none;
+}
+
+
