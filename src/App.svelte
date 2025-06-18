@@ -14,8 +14,8 @@
   import Html from './Html.svelte';
   import Cmasmas from './Cmasmas.svelte';
   import WavyLineHueco from './WavyLineHueco.svelte';
-  import Avatar from './avatar.svelte';
   import Referencias from './avatarRef.svelte';
+  import AvatarCard from './AvatarCard.svelte';
   
   let referenciasActivasAvatar = false;
   let mostrarReferenciasAvatar = false;
@@ -23,7 +23,9 @@
   let mostrarReferencias = false;
   let referenciasActivas = false;
   let grillaActiva = false;
+  let Avatares = {};
 
+//########################################## FUNCIONES REPOSITORIOS ############################################################# //
   import Papa from 'papaparse';
   import { onMount } from 'svelte';
   import * as d3 from 'd3';
@@ -46,14 +48,14 @@
 };
 
 
-  let Repositorios = [];
+let Repositorios = [];
 
   function parseDateDDMMYYYY(fechaStr) {
   const [day, month, year] = fechaStr.split('/').map(Number);
   return new Date(year, month - 1, day); // JavaScript months are 0-indexed
 }
 
-function parseColaboradoresFromCSV(csvText) {
+function parseRepositoriosFromCSV(csvText) {
   if (csvText.charCodeAt(0) === 0xFEFF) {
     csvText = csvText.slice(1);
   }
@@ -127,21 +129,6 @@ function parseColaboradoresFromCSV(csvText) {
   return parsedRepos;
 }
 
-onMount(async () => {
-  try {
-    const response = await fetch('/datos.csv');
-    let csvText = await response.text();
-
-    if (csvText.charCodeAt(0) === 0xFEFF) {
-      csvText = csvText.slice(1);
-    }
-
-    Repositorios = parseColaboradoresFromCSV(csvText);
-  } catch (e) {
-    console.error('Error fetching CSV:', e);
-  }
-});
-
   const iconComponents = {
     JavaScript,
     DoubleDiamondIcon,
@@ -159,7 +146,7 @@ onMount(async () => {
 
  
  const max_size = 1.6   
- const baseIconSize = 50;  // for example, 50px base size
+ const baseIconSize = 50;  
  const iconLayoutRow = JSON.parse(JSON.stringify(iconLayout));
 
  function formatDateToDDMMYYYY(date) {
@@ -175,12 +162,167 @@ onMount(async () => {
       .filter(icon => lenguajes.includes(icon.nombre))
   }
 
+
+//########################################## FUNCIONES COLABORADORES ############################################################# //
+function parseColaboradoresCSV(csvTextColab) {
+  if (csvTextColab.charCodeAt(0) === 0xFEFF) {
+    csvTextColab = csvTextColab.slice(1); // Remove BOM if present
+  }
+  
+  console.log("Primera línea:", csvTextColab.split('\n')[0]);
+  console.log("Raw CSV recibido:");
+  console.log(csvTextColab);
+  const { data, errors } = Papa.parse(csvTextColab, {
+    header: true,
+    skipEmptyLines: true,
+    dynamicTyping: true,
+  });
+
+  if (errors.length) {
+    console.error('CSV parse errors:', errors);
+  }
+
+  const parsedData = {};
+
+  data.forEach(row => {
+    const nombre = row.nombre;
+
+    const reposList = row["repos(ls)"]
+      ? row["repos(ls)"].split(";").map(repo => repo.trim()).filter(Boolean)
+      : [];
+
+    const languages = [];
+    if (row.python) languages.push("Python");
+    if (row.javascript) languages.push("JavaScript");
+    if (row.css) languages.push("CSS");
+    if (row.html) languages.push("Html");
+    if (row.svelte) languages.push("Svelte");
+    if (row.c) languages.push("C");
+    if (row.cmas) languages.push("Cmasmas");
+
+    parsedData[nombre] = {
+      repos: reposList,
+      languages: languages,
+      commits: parseInt(row.commits),
+      fav: row.fav,
+      repo_count: parseInt(row.repo_count)
+    };
+  });
+
+  return parsedData;
+}
+
+
+  /*
+EJEMPLO:
+"Victor Navajas": Object { commits: 7, fav: "Gestión eficiente de recursos en sistemas ferroviarios", repo_count: 1, repos: [ "Gestión eficiente de recursos en sistemas ferroviarios Kutter" ]}
+​​
+commits: 7
+fav: "Gestión eficiente de recursos en sistemas ferroviarios"
+languages: Array [ "Python", "C" ]
+repo_count: 1
+repos: Array [ "Gestión eficiente de recursos en sistemas ferroviarios Kutter" ]
+
+  */
+
+const coloresLenguaje = {
+    python: "#009688",
+    javascript: "#c9b8f8",
+    css: "#ff8acb",
+    html: "#f03800",
+    svelte: "#b24fe1",
+    c: "#009b01",
+    cmas: "#8bc34a"
+  };
+
+  function getColores(persona) {
+    return persona.languages
+      .map(l => coloresLenguaje[l.toLowerCase()])
+      .filter(Boolean);
+  }
+
+  function mapRepos(repoCount) {
+    const min = 50, max = 130, maxRepos = 16;
+    return min + (repoCount / maxRepos) * (max - min);
+  }
+
+  function mapCommits(commits) {
+    const maxStars = 10;
+    const maxCommits = 200;
+    return Math.max(1, Math.round((commits / maxCommits) * maxStars));
+  }  
+/* 
+  tailwind.config = {
+
+    theme: {
+      extend: {
+        animation: {
+          'infinite-scroll': 'infinite-scroll 25s linear infinite',
+        },
+        keyframes: {
+          'infinite-scroll': {
+            from: { transform: 'translateX(0)' },
+            to: { transform: 'translateX(-100%)' },
+          }
+        }                    
+      },
+    },
+  } */
+
+  //#################################### FETCH REPOSITORIOS Y COLABORADORES ############################################### //
+onMount(async () => {
+  try {
+    const response = await fetch('/colaboradores.csv');
+    let csvTextColab = await response.text();
+
+    if (csvTextColab.charCodeAt(0) === 0xFEFF) {
+      csvTextColab = csvTextColab.slice(1);
+    }
+    csvTextColab = csvTextColab.trimStart();
+    Avatares = parseColaboradoresCSV(csvTextColab); 
+    console.log('Avatares cargados:', Avatares);
+  } catch (e) {
+    console.error('Error cargando CSV de colaboradores:', e);
+  }
+  
+  try {
+    const response = await fetch('/datos.csv');
+    let csvText = await response.text();
+
+    if (csvText.charCodeAt(0) === 0xFEFF) {
+      csvText = csvText.slice(1);
+    }
+
+    Repositorios = parseRepositoriosFromCSV(csvText);
+  } catch (e) {
+    console.error('Error fetching CSV:', e);
+  }
+});
+
+tailwind.config = {
+    theme: {
+      extend: {
+        animation: {
+          'infinite-scroll': 'infinite-scroll 25s linear infinite',
+        },
+        keyframes: {
+          'infinite-scroll': {
+            from: { transform: 'translateX(0)' },
+            to: { transform: 'translateX(-100%)' },
+          }
+        }                    
+      },
+    },
+  }
+
+
 </script>
 
 <main class="page">
   <h1 class="title"> Codematrix </h1>
   <div class="codematrix-container">   
-     <div class="flourish-embed flourish-network" data-src="visualisation/23708577"></div>
+    <div class="flourish-embed flourish-network" data-src="visualisation/23726675"></div> 
+    
     <p>Cada línea, un aporte. Cada nodo, una mente.<br>
     Esta matriz revela cómo se tejen las relaciones entre quienes colaboran y los proyectos que hacen crecer este espacio.<br>
     Mové los nodos, explorá la constelación. Esto no es solo código: es comunidad en movimiento.</p>
@@ -190,16 +332,39 @@ onMount(async () => {
 <div>
  
 
-<h1>Descubri a los colaboradores</h1>
-<div class="avatar">
-  <Avatar/>
-  <Avatar/>
-  <Avatar/>
-  <Avatar/>
-  <Avatar/>
-  <Avatar/>
-</div>
-  
+<h1 class="title">Descubri a los colaboradores</h1>
+  <div
+    class="w-full inline-flex flex-nowrap overflow-hidden [mask-image:_linear-gradient(to_right,transparent_0,_black_128px,_black_calc(100%-200px),transparent_100%)]">
+    <ul
+      class="flex items-center justify-center md:justify-start [&_li]:mx-8 [&_img]:max-w-none animate-infinite-scroll"
+    >
+      {#each Object.entries(Avatares) as [nombre, persona]}
+        <li>
+          <AvatarCard
+            nombre={nombre}
+            colores={getColores(persona)}
+            sombreroHeight={mapRepos(persona.repo_count)}
+            commits={persona.commits}
+          />
+        </li>
+      {/each}
+    </ul>
+    <ul
+      class="flex items-center justify-center md:justify-start [&_li]:mx-8 [&_img]:max-w-none animate-infinite-scroll" aria-hidden="true">
+      {#each Object.entries(Avatares) as [nombre, persona]}
+        <li>
+          <AvatarCard
+            nombre={nombre}
+            colores={getColores(persona)}
+            sombreroHeight={mapRepos(persona.repo_count)}
+            commits={persona.commits}
+          />
+        </li>
+      {/each}
+    </ul>
+  </div>
+
+
 <div class="intro">
   <p class="info">
     Representamos colaboraciones en repositorios de GitHub, correspondientes a trabajos que realizamos a lo largo de nuestra carrera. Para ello, usamos tarjetas visuales

@@ -1,12 +1,26 @@
+
 <script>
-  import Anteojos from './Anteojos.svelte';
-  let colores = [
-    "#b24fe1", "#009688", "#009b01", "#8bc34a", "#ff8acb", "#f03800", "#c9b8f8"
-  ];
-  let sombreroHeight = 90;
+  export let nombre;
+  export let colores = [];
+  export let sombreroHeight = 90;
+  import SemiCircleStars from './SemiStart.svelte';
+  export let commits;
+
+function calcTop(height) {
+  const minTop = 85;   // sombrero más chico (repos = 1~2)
+  const maxTop = 25;   // sombrero más grande (repos = 16)
+  const minHeight = 50;
+  const maxHeight = 130;
+
+  const norm = (height - minHeight) / (maxHeight - minHeight); // [0,1]
+  const eased = 1 - Math.pow(1 - norm, 1.8); // curva suavizada
+  return minTop - eased * (minTop - maxTop);
+}
+
 </script>
 
 <div class="card">
+  <!-- Arcoíris de lenguajes -->
   <div class="arcoiris">
     <svg width="360" height="450" viewBox="0 0 360 450">
       {#each colores as color, i}
@@ -20,15 +34,24 @@
     </svg>
   </div>
 
-
-  <img src="/sombrero.png" alt="Sombrero" class="sombrero" style={`height: ${sombreroHeight}px`} />
+  <img
+    src="/sombrero.png"
+    alt="Sombrero"
+    class="sombrero"
+    style={`height: ${sombreroHeight}px; top: ${calcTop(sombreroHeight)}px;`}
+  />
 
   <div class="gato-wrapper">
     <img src="/gitcat.png" alt="Octocat" class="gato" />
   </div>
+
   <div class="name">
-    <p>Sofía Kutter</p>
+    <p>{nombre}</p>
   </div>
+
+  <div class="SemiStar">
+  <SemiCircleStars commits={commits} maxCommits={200} />
+</div>
 </div>
 
 <style>
@@ -47,6 +70,7 @@
       0 0 24px rgba(0, 255, 200, 0.15) inset;
     backdrop-filter: blur(6px);
     transition: box-shadow 0.3s ease;
+    margin: 1rem;
   }
 
   .arcoiris {
@@ -55,7 +79,7 @@
     top: 15%;
     left: 60%;
     transform: translateX(-50%);
-    z-index: 0;
+    z-index: 1;
   }
 
   .gato-wrapper {
@@ -64,7 +88,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 1;
+    z-index: 2;
     margin-top: -22%;
   }
 
@@ -72,23 +96,34 @@
     width: 280px;
     max-height: 280px;
     object-fit: contain;
-    z-index: 2;
+    z-index: 3;
   }
 
   .sombrero {
     position: absolute;
-    top: 12%;
+    top: 15%;
     left: 50%;
     transform: translateX(-50%);
-    z-index: 3;
+    z-index: 4;
   }
 
-  .name{
+  .name {
     grid-row: 3;
     grid-column: 2;
     display: flex;
-    justify-content: center;   /* centrar horizontalmente */
-    align-items: end;          /* alinear al fondo */
+    justify-content: center;
+    align-items: end;
     height: 95%;
+    color: white;
   }
+
+  .SemiStar {
+    position: absolute;
+    margin-top: -10%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+  }
+
+  
 </style>
