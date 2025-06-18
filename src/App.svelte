@@ -727,7 +727,7 @@ function actualizarCajas() {
       <div class="cajas">
         {#each Repositorios as t}
           <div class="caja" class:masked={!isSelectedContributorOf(t.nombre)}>
-
+            <div class ='Tarjeta'> 
             <div
               class="borde-extra"
               style="border-color: {t.peso == 4 ? '#ffffff' : '#000000'};"
@@ -763,6 +763,7 @@ function actualizarCajas() {
                           />
                         {/if}
                       {/each}
+                      </div>
                     </div>
                   </div>
                 </div>

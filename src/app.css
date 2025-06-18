@@ -137,6 +137,11 @@ p{
   margin-bottom: 3rem;
 }
 
+.Tarjeta{
+  display: flex;
+  justify-content: center;
+}
+
 
 .colab-box-BIG {
   position: relative;  
