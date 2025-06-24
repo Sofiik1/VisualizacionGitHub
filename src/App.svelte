@@ -17,12 +17,8 @@
   import ReferenciasAvatar from "./avatarRef.svelte";
   import AvatarCard from "./AvatarCard.svelte";
 
-  let referenciasActivasAvatar = false;
-  let mostrarReferenciasAvatar = false;
-  let mostrarGrilla = false;
   let mostrarReferencias = false;
   let referenciasActivas = false;
-  let grillaActiva = false;
 
   import Papa from "papaparse";
   import { onMount } from "svelte";
@@ -293,6 +289,19 @@ repos: Array [ "Gestión eficiente de recursos en sistemas ferroviarios Kutter" 
     },
   }
 
+import Modal from './Modal.svelte'; // Modal reutilizable
+import EstrellaRef from "./EstrellaRef.svelte";
+
+  let selectedAvatar = null;
+
+  function openModal(data) {
+    console.log("Avatar seleccionado:", data);
+    selectedAvatar = data;
+  }
+
+  function closeModal() {
+    selectedAvatar = null;
+  }
 </script>
 
 <main class="page">
@@ -317,7 +326,11 @@ repos: Array [ "Gestión eficiente de recursos en sistemas ferroviarios Kutter" 
     </div>
   </div>
 
-  <h1 class="title">Descubri a los colaboradores</h1>
+  <h1 class="title">Elegí una  carta y descubrí una historia</h1>
+  <p class="subtitle">Cada avatar esconde un viaje: los lenguajes que habla, los proyectos que abrazó, <br/> las ideas que dejó vibrando en el código.
+    
+     Hacé clic y abrí la puerta a su universo.
+  </p>
   <div
     class="w-full inline-flex flex-nowrap overflow-hidden [mask-image:_linear-gradient(to_right,transparent_0,_black_128px,_black_calc(100%-200px),transparent_100%)]"
   >
@@ -331,6 +344,8 @@ repos: Array [ "Gestión eficiente de recursos en sistemas ferroviarios Kutter" 
             colores={getColores(persona)}
             sombreroHeight={mapRepos(persona.repo_count)}
             commits={persona.commits}
+            on:select={(e) => openModal({...e.detail, nombre, repos: persona.repos, commits: persona.commits, 
+                                        languages: persona.languages, fav_project: persona.fav})}
           />
         </li>
       {/each}
@@ -346,36 +361,105 @@ repos: Array [ "Gestión eficiente de recursos en sistemas ferroviarios Kutter" 
             colores={getColores(persona)}
             sombreroHeight={mapRepos(persona.repo_count)}
             commits={persona.commits}
+            repo_count={persona.repo_count}
+            on:select={(e) => openModal({...e.detail, nombre, repos: persona.repos, commits: persona.commits, 
+                                        languages: persona.languages, fav_project: persona.fav, repo_count: persona.repo_count
+                                        ,})}
           />
         </li>
       {/each}
     </ul>
   </div>
 
-  <div>
-    <p class="info">
-      Representamos colaboraciones en repositorios de GitHub, correspondientes a
+{#if selectedAvatar}
+  <Modal on:close={closeModal}>
+    <div class="modal-content-container">
+      <!-- Avatar -->
+      <div class="modal-avatar">
+        <AvatarCard
+          nombre={selectedAvatar.nombre}
+          colores={getColores(selectedAvatar)}
+          sombreroHeight={mapRepos(selectedAvatar.repo_count)}
+          commits={selectedAvatar.commits}
+          modoPopup={true}
+        />
+      </div>
+      
+      <!-- Info -->
+      <div class="scrollable">
+          <div class="modal-info">
+
+            <p class="modal-subtitulo">Lenguajes utilizados:</p>
+            <div class="modal-lenguajes">
+              {#each selectedAvatar.languages as lang}
+                <div class="lenguaje-item">
+                  <div
+                    class="lenguaje-color"
+                    style="background-color: {coloresLenguaje[lang.toLowerCase()]}"
+                  ></div>
+                  <span class="lenguaje-nombre">{lang}</span>
+                </div>
+              {/each}
+            </div>
+
+            <div class="cantidad-repo">
+              <div class="linea-repo">
+                <div>
+                  <p class="modal-subtitulo"> Participó en <strong>{selectedAvatar.repos.length}</strong> repositorios</p>
+                  <p class="modal-aclaracion">El tamaño refleja esta cantidad</p>
+                </div>
+                <img src="/sombrero.png" alt="Sombrero" class="sombrero" style={`height: 50px; width: 45px;`}/>
+              </div>
+            </div>  
+
+            <div class="cantidad-commits">
+              <div class="linea-commits">
+                <p class="modal-subtitulo">
+                  Realizó <strong>{selectedAvatar.commits}</strong> commits →
+                </p>
+                <EstrellaRef />
+              </div>
+            </div>
+            
+            <p class="modal-subtitulo">Repositorio favorito: </p>
+            <span class="repo-fav"> <li>{selectedAvatar.fav_project} </li></span>
+            
+
+            <p class="modal-subtitulo">Repositorios en los que participó:</p>
+            <ul class="modal-repos-lista">
+              {#each selectedAvatar.repos as repo}
+                <li>{repo}</li>
+              {/each}
+            </ul>
+          </div>
+        </div>
+    </div>
+  </Modal>
+{/if}
+
+
+
+
+
+<div class="repographix">
+    <h1 class="title">Repographix</h1>
+    <p class="subtitle-repo">
+      <!-- Representamos colaboraciones en repositorios de GitHub, correspondientes a
       trabajos que realizamos a lo largo de nuestra carrera. Para ello, usamos
       tarjetas visuales sintetizando atributos clave como: la variedad de
       lenguajes utilizados, la cantidad de commits, el peso del repositorio y
       cual fue la satisfacción del usuario con el resultado final de su
       proyecto. Para representar y diferenciar cada una de estas dimensiones,
-      seleccionamos las siguientes formas y colores.
+      seleccionamos las siguientes formas y colores. -->
+      Cada proyecto, una huella, un resumen visual del viaje.
+      Estas representaciones nacen de los repositorios que habitamos durante nuestra carrera: líneas de código, decisiones 
+      compartidas, objetivos alcanzados.
+      Tradujimos la esencia de cada colaboración en formas y colores que hablan por sí solos: los lenguajes que se entrelazaron,
+      los commits que marcaron el pulso, la magnitud del desafío… y la satisfacción con lo construido.
     </p>
-  </div>
+</div>
 
   <div>
-    <button
-      class="ref-button {referenciasActivasAvatar ? 'activo' : ''}"
-      on:click={() => {
-        referenciasActivasAvatar = !referenciasActivasAvatar;
-        mostrarReferenciasAvatar = !mostrarReferenciasAvatar;
-      }}
-    >
-      {referenciasActivasAvatar
-        ? "Ocultar referencias colaboradores"
-        : "Ver referencias colaboradores"}
-    </button>
 
     <button
       class="ref-button {referenciasActivas ? 'activo' : ''}"
@@ -389,23 +473,9 @@ repos: Array [ "Gestión eficiente de recursos en sistemas ferroviarios Kutter" 
         : "Ver referencias repositorios"}
     </button>
 
-    <button
-      class="ref-button {grillaActiva ? 'activo' : ''}"
-      on:click={() => {
-        grillaActiva = !grillaActiva;
-        mostrarGrilla = !mostrarGrilla;
-      }}
-    >
-      {grillaActiva ? "Ocultar Repos" : "Ver todos los Repos"}
-    </button>
-
-    {#if mostrarReferenciasAvatar}
-      <ReferenciasAvatar />
-    {/if}
-
     {#if mostrarReferencias}
       <div class="legend-wrapper">
-        <h3 class="legend-wrapper-title">Referncias de repositorios</h3>
+        <h3 class="legend-wrapper-title">Referencias de repositorios</h3>
         <div class="legend-info">
           <div class="legend-grid-2x2">
             <!-- PESO -->
@@ -607,9 +677,6 @@ repos: Array [ "Gestión eficiente de recursos en sistemas ferroviarios Kutter" 
       </div>
     {/if}
 
-    {#if mostrarGrilla}
-      <h1 class="title">Repographix</h1>
-      <h2 class="subtitle">Nuestros repositorios en tarjetas visuales</h2>
       <div class="cajas">
         {#each Repositorios as t}
           <div class="caja">
@@ -660,7 +727,7 @@ repos: Array [ "Gestión eficiente de recursos en sistemas ferroviarios Kutter" 
           </div>
         {/each}
       </div>
-    {/if}
+
 
     <footer class="footer">
       <div class="footer-content">

@@ -34,9 +34,11 @@
   font-family: "Electrolize", sans-serif;
   font-size: 1.5rem;
   color: #dad9d9;
-  margin-bottom: 2rem;
+  margin-top: 15px;
+  margin-bottom: 3rem;
   text-align: center;
 }
+
 
 .caja-horizontal {
   flex: 0 0 auto;
@@ -84,18 +86,6 @@
   margin: 12vh 0 10vh 0;
 }
 
-.info {
-  font-family: "Electrolize", sans-serif;
-  font-size: 1.3rem;
-  color: #ffffff;
-  line-height: 1.9;
-  padding: 3rem 0;
-  margin: auto;
-  text-align: center;
-  width: 70%;
-}
-
-
 .commit-description {
   text-align: center;
   font-size: 1rem;
@@ -105,6 +95,18 @@
   max-width: 200px;
 }
 
+.repographix{
+  padding: 3rem;
+}
+
+.subtitle-repo {
+  font-family: "Electrolize", sans-serif;
+  font-size: 1.3rem;
+  color: #dad9d9;
+  margin-top: 15px;
+  margin-bottom: 2rem;
+  text-align: center;
+}
 
 .page,
 .footer,
@@ -400,4 +402,117 @@ p{
 .legend-block {
   display: flex;
   flex-direction: column;
+}
+
+/*MODAL DESIGN*/
+.modal-content-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 1.5rem;
+  max-height: 90vh;
+}
+
+.scrollable {
+  max-height: 80vh;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 255, 200, 0.3)transparent;
+}
+
+.modal-info-scrollable::-webkit-scrollbar {
+  width: 1px;
+}
+.modal-info-scrollable::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 255, 200, 0.25);
+  border-radius: 1px;
+}
+
+.scrollable::-webkit-scrollbar-track {
+  background: transparent; /* 🔹 sin fondo */
+}
+
+.modal-subtitulo{
+  text-align: left;
+  font-family: "Electrolize", sans-serif;
+  font-weight: 500;
+  font-size: 1.2rem;
+  color: #ffffff;
+}
+
+.linea-repo,
+.linea-commits {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* espacio entre texto y icono */
+}
+
+.cantidad-repo,
+.cantidad-commits {
+  margin-bottom: 1rem;
+}
+
+.repo-fav {
+  font-size: 0.9rem;
+  color: white;
+  text-align: left;
+  margin-bottom: 5px;
+}
+
+.modal-aclaracion{
+  margin-top: 0;
+  font-size: 0.8rem;
+  color: rgb(214, 212, 212);
+  text-align: left;
+}
+
+@media (min-width: 768px) {
+  .modal-content-container {
+    flex-direction: row;
+  }
+}
+
+.modal-avatar {
+  flex-shrink: 0;
+}
+
+.modal-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+
+
+.modal-lenguajes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.lenguaje-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.lenguaje-color {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+}
+
+.lenguaje-nombre {
+  font-size: 0.9rem;
+  color: white;
+}
+
+
+.modal-repos-lista {
+  list-style-type: disc;
+  padding-left: 1rem;
+  color: white;
+  font-size: 0.9rem;
+  text-align: left;
 }
