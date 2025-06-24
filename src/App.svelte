@@ -14,7 +14,6 @@
   import Html from "./Html.svelte";
   import Cmasmas from "./Cmasmas.svelte";
   import WavyLineHueco from "./WavyLineHueco.svelte";
-  import ReferenciasAvatar from "./avatarRef.svelte";
   import AvatarCard from "./AvatarCard.svelte";
 
   let mostrarReferencias = false;
@@ -363,8 +362,7 @@ import EstrellaRef from "./EstrellaRef.svelte";
             commits={persona.commits}
             repo_count={persona.repo_count}
             on:select={(e) => openModal({...e.detail, nombre, repos: persona.repos, commits: persona.commits, 
-                                        languages: persona.languages, fav_project: persona.fav, repo_count: persona.repo_count
-                                        ,})}
+                                        languages: persona.languages, fav_project: persona.fav, repo_count: persona.repo_count,})}
           />
         </li>
       {/each}
@@ -438,9 +436,6 @@ import EstrellaRef from "./EstrellaRef.svelte";
 {/if}
 
 
-
-
-
 <div class="repographix">
     <h1 class="title">Repographix</h1>
     <p class="subtitle-repo">
@@ -459,7 +454,7 @@ import EstrellaRef from "./EstrellaRef.svelte";
     </p>
 </div>
 
-  <div>
+  <div></div>
 
     <button
       class="ref-button {referenciasActivas ? 'activo' : ''}"
@@ -749,7 +744,6 @@ import EstrellaRef from "./EstrellaRef.svelte";
         >
       </div>
     </footer>
-  </div>
 </main>
 
 <style>
