@@ -15,7 +15,9 @@
   import Cmasmas from "./Cmasmas.svelte";
   import WavyLineHueco from "./WavyLineHueco.svelte";
   import AvatarCard from "./AvatarCard.svelte";
-import Cordon from "./Cordon.svelte";
+  import Header from "./Header.svelte";
+  import Footer from "./Footer.svelte"
+
   let mostrarReferencias = false;
   let referenciasActivas = false;
 
@@ -357,6 +359,10 @@ import EstrellaRef from "./EstrellaRef.svelte";
 </script>
 
 <main class="page">
+
+  <div class="header"> <Header/> </div>
+
+<section id="red">
   <div class="intro">
     <div class="seccion-titulos">
     <h1 class="title">Codematrix</h1>
@@ -380,7 +386,9 @@ import EstrellaRef from "./EstrellaRef.svelte";
       </p>
     </div>
   </div>
-  <Cordon/>
+</section>
+
+<section id=colaboradores>
 <div class="colaboradores">
   <div class="seccion-titulos">
   <h1 class="title">Elegí una  carta y descubrí una historia</h1>
@@ -493,7 +501,9 @@ import EstrellaRef from "./EstrellaRef.svelte";
   </Modal>
 {/if}
 </div>
+</section>
 
+<section id=repositorios>
 <div class="repographix">
     <div class="seccion-titulos">
     <h1 class="title">Repographix</h1>
@@ -773,8 +783,6 @@ import EstrellaRef from "./EstrellaRef.svelte";
       </div>
     {/if}
     
-      
-
       <div class="cajas">
         {#each Repositorios as t}
         <div class="caja" class:masked={!isSelectedContributorOf(t.nombre)}>
@@ -816,29 +824,13 @@ import EstrellaRef from "./EstrellaRef.svelte";
           </div>
         {/each}
       </div>
+</section>
 
+<section id=insights>
 
-    <footer class="footer">
-      <div class="footer-content">
-        <a href="https://github.com/ezemaut/VisualizacionFinal" target="_blank"
-          >Repositorio en GitHub</a
-        >
-        <span>|</span>
-        <a href="https://www.linkedin.com/in/sofia-kutter" target="_blank"
-          >Sofía Kutter</a
-        >
-        <span>|</span>
-        <a href="https://www.linkedin.com/in/ezequiel-mautner/" target="_blank"
-          >Ezequiel Mautner</a
-        >
-        <span>|</span>
-        <a
-          href="https://www.linkedin.com/in/morafernandezstickar/"
-          target="_blank">Mora Fernandez</a
-        >
-      </div>
-    </footer>
+</section>
 
+    <Footer/>
 </main>
 
 <style>

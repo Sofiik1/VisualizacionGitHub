@@ -1,17 +1,9 @@
-
 <script>
   export let nombre;
   export let colores = [];
   export let sombreroHeight = 90;
   import SemiCircleStars from './SemiStart.svelte';
   export let commits;
-  export let modoPopup = false;
-  import { createEventDispatcher } from 'svelte';
-  const dispatch = createEventDispatcher();
-
-  function handleClick() {if (modoPopup) return;
-    dispatch('select', { nombre, colores, sombreroHeight, commits});
-  }
 
 function calcTop(height) {
   const minTop = 85;   // sombrero más chico (repos = 1~2)
@@ -25,15 +17,8 @@ function calcTop(height) {
 }
 
 </script>
-<!-- svelte-ignore a11y-click-events-have-key-events -->
-<!-- svelte-ignore a11y-no-static-element-interactions -->
-<div
-  class={`cursor-pointer ${modoPopup ? 'popup-avatar' : 'scrolling-avatar'}`}
-  on:click={handleClick}
->
 
-
-<div class="card" >
+<div class="card">
   <!-- Arcoíris de lenguajes -->
   <div class="arcoiris">
     <svg width="360" height="450" viewBox="0 0 360 450">
@@ -67,7 +52,6 @@ function calcTop(height) {
   <SemiCircleStars commits={commits} maxCommits={200} />
 </div>
 </div>
-</div>
 
 <style>
   .card {
@@ -77,7 +61,7 @@ function calcTop(height) {
     height: 350px;
     width: 300px;
     position: relative;
-    border: 2px solid rgba(236, 249, 246, 0.767); 
+    border: 2px solid rgba(0, 255, 200, 0.364); 
     border-radius: 16px;
     background: black;
     box-shadow:
@@ -99,8 +83,7 @@ function calcTop(height) {
 
   .gato-wrapper {
     grid-row: 2 / span 2;
-    grid-column: 2; 
-    
+    grid-column: 2;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -109,7 +92,7 @@ function calcTop(height) {
   }
 
   .gato {
-    width: 250px;
+    width: 280px;
     max-height: 280px;
     object-fit: contain;
     z-index: 3;
@@ -141,50 +124,5 @@ function calcTop(height) {
     z-index: 10;
   }
 
-  /* Estilos para modo modal */
-.popup-avatar .card {
-  margin: 0 auto; /* centrar la card en el modal */
-  border: 2px solid rgba(236, 249, 246, 0.767); 
-  height: 400px;
-}
-
-.popup-avatar .gato-wrapper {
-  margin-top: -18%; /* menos empuje hacia arriba */
-}
-
-.popup-avatar .gato {
-  position: absolute;
-  top: 20%;
-}
-
-.popup-avatar .name{
-  height: 100%;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 20px;
-
-}
-
-.popup-avatar .name p {
-  white-space: nowrap;
-  overflow: hidden;
-}
-
-.popup-avatar .sombrero {
-  max-height: 100px;
-  top: 12%;
-}
-
-.popup-avatar .SemiStar {
-  margin-top: -5%;
-}
-
-.popup-avatar .arcoiris {
-  top: 13%;
-  left: 60%;
-  transform: translateX(-50%);
-}
   
 </style>
