@@ -582,3 +582,9 @@ p{
   font-size: 0.9rem;
   text-align: left;
 }
+
+
+.grafico_flourish {
+  max-width: 70vw ;
+  margin: 30px auto; 
+}

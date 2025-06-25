@@ -1,9 +1,14 @@
 <script>
+  import { scaleQuantize } from 'd3-scale';
   export let commits = 0;
-  export let maxCommits = 200;
+  export const maxCommits = 200;
   const maxStars = 15;
 
-  const numStars = Math.max(1, Math.round((commits / maxCommits) * maxStars));
+  const commitsToStars = scaleQuantize()
+  .domain([1, 86])  // tighter upper bound for better low-end distribution
+  .range([...Array(maxStars).keys()].map(i => i + 1));
+  
+  const numStars = commitsToStars(commits);
   const radius = 80;
   const centerX = 100;
   const centerY = 100;

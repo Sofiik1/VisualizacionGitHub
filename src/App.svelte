@@ -7,16 +7,14 @@
   import Python from "./Py.svelte";
   import SemiArcsIcon from "./SemiArcsIcon.svelte";
   import WavyLineIcon from "./WavyLineIcon.svelte";
-  import WavyLineIcon2 from "./WavyLineIcon.svelte";
-  import WavyLineIcon3 from "./WavyLineIcon.svelte";
-  import WavyLineIcon4 from "./WavyLineIcon.svelte";
   import StarIcon from "./StarIcon.svelte";
   import Html from "./Html.svelte";
   import Cmasmas from "./Cmasmas.svelte";
   import WavyLineHueco from "./WavyLineHueco.svelte";
   import AvatarCard from "./AvatarCard.svelte";
-  import Header from "./Header.svelte";
-  import Footer from "./Footer.svelte"
+import Cordon from "./Cordon.svelte";
+import Header from "./Header.svelte";
+import Footer from "./Footer.svelte";
 
   let mostrarReferencias = false;
   let referenciasActivas = false;
@@ -359,10 +357,9 @@ import EstrellaRef from "./EstrellaRef.svelte";
 </script>
 
 <main class="page">
+  <Header/>
 
-  <div class="header"> <Header/> </div>
-
-<section id="red">
+  <section id="red">
   <div class="intro">
     <div class="seccion-titulos">
     <h1 class="title">Codematrix</h1>
@@ -386,9 +383,9 @@ import EstrellaRef from "./EstrellaRef.svelte";
       </p>
     </div>
   </div>
-</section>
+  </section>
 
-<section id=colaboradores>
+  <section id="colaboradores">
 <div class="colaboradores">
   <div class="seccion-titulos">
   <h1 class="title">Elegí una  carta y descubrí una historia</h1>
@@ -472,7 +469,7 @@ import EstrellaRef from "./EstrellaRef.svelte";
                   <p class="modal-subtitulo"> Participó en <strong>{selectedAvatar.repos.length}</strong> repositorios</p>
                   <p class="modal-aclaracion">El tamaño refleja esta cantidad</p>
                 </div>
-                <img src="/sombrero.png" alt="Sombrero" class="sombrero" style={`height: 50px; width: 45px;`}/>
+                <img src="/chapa.png" alt="Sombrero" class="sombrero" style={`height: 60px; width: 60px;`}/>
               </div>
             </div>  
 
@@ -503,7 +500,7 @@ import EstrellaRef from "./EstrellaRef.svelte";
 </div>
 </section>
 
-<section id=repositorios>
+<section id="repositorios">
 <div class="repographix">
     <div class="seccion-titulos">
     <h1 class="title">Repographix</h1>
@@ -783,6 +780,8 @@ import EstrellaRef from "./EstrellaRef.svelte";
       </div>
     {/if}
     
+      
+
       <div class="cajas">
         {#each Repositorios as t}
         <div class="caja" class:masked={!isSelectedContributorOf(t.nombre)}>
@@ -824,13 +823,24 @@ import EstrellaRef from "./EstrellaRef.svelte";
           </div>
         {/each}
       </div>
-</section>
 
-<section id=insights>
+      </section>
 
-</section>
+      <section id="insights">
+        <h2 class="subtitle">El lenguaje más usado por los usuarios es Python, seguido de C</h2>
+    <iframe src='https://flo.uri.sh/visualisation/23937609/embed' title='Interactive or visual content' class='grafico_flourish flourish-embed-iframe' frameborder='0' scrolling='no' style='width:100%;height:600px;' sandbox='allow-same-origin allow-forms allow-scripts allow-downloads allow-popups allow-popups-to-escape-sandbox allow-top-navigation-by-user-activation'></iframe>
+    
+    <h2 class="subtitle">Casi todos los repositorios favoritos de los usuarios fueron hechos casi 100% en Python</h2>
+    <iframe src='https://flo.uri.sh/visualisation/23942272/embed' title='Interactive or visual content' class='grafico_flourish flourish-embed-iframe' frameborder='0' scrolling='no' style='width:100%;height:600px;' sandbox='allow-same-origin allow-forms allow-scripts allow-downloads allow-popups allow-popups-to-escape-sandbox allow-top-navigation-by-user-activation'></iframe>
 
-    <Footer/>
+
+
+        
+      </section>
+
+
+  <Footer/>
+
 </main>
 
 <style>
