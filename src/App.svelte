@@ -15,7 +15,7 @@
   import Cmasmas from "./Cmasmas.svelte";
   import WavyLineHueco from "./WavyLineHueco.svelte";
   import AvatarCard from "./AvatarCard.svelte";
-
+import Cordon from "./Cordon.svelte";
   let mostrarReferencias = false;
   let referenciasActivas = false;
 
@@ -171,17 +171,6 @@
     return parsedData;
   }
 
-  /*
-EJEMPLO:
-"Victor Navajas": Object { commits: 7, fav: "Gestión eficiente de recursos en sistemas ferroviarios", repo_count: 1, repos: [ "Gestión eficiente de recursos en sistemas ferroviarios Kutter" ]}
-​​
-commits: 7
-fav: "Gestión eficiente de recursos en sistemas ferroviarios"
-languages: Array [ "Python", "C" ]
-repo_count: 1
-repos: Array [ "Gestión eficiente de recursos en sistemas ferroviarios Kutter" ]
-
-  */
   let Avatares = {};
   onMount(async () => {
     try {
@@ -211,6 +200,69 @@ repos: Array [ "Gestión eficiente de recursos en sistemas ferroviarios Kutter" 
       console.error("Error fetching CSV:", e);
     }
   });
+
+  // Filter
+let showDropdown = false;
+
+let contributors = []; // array of names
+let selectedContributors = new Set(); // will contain names (strings)
+
+$: if (Avatares && Object.keys(Avatares).length > 0) {
+  contributors = Object.keys(Avatares);
+  selectedContributors = new Set(contributors); // all selected by default
+}
+
+// Force reactivity after any change
+function toggleContributor(name) {
+  if (selectedContributors.has(name)) {
+    selectedContributors.delete(name);
+  } else {
+    selectedContributors.add(name);
+  }
+  // This is key to trigger updates:
+  selectedContributors = new Set(selectedContributors);
+  console.log("selectedContributors", selectedContributors);
+}
+
+function isSelected(name) {
+  return selectedContributors.has(name);
+}
+
+
+function isSelectedContributorOf(repoNombre) {
+  // Buscar si algún colaborador que participa en este repo está seleccionado
+  for (const [contribuidor, data] of Object.entries(Avatares)) {
+    if (selectedContributors.has(contribuidor)) {
+      if (data.repos.includes(repoNombre)) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+function actualizarCajas() {
+  // Forzamos a que Repositorios se copie, para que el #each reaccione.
+  Repositorios = [...Repositorios];
+  console.log("🔁 Cajas actualizadas con", [...selectedContributors]);
+}
+
+  let todosSeleccionados = false;
+
+  function toggleTodos() {
+    if (todosSeleccionados) {
+      selectedContributors = new Set();
+    } else {
+      selectedContributors = new Set(contributors);
+    }
+    todosSeleccionados = !todosSeleccionados;
+    actualizarCajas();
+  }
+
+  // Recalculamos si están todos seleccionados al cambiar el set
+  $: todosSeleccionados = selectedContributors.size === contributors.length;
+
+// fin filtros
 
   const iconComponents = {
     JavaScript,
@@ -250,7 +302,7 @@ repos: Array [ "Gestión eficiente de recursos en sistemas ferroviarios Kutter" 
     html: "#f03800",
     svelte: "#b24fe1",
     c: "#009b01",
-    cmas: "#8bc34a",
+    cmasmas: "#8bc34a",
   };
 
   function getColores(persona) {
@@ -301,11 +353,15 @@ import EstrellaRef from "./EstrellaRef.svelte";
   function closeModal() {
     selectedAvatar = null;
   }
+
 </script>
 
 <main class="page">
   <div class="intro">
+    <div class="seccion-titulos">
     <h1 class="title">Codematrix</h1>
+    <h2 class="subtitle">Explora nuestra red de colaboradores a partir de GitHub</h2>
+    </div>
     <div class="codematrix-container">
       <div
         class="flourish-embed flourish-network"
@@ -324,12 +380,14 @@ import EstrellaRef from "./EstrellaRef.svelte";
       </p>
     </div>
   </div>
-
+  <Cordon/>
+<div class="colaboradores">
+  <div class="seccion-titulos">
   <h1 class="title">Elegí una  carta y descubrí una historia</h1>
   <p class="subtitle">Cada avatar esconde un viaje: los lenguajes que habla, los proyectos que abrazó, <br/> las ideas que dejó vibrando en el código.
-    
-     Hacé clic y abrí la puerta a su universo.
+      Hacé clic y abrí la puerta a su universo.
   </p>
+  </div> 
   <div
     class="w-full inline-flex flex-nowrap overflow-hidden [mask-image:_linear-gradient(to_right,transparent_0,_black_128px,_black_calc(100%-200px),transparent_100%)]"
   >
@@ -395,7 +453,7 @@ import EstrellaRef from "./EstrellaRef.svelte";
                     class="lenguaje-color"
                     style="background-color: {coloresLenguaje[lang.toLowerCase()]}"
                   ></div>
-                  <span class="lenguaje-nombre">{lang}</span>
+                  <span class="lenguaje-nombre">{lang === 'Cmasmas' ? 'C++' : lang}</span>
                 </div>
               {/each}
             </div>
@@ -434,39 +492,82 @@ import EstrellaRef from "./EstrellaRef.svelte";
     </div>
   </Modal>
 {/if}
-
+</div>
 
 <div class="repographix">
+    <div class="seccion-titulos">
     <h1 class="title">Repographix</h1>
-    <p class="subtitle-repo">
-      <!-- Representamos colaboraciones en repositorios de GitHub, correspondientes a
-      trabajos que realizamos a lo largo de nuestra carrera. Para ello, usamos
-      tarjetas visuales sintetizando atributos clave como: la variedad de
-      lenguajes utilizados, la cantidad de commits, el peso del repositorio y
-      cual fue la satisfacción del usuario con el resultado final de su
-      proyecto. Para representar y diferenciar cada una de estas dimensiones,
-      seleccionamos las siguientes formas y colores. -->
+    <p class="subtitle">
       Cada proyecto, una huella, un resumen visual del viaje.
       Estas representaciones nacen de los repositorios que habitamos durante nuestra carrera: líneas de código, decisiones 
       compartidas, objetivos alcanzados.
       Tradujimos la esencia de cada colaboración en formas y colores que hablan por sí solos: los lenguajes que se entrelazaron,
       los commits que marcaron el pulso, la magnitud del desafío… y la satisfacción con lo construido.
     </p>
+    </div>
 </div>
 
-  <div></div>
+    <div class="box-boton">
+          <button
+            class="ref-button {referenciasActivas ? 'activo' : ''}"
+            on:click={() => {
+              referenciasActivas = !referenciasActivas;
+              mostrarReferencias = !mostrarReferencias;
+            }}
+          >
+            {referenciasActivas
+              ? "Ocultar referencias"
+              : "Ver referencias"}
+          </button>
 
-    <button
-      class="ref-button {referenciasActivas ? 'activo' : ''}"
-      on:click={() => {
-        referenciasActivas = !referenciasActivas;
-        mostrarReferencias = !mostrarReferencias;
-      }}
-    >
-      {referenciasActivas
-        ? "Ocultar referencias repositorios"
-        : "Ver referencias repositorios"}
-    </button>
+          <button class="ref-button" on:click={() => showDropdown = !showDropdown}>
+            Filtrar por contribuidor
+          </button>
+
+
+    </div>
+
+        {#if showDropdown}
+          <div class="dropdown-content">
+            <div class="grilla-filtro">
+            {#each contributors as name}
+              <label>
+                <input
+                  type="checkbox"
+                  checked={selectedContributors.has(name)}
+                  on:change={(e) => {
+                    if (e.target.checked) {
+                      selectedContributors.add(name);
+                    } else {
+                      selectedContributors.delete(name);
+                    }
+                    selectedContributors = new Set(selectedContributors); // fuerza reactividad
+                    actualizarCajas(); // 🔁 Actualiza las cajas
+                  }}
+                />
+                {name}
+              </label>
+            {/each}
+            </div>
+            <span></span>
+
+            <button
+                class="ref-button {todosSeleccionados ? 'activo' : ''}"
+                on:click={() => {
+                  if (todosSeleccionados) {
+                    selectedContributors = new Set(); // Deseleccionar todos
+                  } else {
+                    selectedContributors = new Set(contributors); // Seleccionar todos
+                  }
+                  todosSeleccionados = selectedContributors.size === contributors.length; // ✅ Actualiza flag
+                  actualizarCajas(); // 🔁 Actualiza visualización
+                }}
+              >
+              {todosSeleccionados ? 'Deseleccionar todos' : 'Seleccionar todos'}
+            </button>
+        </div>
+          {/if}
+
 
     {#if mostrarReferencias}
       <div class="legend-wrapper">
@@ -671,45 +772,38 @@ import EstrellaRef from "./EstrellaRef.svelte";
         </div>
       </div>
     {/if}
+    
+      
 
       <div class="cajas">
         {#each Repositorios as t}
-          <div class="caja">
-            <div
-              class="borde-extra"
-              style="border-color: {t.peso == 4 ? '#ffffff' : '#000000'};"
-            >
-              <div
-                class="borde-extra"
-                style="border-color: {t.peso >= 3 ? '#ffffff' : '#000000'};"
-              >
-                <div
-                  class="borde-extra"
-                  style="border-color: {t.peso >= 2
-                    ? '#ffffff'
-                    : '#000000'}; padding:3.5px;"
-                >
-                  <div class="colab-box-BIG">
-                    <div class="icon-layer-BIG">
-                      {#each t.iconos as nombre}
-                        {#if iconComponents[nombre] && t.iconLayout[nombre]}
-                          <svelte:component
-                            this={iconComponents[nombre]}
-                            size={baseIconSize *
-                              t.iconLayout[nombre].scale *
-                              0.9 *
-                              (nombre === "StarIcon" ? t.starScale : 1)}
-                            class="icon-item-BIG"
-                            style={`position: absolute;
-                                  left: ${t.iconLayout[nombre].x};
-                                  top: ${t.iconLayout[nombre].y};
-                                  stroke= ${t.iconLayout[nombre].color};
-                                  transform: translate(-50%, -50%);
-                                  z-index: ${t.iconLayout[nombre].zIndex ?? 0};
-                                  pointer-events: none;`}
-                          />
-                        {/if}
-                      {/each}
+        <div class="caja" class:masked={!isSelectedContributorOf(t.nombre)}>
+            <div class ='Tarjeta'>
+              <div class="borde-extra" style="border-color: {t.peso == 4 ? '#ffffff' : '#000000'};">
+                <div class="borde-extra" style="border-color: {t.peso >= 3 ? '#ffffff' : '#000000'};" >
+                  <div class="borde-extra" style="border-color: {t.peso >= 2   ? '#ffffff'   : '#000000'}; padding:3.5px;" >
+                    <div class="colab-box-BIG">
+                      <div class="icon-layer-BIG">
+                        {#each t.iconos as nombre}
+                          {#if iconComponents[nombre] && t.iconLayout[nombre]}
+                            <svelte:component
+                              this={iconComponents[nombre]}
+                              size={baseIconSize *
+                                t.iconLayout[nombre].scale *
+                                0.9 *
+                                (nombre === "StarIcon" ? t.starScale : 1)}
+                              class="icon-item-BIG"
+                              style={`position: absolute;
+                                    left: ${t.iconLayout[nombre].x};
+                                    top: ${t.iconLayout[nombre].y};
+                                    stroke= ${t.iconLayout[nombre].color};
+                                    transform: translate(-50%, -50%);
+                                    z-index: ${t.iconLayout[nombre].zIndex ?? 0};
+                                    pointer-events: none;`}
+                            />
+                          {/if}
+                        {/each}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -744,6 +838,7 @@ import EstrellaRef from "./EstrellaRef.svelte";
         >
       </div>
     </footer>
+
 </main>
 
 <style>

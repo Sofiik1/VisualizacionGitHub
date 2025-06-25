@@ -77,7 +77,7 @@ function calcTop(height) {
     height: 350px;
     width: 300px;
     position: relative;
-    border: 2px solid rgba(0, 255, 200, 0.364); 
+    border: 2px solid rgba(236, 249, 246, 0.767); 
     border-radius: 16px;
     background: black;
     box-shadow:
@@ -144,9 +144,7 @@ function calcTop(height) {
   /* Estilos para modo modal */
 .popup-avatar .card {
   margin: 0 auto; /* centrar la card en el modal */
-  box-shadow:
-    0 0 16px rgba(0, 255, 200, 0.3),
-    0 0 32px rgba(0, 255, 200, 0.3) inset;
+  border: 2px solid rgba(236, 249, 246, 0.767); 
   height: 400px;
 }
 

@@ -34,7 +34,7 @@
     max-width: 800px;
     max-height: 90vh;
     width: 90%;
-    border: 2px solid rgba(0, 255, 200, 0.364); 
+    border: 2px solid rgba(239, 245, 244, 0.599); 
     position: relative;
   }
 

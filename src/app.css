@@ -20,6 +20,12 @@
   text-align: left;
 }
 
+.seccion-titulos{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
 
 .title {
   font-family: "Electrolize", sans-serif;
@@ -31,14 +37,24 @@
 }
 
 .subtitle {
+  display: flex;
+  justify-content: center;
   font-family: "Electrolize", sans-serif;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   color: #dad9d9;
   margin-top: 15px;
   margin-bottom: 3rem;
-  text-align: center;
+  text-align: left;
+  padding: 0 8rem 0 ;
 }
 
+.intro {
+  margin: 12vh 0 15vh 0;
+}
+
+.colaboradores{
+  margin-top: 15vh;
+}
 
 .caja-horizontal {
   flex: 0 0 auto;
@@ -82,9 +98,6 @@
   align-content: center;
 }
 
-.intro {
-  margin: 12vh 0 10vh 0;
-}
 
 .commit-description {
   text-align: center;
@@ -96,7 +109,7 @@
 }
 
 .repographix{
-  padding: 3rem;
+  margin-top: 15vh;
 }
 
 .subtitle-repo {
@@ -362,34 +375,6 @@ p{
   scroll-behavior: smooth; 
 }
 
-.ref-button {
-  /* position: sticky; */
-  background-color: #1e1e1e;      /* Dark background */
-  color: #ffffff;                /* White text */
-  padding: 0.75rem 1.5rem;       /* Size */
-  font-family: "Electrolize", sans-serif;
-  font-size: 1.2rem;               /* Font size */
-  border: 2px solid #ffffff;     /* White border */
-  border-radius: 8px;            /* Rounded corners */
-  cursor: pointer;               /* Pointer cursor on hover */
-  transition: background-color 0.3s ease, transform 0.2s ease;
-  margin-bottom: 20px;
-  margin-top: 20px;
-  margin-left: 20px;
-  transition: background-color 0.3s ease, transform 0.2s ease, border-color 0.3s ease;
-}
-
-
-.ref-button:hover {
-  background-color: #333333;
-  transform: scale(1.05);        /* Slight zoom on hover */
-}
-
-.ref-button.activo {
-  border-color: #fe1492;
-}
-
-
 .legend-grid-2x2 {
   display: grid;
   grid-template-columns: 1fr 1fr;  /* 2 columns */
@@ -417,14 +402,14 @@ p{
   max-height: 80vh;
   overflow-y: auto;
   scrollbar-width: thin;
-  scrollbar-color: rgba(0, 255, 200, 0.3)transparent;
+  scrollbar-color: rgba(247, 253, 252, 0.3)transparent;
 }
 
 .modal-info-scrollable::-webkit-scrollbar {
   width: 1px;
 }
 .modal-info-scrollable::-webkit-scrollbar-thumb {
-  background-color: rgba(0, 255, 200, 0.25);
+  border: 2px solid rgba(236, 249, 246, 0.767); 
   border-radius: 1px;
 }
 
@@ -465,6 +450,90 @@ p{
   color: rgb(214, 212, 212);
   text-align: left;
 }
+ /*botones*/
+
+.box-boton{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  gap: 2rem;
+}
+
+.ref-button {
+  background-color: #1e1e1e;      /* Dark background */
+  color: #ffffff;                /* White text */
+  padding: 0.75rem 1.5rem;       /* Size */
+  font-family: "Electrolize", sans-serif;
+  font-size: 1.2rem;               /* Font size */
+  border: 2px solid #ffffff;     /* White border */
+  border-radius: 8px;            /* Rounded corners */
+  cursor: pointer;               /* Pointer cursor on hover */
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  transition: background-color 0.3s ease, transform 0.2s ease, border-color 0.3s ease;
+}
+
+
+.ref-button:hover {
+  background-color: #333333;
+  transform: scale(1.05);        /* Slight zoom on hover */
+}
+
+
+/* filtro */
+
+.dropdown-content {
+  justify-content: center;
+  background: #1a1a1a;
+  padding: 1rem;
+  border: 1px solid white;
+  color: white;
+  max-width: 40%; /* un poco más ancho que fit-content */
+  margin: 1rem auto; /* centro vertical y horizontal */
+  max-height: fit-content;
+  border: 2px solid #ffffff;     /* White border */
+  border-radius: 8px;            /* Rounded corners */
+}
+
+.grilla-filtro{
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  gap: 0.5rem 1rem; /* espacio vertical y horizontal */
+}
+
+.dropdown-content button{
+  background: #333;
+  color: white;
+  border: 1px solid white;
+  padding: 0.4rem 0.8rem;
+  cursor: pointer;
+  grid-column: span 1; /* cada botón ocupa 1 columna */
+  border: 2px solid #ffffff;     /* White border */
+  border-radius: 8px;            /* Rounded corners */
+  font-size: .8rem;
+  margin-top: 15px;
+  margin-bottom: 10px;
+}
+
+.dropdown-content label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  user-select: none;
+  font-size: .8rem;
+}
+
+/* mascara */
+.masked {
+  display: none;
+}
+
+.Tarjeta{
+  display: flex;
+  justify-content: center;
+}
 
 @media (min-width: 768px) {
   .modal-content-container {
@@ -481,8 +550,6 @@ p{
   flex-direction: column;
   gap: 0.5rem;
 }
-
-
 
 .modal-lenguajes {
   display: flex;
@@ -507,7 +574,6 @@ p{
   font-size: 0.9rem;
   color: white;
 }
-
 
 .modal-repos-lista {
   list-style-type: disc;
