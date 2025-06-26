@@ -826,17 +826,33 @@ import EstrellaRef from "./EstrellaRef.svelte";
 
       </section>
 
-      <section id="insights">
-        <h2 class="subtitle">El lenguaje más usado por los usuarios es Python, seguido de C</h2>
-    <iframe src='https://flo.uri.sh/visualisation/23937609/embed' title='Interactive or visual content' class='grafico_flourish flourish-embed-iframe' frameborder='0' scrolling='no' style='width:100%;height:600px;' sandbox='allow-same-origin allow-forms allow-scripts allow-downloads allow-popups allow-popups-to-escape-sandbox allow-top-navigation-by-user-activation'></iframe>
-    
-    <h2 class="subtitle">Casi todos los repositorios favoritos de los usuarios fueron hechos casi 100% en Python</h2>
-    <iframe src='https://flo.uri.sh/visualisation/23942272/embed' title='Interactive or visual content' class='grafico_flourish flourish-embed-iframe' frameborder='0' scrolling='no' style='width:100%;height:600px;' sandbox='allow-same-origin allow-forms allow-scripts allow-downloads allow-popups allow-popups-to-escape-sandbox allow-top-navigation-by-user-activation'></iframe>
+<section id="insights">
+    <div class="seccion-titulos">
+      <h2 class="subtitle">El lenguaje de la comunidad</h2>
+      <p> Cada gato representa a un colaborador que usó ese lenguaje en al menos un repositorio. Python lidera con soltura, seguido por HTML, C y CSS, 
+        mientras lenguajes como Svelte y C++ también dejan su huella. Este gráfico revela no solo qué lenguajes se escriben, sino también cuántas voces 
+        distintas los eligieron para expresarse.
+      </p>
+    </div>
 
+    <div class="flourish-embed flourish-bar-chart-race" data-src="visualisation/23937609">
+      <script src="https://public.flourish.studio/resources/embed.js"></script>
+      <noscript><img src="https://public.flourish.studio/visualisation/23937609/thumbnail" width="100%" alt="bar-chart-race visualization" /></noscript>
+    </div>
 
+    <div class="seccion-titulos">
+      <h2 class="subtitle">Años de código compartido</h2>
+      <p>A lo largo del tiempo, este gráfico revela cuántos proyectos alojados en GitHub contaron con la colaboración de cada mente.
+        Observa como avanzan los años y sus esfuerzos.
+      </p>
+    </div>
+    <div class="flourish-embed flourish-bar-chart-race" data-src="visualisation/22689556">
+      <script src="https://public.flourish.studio/resources/embed.js"></script>
+      <noscript><img src="https://public.flourish.studio/visualisation/22689556/thumbnail" width="100%" alt="bar-chart-race visualization" /></noscript>
+    </div>
 
         
-      </section>
+</section>
 
 
   <Footer/>
