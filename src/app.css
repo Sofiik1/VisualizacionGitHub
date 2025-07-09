@@ -535,11 +535,7 @@ p{
   justify-content: center;
 }
 
-@media (min-width: 768px) {
-  .modal-content-container {
-    flex-direction: row;
-  }
-}
+
 
 .modal-avatar {
   flex-shrink: 0;
@@ -584,7 +580,59 @@ p{
 }
 
 
-.grafico_flourish {
-  max-width: 70vw ;
-  margin: 30px auto; 
+
+.insight-graph{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+
+.graph-title {
+  font-family: "Electrolize", sans-serif;
+  font-size: 2rem;
+  line-height: 1;
+  margin-bottom: 1rem;
+  color: #ffffff;
+  text-align: center;
+}
+
+.graph-org{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 3rem;
+  max-width: 800px;
+  margin: 0 auto 30px; 
+}
+
+.graph-org > div:first-child {
+  max-width: 280px;
+  flex-shrink: 0;
+}
+
+
+.graph-org p{
+  max-width: 280px;
+  font-family: "Electrolize", sans-serif;
+  font-size: 1.1rem;
+  color: #dad9d9;
+  line-height: 1.5;
+  text-align: left;
+  font-weight: 400;
+}
+
+.org-graph {
+  flex-grow: 1;
+  max-width: 500px;
+  margin-left: 5rem;
+}
+
+@media (min-width: 768px) {
+  .modal-content-container {
+    flex-direction: row;
+  }
 }

@@ -827,28 +827,36 @@ import EstrellaRef from "./EstrellaRef.svelte";
       </section>
 
 <section id="insights">
-    <div class="seccion-titulos">
-      <h2 class="subtitle">El lenguaje de la comunidad</h2>
-      <p> Cada gato representa a un colaborador que usó ese lenguaje en al menos un repositorio. Python lidera con soltura, seguido por HTML, C y CSS, 
-        mientras lenguajes como Svelte y C++ también dejan su huella. Este gráfico revela no solo qué lenguajes se escriben, sino también cuántas voces 
-        distintas los eligieron para expresarse.
-      </p>
-    </div>
+  <h1 class="title">Behind the Push</h1>
+  <p class="subtitle"> Cada lenguaje, una elección. Cada colaboración, una amistad. Cada push, una huella en el tiempo. </p>
+    
+  <div class="graph-org">
+    <div>
+        <h1 class="graph-title">El lenguaje de la comunidad</h1>
+        <p> Cada gato representa a un colaborador que eligió ese lenguaje para dejar su huella. 
+          Python reina con claridad, seguido por HTML, C y CSS, mientras que lenguajes como Svelte y C++ también se hacen notar. 
+          Este gráfico revela no solo líneas de código, sino elecciones, estilos y las múltiples voces que habitan el proyecto.
+        </p>
+      </div>
+      <div class="org-graph">
+        <div class="flourish-embed flourish-bar-chart-race" data-src="visualisation/23937609">
+          <script src="https://public.flourish.studio/resources/embed.js"></script>
+          <noscript><img src="https://public.flourish.studio/visualisation/23937609/thumbnail" width="100%" alt="bar-chart-race visualization" /></noscript>
+        </div>
+      </div>
+      
+      
+  </div>
 
-    <div class="flourish-embed flourish-bar-chart-race" data-src="visualisation/23937609">
-      <script src="https://public.flourish.studio/resources/embed.js"></script>
-      <noscript><img src="https://public.flourish.studio/visualisation/23937609/thumbnail" width="100%" alt="bar-chart-race visualization" /></noscript>
-    </div>
-
-    <div class="seccion-titulos">
-      <h2 class="subtitle">Años de código compartido</h2>
-      <p>A lo largo del tiempo, este gráfico revela cuántos proyectos alojados en GitHub contaron con la colaboración de cada mente.
+      <h1 class="graph-title">Años de código compartido</h1>
+      <p class="subtitle">Este gráfico revela cuántos proyectos alojados en GitHub contaron con la colaboración de cada mente.
         Observa como avanzan los años y sus esfuerzos.
       </p>
-    </div>
-    <div class="flourish-embed flourish-bar-chart-race" data-src="visualisation/22689556">
-      <script src="https://public.flourish.studio/resources/embed.js"></script>
-      <noscript><img src="https://public.flourish.studio/visualisation/22689556/thumbnail" width="100%" alt="bar-chart-race visualization" /></noscript>
+    <div class="insight-graph">
+      <div class="flourish-embed flourish-bar-chart-race" data-src="visualisation/22689556">
+        <script src="https://public.flourish.studio/resources/embed.js"></script>
+        <noscript><img src="https://public.flourish.studio/visualisation/22689556/thumbnail" width="100%" alt="bar-chart-race visualization" /></noscript>
+      </div>
     </div>
 
         
