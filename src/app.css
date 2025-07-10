@@ -589,6 +589,15 @@ p{
   height: 100%;
 }
 
+.graph-title1 {
+  font-family: "Electrolize", sans-serif;
+  font-size: 2rem;
+  line-height: 1;
+  margin-bottom: 1rem;
+  color: #ffffff;
+  text-align: center;
+  max-width: 280px;
+}
 
 .graph-title {
   font-family: "Electrolize", sans-serif;
@@ -605,18 +614,12 @@ p{
   justify-content: center;
   flex-wrap: wrap;
   gap: 3rem;
-  max-width: 800px;
-  margin: 0 auto 30px; 
+  max-width: 900px;
+  margin: 60px auto 80px; 
 }
-
-.graph-org > div:first-child {
-  max-width: 280px;
-  flex-shrink: 0;
-}
-
 
 .graph-org p{
-  max-width: 280px;
+  max-width: 300px;
   font-family: "Electrolize", sans-serif;
   font-size: 1.1rem;
   color: #dad9d9;
@@ -626,10 +629,42 @@ p{
 }
 
 .org-graph {
-  flex-grow: 1;
-  max-width: 500px;
-  margin-left: 5rem;
+  max-width: 650px;
+  display: flex;
+  justify-content: center;
+  align-items:center;
+  width: 60%;
 }
+
+
+.flourish-embed.flourish-pictogram {
+  width: 100% !important;
+  display: block;
+}
+
+.flourish-embed.flourish-pictogram iframe {
+  width: 100% !important;
+  display: block;
+}
+
+
+.paused .animate-infinite-scroll {
+    animation-play-state: paused !important;
+  }
+
+@keyframes infinite-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-infinite-scroll {
+  animation: infinite-scroll 15s linear infinite;
+}
+
 
 @media (min-width: 768px) {
   .modal-content-container {

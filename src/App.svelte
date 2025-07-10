@@ -354,6 +354,23 @@ import EstrellaRef from "./EstrellaRef.svelte";
     selectedAvatar = null;
   }
 
+let sliderWrapper;
+  let timeout;
+
+  function scroll(direction) {
+    // Pausar animación CSS
+    sliderWrapper.classList.add('paused');
+
+    // Scroll manual
+    const offset = direction === 'left' ? -300 : 300;
+    sliderWrapper.scrollBy({ left: offset, behavior: 'smooth' });
+
+    // Limpiar y reiniciar timeout
+    clearTimeout(timeout);
+    timeout = setTimeout(() => {
+      sliderWrapper.classList.remove('paused');
+    }, 5000); // 5 segundos
+  }
 </script>
 
 <main class="page">
@@ -393,12 +410,28 @@ import EstrellaRef from "./EstrellaRef.svelte";
       Hacé clic y abrí la puerta a su universo.
   </p>
   </div> 
+  <div class="relative w-full">
+  <!-- Flechas -->
+  <button
+    on:click={() => scroll('left')}
+    class="absolute left-2 top-1/2 -translate-y-1/2 z-10 bg-white/20 backdrop-blur p-2 rounded-full"
+  >
+    ⬅
+  </button>
+  <button
+    on:click={() => scroll('right')}
+    class="absolute right-2 top-1/2 -translate-y-1/2 z-10 bg-white/20 backdrop-blur p-2 rounded-full"
+  >
+    ➡
+  </button>
+
+  <!-- Slider con animación y scroll manual -->
   <div
+    bind:this={sliderWrapper}
     class="w-full inline-flex flex-nowrap overflow-hidden [mask-image:_linear-gradient(to_right,transparent_0,_black_128px,_black_calc(100%-200px),transparent_100%)]"
   >
-    <ul
-      class="flex items-center justify-center md:justify-start [&_li]:mx-8 [&_img]:max-w-none animate-infinite-scroll"
-    >
+    <!-- Lista duplicada para el loop -->
+    <ul class="flex items-center [&_li]:mx-8 [&_img]:max-w-none animate-infinite-scroll">
       {#each Object.entries(Avatares) as [nombre, persona]}
         <li>
           <AvatarCard
@@ -406,14 +439,22 @@ import EstrellaRef from "./EstrellaRef.svelte";
             colores={getColores(persona)}
             sombreroHeight={mapRepos(persona.repo_count)}
             commits={persona.commits}
-            on:select={(e) => openModal({...e.detail, nombre, repos: persona.repos, commits: persona.commits, 
-                                        languages: persona.languages, fav_project: persona.fav})}
+            on:select={(e) =>
+              openModal({
+                ...e.detail,
+                nombre,
+                repos: persona.repos,
+                commits: persona.commits,
+                languages: persona.languages,
+                fav_project: persona.fav,
+              })}
           />
         </li>
       {/each}
     </ul>
+
     <ul
-      class="flex items-center justify-center md:justify-start [&_li]:mx-8 [&_img]:max-w-none animate-infinite-scroll"
+      class="flex items-center [&_li]:mx-8 [&_img]:max-w-none animate-infinite-scroll"
       aria-hidden="true"
     >
       {#each Object.entries(Avatares) as [nombre, persona]}
@@ -423,14 +464,21 @@ import EstrellaRef from "./EstrellaRef.svelte";
             colores={getColores(persona)}
             sombreroHeight={mapRepos(persona.repo_count)}
             commits={persona.commits}
-            repo_count={persona.repo_count}
-            on:select={(e) => openModal({...e.detail, nombre, repos: persona.repos, commits: persona.commits, 
-                                        languages: persona.languages, fav_project: persona.fav, repo_count: persona.repo_count,})}
+            on:select={(e) =>
+              openModal({
+                ...e.detail,
+                nombre,
+                repos: persona.repos,
+                commits: persona.commits,
+                languages: persona.languages,
+                fav_project: persona.fav,
+              })}
           />
         </li>
       {/each}
     </ul>
   </div>
+</div>
 
 {#if selectedAvatar}
   <Modal on:close={closeModal}>
@@ -528,7 +576,7 @@ import EstrellaRef from "./EstrellaRef.svelte";
           </button>
 
           <button class="ref-button" on:click={() => showDropdown = !showDropdown}>
-            Filtrar por contribuidor
+            Filtrar por colaborador
           </button>
 
 
@@ -831,21 +879,21 @@ import EstrellaRef from "./EstrellaRef.svelte";
   <p class="subtitle"> Cada lenguaje, una elección. Cada colaboración, una amistad. Cada push, una huella en el tiempo. </p>
     
   <div class="graph-org">
+
+    <div class="org-graph">
+      <div class="flourish-embed flourish-pictogram" data-src="visualisation/24165680"><script src="https://public.flourish.studio/resources/embed.js">
+      </script><noscript><img src="https://public.flourish.studio/visualisation/24165680/thumbnail" width="100%" alt="pictogram visualization" /></noscript></div>
+    </div>
+
     <div>
-        <h1 class="graph-title">El lenguaje de la comunidad</h1>
-        <p> Cada gato representa a un colaborador que eligió ese lenguaje para dejar su huella. 
-          Python reina con claridad, seguido por HTML, C y CSS, mientras que lenguajes como Svelte y C++ también se hacen notar. 
-          Este gráfico revela no solo líneas de código, sino elecciones, estilos y las múltiples voces que habitan el proyecto.
-        </p>
-      </div>
-      <div class="org-graph">
-        <div class="flourish-embed flourish-bar-chart-race" data-src="visualisation/23937609">
-          <script src="https://public.flourish.studio/resources/embed.js"></script>
-          <noscript><img src="https://public.flourish.studio/visualisation/23937609/thumbnail" width="100%" alt="bar-chart-race visualization" /></noscript>
-        </div>
-      </div>
-      
-      
+      <h1 class="graph-title1">El lenguaje de la comunidad</h1>
+      <p>
+        Cada gato representa a un colaborador que dejó su rastro en ese lenguaje. Python lidera la marcha, seguido por HTML, C y CSS,
+        mientras Svelte y C++ también hacen su aparición. El gráfico no solo muestra código, sino voces, estilos y decisiones 
+        compartidas.
+      </p>
+    </div>
+
   </div>
 
       <h1 class="graph-title">Años de código compartido</h1>
