@@ -10,13 +10,13 @@
   import Html from "./Html.svelte";
   import JavaScript from "./JavaScript.svelte";
   import Modal from './Modal.svelte';
-  import SemiArcsIcon from "./SemiArcsIcon.svelte";
-  import Python from "./Py.svelte";
   import Svelte from "./Svelte.svelte";
-  import StarIcon from "./StarIcon.svelte";
+  import Python from "./Py.svelte";
+  import SemiArcsIcon from "./SemiArcsIcon.svelte";
   import WavyLineIcon from "./WavyLineIcon.svelte";
+  import StarIcon from "./StarIcon.svelte";
   import WavyLineHueco from "./WavyLineHueco.svelte";
-  
+
   let mostrarReferencias = false;
   let referenciasActivas = false;
 
@@ -875,9 +875,10 @@ let sliderWrapper;
       </section>
 
 <section id="insights">
-  <h1 class="title">Behind the Push</h1>
-  <p class="subtitle"> Cada lenguaje, una elección. Cada colaboración, una amistad. Cada push, una huella en el tiempo. </p>
-    
+  <div class="seccion-titulos">
+    <h1 class="title">Behind the Push</h1>
+    <p class="subtitle"> Cada lenguaje, una elección. Cada colaboración, una amistad. Cada push, una huella en el tiempo. </p>
+  </div>  
   <div class="graph-org">
 
     <div class="org-graph">
