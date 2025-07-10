@@ -1,21 +1,22 @@
 <script>
-  import JavaScript from "./JavaScript.svelte";
-  import DoubleDiamondIcon from "./DoubleDiamondIcon.svelte";
-  import CSS from "./CSS.svelte";
-  import C from "./C.svelte";
-  import Svelte from "./Svelte.svelte";
-  import Python from "./Py.svelte";
-  import SemiArcsIcon from "./SemiArcsIcon.svelte";
-  import WavyLineIcon from "./WavyLineIcon.svelte";
-  import StarIcon from "./StarIcon.svelte";
-  import Html from "./Html.svelte";
-  import Cmasmas from "./Cmasmas.svelte";
-  import WavyLineHueco from "./WavyLineHueco.svelte";
   import AvatarCard from "./AvatarCard.svelte";
-import Cordon from "./Cordon.svelte";
-import Header from "./Header.svelte";
-import Footer from "./Footer.svelte";
-
+  import C from "./C.svelte";
+  import Cmasmas from "./Cmasmas.svelte";
+  import CSS from "./CSS.svelte";
+  import DoubleDiamondIcon from "./DoubleDiamondIcon.svelte";
+  import EstrellaRef from "./EstrellaRef.svelte";
+  import Footer from "./Footer.svelte";
+  import Header from "./Header.svelte";
+  import Html from "./Html.svelte";
+  import JavaScript from "./JavaScript.svelte";
+  import Modal from './Modal.svelte';
+  import SemiArcsIcon from "./SemiArcsIcon.svelte";
+  import Python from "./Py.svelte";
+  import Svelte from "./Svelte.svelte";
+  import StarIcon from "./StarIcon.svelte";
+  import WavyLineIcon from "./WavyLineIcon.svelte";
+  import WavyLineHueco from "./WavyLineHueco.svelte";
+  
   let mostrarReferencias = false;
   let referenciasActivas = false;
 
@@ -340,8 +341,7 @@ function actualizarCajas() {
     },
   }
 
-import Modal from './Modal.svelte'; // Modal reutilizable
-import EstrellaRef from "./EstrellaRef.svelte";
+//Modal
 
   let selectedAvatar = null;
 
